@@ -15,7 +15,69 @@
   </ion-header>
 
   <div id="container">
-    <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <div *ngIf="folder != 'Feed'">
+<!--      <form [formGroup]="validateForm">-->
+        <ion-item class="ion-text-left">
+          <ion-label position="floating">Naam:</ion-label>
+          <ion-input *ngIf="user" style="font-weight: bold;" type="text" [(ngModel)]="user.name"></ion-input>
+        </ion-item>
+<!--        <div class="alert alert-danger" role="alert">-->
+<!--          <p>Please enter a valid name.</p>-->
+<!--        </div>-->
+        <ion-item class="ion-text-left">
+          <ion-label position="floating">E-mail:</ion-label>
+          <ion-input style="font-weight: bold;" *ngIf="user" [(ngModel)]="user.username"></ion-input>
+        </ion-item>
+        <ion-item class="ion-text-left">
+          <ion-label position="floating">Wachtwoord:</ion-label>
+          <ion-input type="password"></ion-input>
+        </ion-item>
+<!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
+<!--          <p>Invalid password (min 8 characters)</p>-->
+<!--        </div>-->
+        <ion-item class="ion-text-left">
+          <ion-label position="floating">Herhaal Wachtwoord:</ion-label>
+          <ion-input type="password"></ion-input>
+        </ion-item>
+<!--        <div class="alert alert-danger" role="alert" *ngIf="validateForm.hasError('passwordNotMatch')">-->
+<!--          <p>Passwords don't match</p>-->
+<!--        </div>-->
+<!--      </form>-->
+        <div style="text-align: center">
+            <ion-button (click)="saveNewUser()">
+                <ion-icon slot="end" name="save"></ion-icon>
+                Opslaan
+            </ion-button>
+        </div>
+        <div>
+
+        </div>
+    </div>
+      <div *ngIf="folder === 'Feed'">
+
+<!--          <ion-app>-->
+<!--              <ion-header translucent>-->
+<!--                  <ion-toolbar>-->
+<!--                      <ion-title>Card</ion-title>-->
+<!--                  </ion-toolbar>-->
+<!--              </ion-header>,-->
+<!--              <ion-content>-->
+                  <ion-card *ngFor="let message of messageList">
+                      <ion-card-header>
+                          <ion-card-subtitle>Schrijver van het bericht</ion-card-subtitle>
+                          <ion-card-title>Onderwerp van het bericht</ion-card-title>
+                      </ion-card-header>
+                      <ion-card-content>
+                          {{message}}
+                      </ion-card-content>
+                  </ion-card>
+<!--              </ion-content>-->
+<!--          </ion-app>-->
+      </div>
+<!--    <p *ngIf="folder != 'Feed'">Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>-->
   </div>
+    <ion-item *ngIf="folder === 'Feed'" style=" position: absolute; bottom: 0; width: 100%">
+        <ion-input [(ngModel)]="message.message" placeholder="type een bericht" type="text" (keyup.enter)="sendMessage()"></ion-input>
+        <ion-button slot="end" (click)="sendMessage()">Send</ion-button>
+    </ion-item>
 </ion-content>

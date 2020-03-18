@@ -16,6 +16,8 @@ public class Person {
 
     private String name;
 
+    private String username;
+
     @Relationship(type = "READ_MESSAGE")
     private ArrayList<Subject> subjectList = new ArrayList<>();
 
@@ -29,6 +31,14 @@ public class Person {
 
     public Long getId() {
         return id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public ArrayList<Subject> getSubjectList() {
@@ -48,6 +58,7 @@ public class Person {
         return "Person{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
                 ", subjectList=" + subjectList +
                 '}';
     }

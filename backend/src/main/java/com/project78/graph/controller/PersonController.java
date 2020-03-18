@@ -41,6 +41,7 @@ public class PersonController {
     public ResponseEntity createPerson(@RequestBody Person person) {
         Person newlyAddedPerson = new Person();
         newlyAddedPerson.setName(person.getName());
+        newlyAddedPerson.setUsername(person.getUsername());
         personRepository.save(person);
         return ResponseEntity.ok().build();
     }
