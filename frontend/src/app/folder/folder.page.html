@@ -64,11 +64,11 @@
 <!--              <ion-content>-->
                   <ion-card *ngFor="let message of messageList">
                       <ion-card-header>
-                          <ion-card-subtitle>Schrijver van het bericht</ion-card-subtitle>
-                          <ion-card-title>Onderwerp van het bericht</ion-card-title>
+                          <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
+                          <ion-card-title>{{message.subjectName}}</ion-card-title>
                       </ion-card-header>
                       <ion-card-content>
-                          {{message}}
+                          {{message.message}}
                       </ion-card-content>
                   </ion-card>
 <!--              </ion-content>-->
@@ -77,7 +77,7 @@
 <!--    <p *ngIf="folder != 'Feed'">Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>-->
   </div>
     <ion-item *ngIf="folder === 'Feed'" style=" position: absolute; bottom: 0; width: 100%">
-        <ion-input [(ngModel)]="message.message" placeholder="type een bericht" type="text" (keyup.enter)="sendMessage()"></ion-input>
+        <ion-input [(ngModel)]="message.message" placeholder="typ een bericht" type="text" (keyup.enter)="sendMessage()"></ion-input>
         <ion-button slot="end" (click)="sendMessage()">Send</ion-button>
     </ion-item>
 </ion-content>

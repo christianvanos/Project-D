@@ -18,6 +18,8 @@ public class Person {
 
     private String username;
 
+    private String password;
+
     @Relationship(type = "READ_MESSAGE")
     private ArrayList<Subject> subjectList = new ArrayList<>();
 
@@ -51,6 +53,15 @@ public class Person {
 
     public void deleteLinkedMessage(Subject subject) {
         this.subjectList.remove(subject);
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

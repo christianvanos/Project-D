@@ -13,6 +13,7 @@ import {UserModalComponent} from './user-modal/user-modal.component';
 })
 export class AppComponent implements OnInit {
     public selectedIndex = 1;
+    private user;
     public appPages = [
         {
             title: 'Maak nieuw account',
@@ -35,7 +36,7 @@ export class AppComponent implements OnInit {
         private modalController: ModalController
     ) {
         console.log('test');
-        this.httpclient.getUserFromNeo4J().subscribe(res => console.log(res));
+        this.httpclient.getUserFromNeo4J().subscribe(res => this.user = res);
         this.initializeApp();
     }
 

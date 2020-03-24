@@ -30,4 +30,14 @@ export class HttpclientService {
     const url = `${this.url}/createSubject`;
     return this.http.put(url, message, httpOptions);
   }
+
+  createLinkUserAndMessage(user) {
+    const url = `${this.url}/linkedMessage`;
+    return this.http.put(url, user, httpOptions);
+  }
+
+  getAllMessagesFromNeo4j() {
+    const url = `${this.url}/findSubject`;
+    return this.http.get(url);
+  }
 }

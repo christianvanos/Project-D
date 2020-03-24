@@ -9,4 +9,6 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
 
     Person findById(long id);
 
+    Person findByUsername(String username);
+
 }
