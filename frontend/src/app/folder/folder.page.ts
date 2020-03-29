@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import {HttpclientService} from '../service/httpclient.service';
 import {Person} from '../models/person';
 import {Message} from '../models/message';
+import {PopoverController} from '@ionic/angular';
+import {PopoverComponent} from '../popover/popover.component';
 
 @Component({
   selector: 'app-folder',
@@ -16,15 +18,19 @@ export class FolderPage implements OnInit {
     id: null,
     name: '',
     username: '',
+    password: '',
     subjectList: []
   };
   private message: Message = {
     id: null,
     message: '',
+    subjectName: '',
+    level: ''
   };
 
   constructor(private activatedRoute: ActivatedRoute,
-              private httpclient: HttpclientService) { }
+              private httpclient: HttpclientService,
+              private popoverController: PopoverController) { }
 
   ngOnInit() {
     this.httpclient.getUserFromNeo4J().subscribe(res => this.user = res);
@@ -36,6 +42,26 @@ export class FolderPage implements OnInit {
     this.httpclient.createUserInNeo4j(this.user).subscribe();
   }
 
+  async presentPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: PopoverComponent,
+      event: ev,
+      translucent: true
+    });
+    popover.onDidDismiss().then(level => {
+      if (level.data) {
+        this.message.level = level.data;
+        console.log(this.message);
+      }
+    });
+    return await popover.present();
+  }
+
+  restartInput() {
+    this.message.message = '';
+    this.message.level = '';
+  }
+
   sendMessage() {
     const staticMessage = {
       subjectName : '',
@@ -43,9 +69,9 @@ export class FolderPage implements OnInit {
     };
     this.messageList.push(staticMessage);
     console.log(this.messageList);
-    this.httpclient.createMessageInNeo4j(this.message).subscribe();
+    // this.httpclient.createMessageInNeo4j(this.message).subscribe();
     this.user.subjectList.push(this.message);
-    this.httpclient.createLinkUserAndMessage(this.user).subscribe();
+    // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
     this.message.message = '';
   }
 
