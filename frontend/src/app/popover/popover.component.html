@@ -1,0 +1,7 @@
+<ion-list>
+  <ion-list-header>Kies prioriteit van bericht</ion-list-header>
+  <ion-item button (click)="levelChoosed('High')">Hoog</ion-item>
+  <ion-item button (click)="levelChoosed('Medium')">Neutraal</ion-item>
+  <ion-item button (click)="levelChoosed('Low')">Laag</ion-item>
+  <ion-item lines="none" detail="false" button (click)="dismissPopover()">Close</ion-item>
+</ion-list>
