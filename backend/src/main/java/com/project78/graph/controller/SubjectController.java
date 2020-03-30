@@ -20,13 +20,13 @@ public class SubjectController {
     @Autowired
     SubjectRepository subjectRepository;
 
-    @RequestMapping(value = "findSubject", method = RequestMethod.GET)
+    @GetMapping("findSubject")
     public ArrayList<Subject> get() {
         ArrayList<Subject> subjects = (ArrayList<Subject>) subjectRepository.findAll();
         return subjects;
     }
 
-    @RequestMapping(value = "createSubject", method = RequestMethod.PUT)
+    @PutMapping("createSubject")
     public ResponseEntity createPerson(@RequestBody Subject subject) {
         Subject newSubject = new Subject();
         newSubject.setSubjectName(subject.getSubjectName());
@@ -35,7 +35,7 @@ public class SubjectController {
         return ResponseEntity.ok().build();
     }
 
-//    @RequestMapping(value = "linkedMessage", method = RequestMethod.PUT)
+//    @PutMapping("linkedMessage")
 //    public ResponseEntity linkMessageToPerson(@RequestBody Person person) {
 //        if (personRepository.findById(person.getId()).isPresent()) {
 //            Person personFromDB = personRepository.findById(person.getId()).get();
