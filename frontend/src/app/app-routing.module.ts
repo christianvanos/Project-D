@@ -1,24 +1,15 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import {AuthenticationGuard} from './auth-guard/authentication-guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '',
+    redirectTo: 'folder/Feed',
     pathMatch: 'full'
   },
   {
-    path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginModule)
-  },
-  {
-    path: 'main-menu',
-    loadChildren: () => import('./main/main.module').then( m => m.MainModule), canActivate: [AuthenticationGuard]
-  },
-  {
     path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule), canActivate: [AuthenticationGuard]
+    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
   }
 ];
 
