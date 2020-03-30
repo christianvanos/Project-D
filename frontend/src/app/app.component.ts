@@ -5,6 +5,8 @@ import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {HttpclientService} from './service/httpclient.service';
 import {UserModalComponent} from './user-modal/user-modal.component';
+import {AuthenticationService} from './service/authentication.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-root',
@@ -14,6 +16,11 @@ import {UserModalComponent} from './user-modal/user-modal.component';
 export class AppComponent implements OnInit {
     public selectedIndex = 1;
     private user;
+    private login;
+    username: string;
+    password: string;
+    error = '';
+    private location;
     public appPages = [
         {
             title: 'Maak nieuw account',
@@ -38,10 +45,12 @@ export class AppComponent implements OnInit {
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
         private httpclient: HttpclientService,
+        private loginService: AuthenticationService,
+        private router: Router,
         private modalController: ModalController
     ) {
-        console.log('test');
-        this.httpclient.getUserFromNeo4J().subscribe(res => this.user = res);
+        console.log(window.location);
+        // this.httpclient.getUserFromNeo4J().subscribe(res => this.user = res);
         this.initializeApp();
     }
 
@@ -60,7 +69,57 @@ export class AppComponent implements OnInit {
         }
     }
 
+    onLogout() {
+        sessionStorage.removeItem('username');
+        sessionStorage.removeItem('jwtToken');
+        this.login = null;
+        this.router.navigate(['']);
+    }
+
+    onLogin() {
+        (this.loginService.authenticate(this.username, this.password).subscribe(
+                data => {
+                    // if ( data === 'NOPERMISSIONS') {
+                    //   this.error = 'No permissions to access this platform.';
+                    // } else {
+                    // this.alertService.presentToast('Logged In');
+                    this.login = true;
+                    this.router.navigate(['/main-menu']);
+                    this.error = '';
+                    this.httpclient.getUserFromNeo4J().subscribe(
+                        user => {
+                            this.user = user;
+                            sessionStorage.setItem('name', this.user.name);
+                        }
+                    );
+                    // }
+                },
+                error => {
+                    if ( error.status === 0) {
+                        this.error = 'Service Temporarily Unavailable';
+                    } else {
+                        this.error = 'Incorrect Username or Password';
+                    }
+                }
+            )
+        );
+        this.username = this.password = '';
+    }
+
     ngOnInit() {
+        if (sessionStorage.getItem('username') != null) {
+            this.login = true;
+            this.httpclient.getUserFromNeo4J().subscribe(
+                user => {
+                    this.user = user;
+                    sessionStorage.setItem('name', this.user.name);
+                }
+            );
+        } else  {
+            this.login = false;
+        }
+        console.log(this.login);
+        this.location = window.location.pathname;
         const path = window.location.pathname.split('folder/')[1];
         if (path !== undefined) {
             this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
