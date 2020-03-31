@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/")
 public class PersonController {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonController.class);
 
     @Autowired
@@ -38,14 +37,14 @@ public class PersonController {
     @Autowired
     SubjectRepository subjectRepository;
 
-    @RequestMapping(value = "find", method = RequestMethod.GET)
+    @GetMapping("find")
     public Person get() {
         Person person = personRepository.findByUsername(utils.getUsernameFromPrincipal());
         System.out.println(person);
         return person;
     }
 
-    @RequestMapping(value = "create", method = RequestMethod.PUT)
+    @PutMapping("create")
     public ResponseEntity createPerson(@RequestBody Person person) {
         Person newlyAddedPerson = new Person();
         newlyAddedPerson.setName(person.getName());
@@ -55,7 +54,7 @@ public class PersonController {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(value = "linkedMessage", method = RequestMethod.PUT)
+    @PutMapping("linkedMessage")
     public ResponseEntity linkMessageToPerson(@RequestBody Person person) {
         if (personRepository.findById(person.getId()).isPresent()) {
             Person personFromDB = personRepository.findById(person.getId()).get();
@@ -66,7 +65,7 @@ public class PersonController {
     }
 
     @Transactional
-    @RequestMapping(value = "deletelinkedMessage", method = RequestMethod.PUT)
+    @PutMapping("deletelinkedMessage")
     public ResponseEntity deletelinkMessageToPerson(@RequestBody Person person) {
         Person personFromDB = null;
         Subject subjectFromDB;

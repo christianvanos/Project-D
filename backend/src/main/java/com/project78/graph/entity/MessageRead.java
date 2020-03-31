@@ -1,39 +1,19 @@
 package com.project78.graph.entity;
 
+import lombok.Data;
 import org.neo4j.ogm.annotation.*;
 
-@RelationshipEntity(type = "READ_MESSAGE")
+@Data
+@RelationshipEntity(type = MessageRead.TYPE)
 public class MessageRead {
+    public static final String TYPE = "READ_MESSAGE";
+
     @Id
     @GeneratedValue
     private  Long id;
 
     @StartNode
     private Person person;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
-    }
 
     @EndNode
     private Subject subject;
