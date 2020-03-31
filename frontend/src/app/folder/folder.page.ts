@@ -25,7 +25,8 @@ export class FolderPage implements OnInit {
     id: null,
     message: '',
     subjectName: '',
-    level: ''
+    level: '',
+    priority: 1
   };
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -65,7 +66,8 @@ export class FolderPage implements OnInit {
   sendMessage() {
     const staticMessage = {
       subjectName : '',
-      message : this.message.message
+      message : this.message.message,
+      priority : 1
     };
     this.messageList.push(staticMessage);
     console.log(this.messageList);

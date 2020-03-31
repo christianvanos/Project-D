@@ -28,11 +28,6 @@ export class AppComponent implements OnInit {
             icon: 'mail'
         },
         {
-            title: 'Inloggen',
-            url: '/folder/Login',
-            icon: 'lock'
-        },
-        {
             title: 'Feed',
             url: '/folder/Feed',
             icon: 'paper-plane'

@@ -1,14 +1,13 @@
 package com.project78.graph.controller;
 
-import com.project78.graph.entity.Person;
 import com.project78.graph.entity.Subject;
-import com.project78.graph.repository.PersonRepository;
 import com.project78.graph.repository.SubjectRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 
 @CrossOrigin(origins = "*")
@@ -30,6 +29,7 @@ public class SubjectController {
     public ResponseEntity createPerson(@RequestBody Subject subject) {
         Subject newSubject = new Subject();
         newSubject.setSubjectName(subject.getSubjectName());
+        newSubject.setPriority(subject.getPriority());
         newSubject.setMessage(subject.getMessage());
         subjectRepository.save(newSubject);
         return ResponseEntity.ok().build();
