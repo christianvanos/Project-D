@@ -8,6 +8,8 @@ import {PopoverController} from '@ionic/angular';
 })
 export class PopoverComponent implements OnInit {
 
+  levelSelected = false;
+  levelValue;
   constructor(private popoverController: PopoverController) { }
 
   ngOnInit() {}
@@ -17,7 +19,13 @@ export class PopoverComponent implements OnInit {
   }
 
   levelChoosed(messageLevel) {
-    this.popoverController.dismiss(messageLevel);
+    this.levelValue = messageLevel;
+    this.levelSelected = true;
+  }
+
+  subjectChoosed(subject) {
+    const message = {subject, level : this.levelValue};
+    this.popoverController.dismiss(message);
   }
 
 }

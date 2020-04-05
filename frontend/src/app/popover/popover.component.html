@@ -1,7 +1,15 @@
-<ion-list>
+<ion-list *ngIf="!levelSelected">
   <ion-list-header>Kies prioriteit van bericht</ion-list-header>
   <ion-item button (click)="levelChoosed('High')">Hoog</ion-item>
   <ion-item button (click)="levelChoosed('Medium')">Neutraal</ion-item>
   <ion-item button (click)="levelChoosed('Low')">Laag</ion-item>
+  <ion-item lines="none" detail="false" button (click)="dismissPopover()">Close</ion-item>
+</ion-list>
+
+<ion-list *ngIf="levelSelected">
+  <ion-list-header>Kies onderwerp</ion-list-header>
+  <ion-item button (click)="subjectChoosed('Verjaardag')">Verjaardag</ion-item>
+  <ion-item button (click)="subjectChoosed('Management')">Management</ion-item>
+  <ion-item button (click)="subjectChoosed('Vergadering')">Vergadering</ion-item>
   <ion-item lines="none" detail="false" button (click)="dismissPopover()">Close</ion-item>
 </ion-list>

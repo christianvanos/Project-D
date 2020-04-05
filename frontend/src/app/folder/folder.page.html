@@ -80,7 +80,9 @@
 <!--                  </ion-toolbar>-->
 <!--              </ion-header>,-->
 <!--              <ion-content>-->
-                  <ion-card *ngFor="let message of messageList" [color]="message.priority ? 'primary' : ''">
+
+
+                  <ion-card *ngFor="let message of allReadMessagesList" [color]="message.level === 'High' ? 'danger' : ''">
                       <ion-card-header>
                           <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
                           <ion-card-title>{{message.subjectName}}</ion-card-title>
@@ -89,13 +91,39 @@
                           {{message.message}}
                       </ion-card-content>
                   </ion-card>
+
+          <ion-card *ngFor="let message of allUnreadMessagesList; index as i;" [color]="message.level === 'High' ? 'danger' : ''">
+              <ion-card-header>
+                  <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
+                  <ion-card-title>{{message.subjectName}}</ion-card-title>
+                  <br *ngIf="!messageRead[i]">
+                  <ion-icon *ngIf="!messageRead[i]" (click)="readMessage(i,message)" name="open-outline"></ion-icon>
+              </ion-card-header>
+              <ion-card-content *ngIf="messageRead[i]">
+                  {{message.message}}
+              </ion-card-content>
+          </ion-card>
+
+          <ion-card *ngFor="let message of newCreatedList" [color]="message.level === 'High' ? 'danger' : ''">
+              <ion-card-header>
+                  <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
+                  <ion-card-title>{{message.subjectName}}</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                  {{message.message}}
+              </ion-card-content>
+          </ion-card>
+
+
+
+
 <!--              </ion-content>-->
 <!--          </ion-app>-->
       </div>
 <!--    <p *ngIf="folder != 'Feed'">Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>-->
   </div>
     <ion-item *ngIf="folder === 'Feed'" style=" position: absolute; bottom: 0; width: 100%">
-        <ion-input *ngIf="message.level" [(ngModel)]="message.message" placeholder="typ een bericht" type="text" (keyup.enter)="sendMessage()"></ion-input>
+        <ion-input *ngIf="message.level" [(ngModel)]="message.message" placeholder="typ een bericht" type="text"></ion-input>
         <ion-button *ngIf="message.level" slot="end" (click)="sendMessage()">Send</ion-button>
         <ion-chip slot="end" *ngIf="!message.level" (click)="presentPopover($event)" color="primary">
             <ion-label>Nieuw</ion-label>

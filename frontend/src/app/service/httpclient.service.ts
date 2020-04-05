@@ -36,8 +36,13 @@ export class HttpclientService {
     return this.http.put(url, user, httpOptions);
   }
 
-  getAllMessagesFromNeo4j() {
-    const url = `${this.url}/findSubject`;
+  createRelationshipBetweenExistingNodes(relationship) {
+    const url = `${this.url}/createRelationship`;
+    return this.http.put(url, relationship, httpOptions);
+  }
+
+  getAllMessagesFromNeo4j(username) {
+    const url = `${this.url}/findSubject/${username}`;
     return this.http.get(url);
   }
 }

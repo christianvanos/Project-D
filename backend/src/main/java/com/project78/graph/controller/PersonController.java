@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -58,7 +60,11 @@ public class PersonController {
     public ResponseEntity linkMessageToPerson(@RequestBody Person person) {
         if (personRepository.findById(person.getId()).isPresent()) {
             Person personFromDB = personRepository.findById(person.getId()).get();
-            person.getSubjectList().forEach(personFromDB::readMessage);
+            person.getSubjectList().forEach(subject -> {
+                UUID uuid = UUID.randomUUID();
+                subject.setUUID(uuid.toString());
+                personFromDB.readMessage(subject);
+            });
             personRepository.save(personFromDB);
         }
         return ResponseEntity.ok().build();

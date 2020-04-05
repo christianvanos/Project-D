@@ -8,19 +8,68 @@ import java.util.ArrayList;
 @Data
 @NodeEntity
 public class Subject {
+
     @Id
     @GeneratedValue
     private Long id;
 
-    @Property
+    private String uuid;
+
+
+    public String getUUID() {
+        return uuid;
+    }
+
+    public void setUUID(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     private String subjectName;
 
-    @Property
-    private Integer priority;
+    private String level;
 
-    @Property
     private String message;
 
     @Relationship(type = MessageRead.TYPE, direction = Relationship.INCOMING)
     private ArrayList<Subject> messageList = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "id=" + id +
+                ", UUID='" + uuid + '\'' +
+                ", subjectName='" + subjectName + '\'' +
+                ", level='" + level + '\'' +
+                ", message='" + message + '\'' +
+                ", messageList=" + messageList +
+                '}';
+    }
 }
