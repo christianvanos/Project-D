@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
     password: string;
     error = '';
     private location;
+
     public appPages = [
         {
             title: 'Maak nieuw account',

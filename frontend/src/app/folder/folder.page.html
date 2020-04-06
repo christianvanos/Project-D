@@ -71,6 +71,7 @@
 
         </div>
     </div>
+
       <div style="overflow: auto" *ngIf="folder === 'Feed'">
 
 <!--          <ion-app>-->
@@ -80,7 +81,58 @@
 <!--                  </ion-toolbar>-->
 <!--              </ion-header>,-->
 <!--              <ion-content>-->
-
+              <div *ngFor="let message of newCreatedList.slice().reverse()  index as i" >
+                  <div class="{{message.level === 'High' ? 'card bg-danger' : 'card'}}"  >
+                      <div class="card-body">
+                          <div class="container">
+                              <div class="row">
+                                  <div class="col-1">
+                                      <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
+                                      </div>
+                                  <div class="col-sm">
+                                      <div class="row">
+                                          <div class="col-sm">
+                                              <p class="text-left"*ngIf="user">{{user.name}}</p>
+                                          <p class="text-left">10 minuten geleden</p>
+                                          </div>
+                                          <div class="col-sm">
+                                              <h5 class="card-title">Bericht titel</h5>
+                                          </div>
+                                          <div class="col-sm">
+                                              {{message.subjectName}}
+                                          </div>
+                                    </div>
+                                      <div class="row" *ngIf="!message.opened">
+                                          <div class="col-sm" style="border-style:none none dashed none;"></div>
+                                          <div class="col-2">
+                                              <div (click) = openMessage(i,message) > Open bericht
+                                              </div>
+                                          </div>
+                                          <div class="col-sm" style="border-style:none none dashed none;"></div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col">
+                                      <div *ngIf="message.opened">
+                                          <br>
+                                          <p class="card-text text-left"> {{message.message}} </p>
+                                          <div class="row">
+                                              <div class="col-sm" style="border-style:none none dashed none;"></div>
+                                              <div class="col-2">
+                                                  <div data-toggle="collapse" href="#test" role="button"  (click) = closeMessage(message) aria-expanded="false" aria-controls="collapseExample"> Sluit bericht
+                                                  </div>
+                                              </div>
+                                              <div class="col-sm" style="border-style:none none dashed none;"></div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              <br>
+          </div>
 
                   <ion-card *ngFor="let message of allReadMessagesList" [color]="message.level === 'High' ? 'danger' : ''">
                       <ion-card-header>
@@ -104,15 +156,6 @@
               </ion-card-content>
           </ion-card>
 
-          <ion-card *ngFor="let message of newCreatedList" [color]="message.level === 'High' ? 'danger' : ''">
-              <ion-card-header>
-                  <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
-                  <ion-card-title>{{message.subjectName}}</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                  {{message.message}}
-              </ion-card-content>
-          </ion-card>
 
 
 
@@ -132,3 +175,4 @@
         <ion-icon slot="end" *ngIf="message.level" (click)="restartInput()" name="close-circle-outline"></ion-icon>
     </ion-item>
 </ion-content>
+

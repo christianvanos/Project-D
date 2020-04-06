@@ -7,6 +7,7 @@ import {PopoverController} from '@ionic/angular';
 import {PopoverComponent} from '../popover/popover.component';
 import {Relationship} from '../models/relationship';
 
+
 @Component({
     selector: 'app-folder',
     templateUrl: './folder.page.html',
@@ -18,6 +19,8 @@ export class FolderPage implements OnInit {
     private messageList;
     private allReadMessagesList;
     private allUnreadMessagesList;
+
+    messageShown = true;
     private newCreatedList = [];
     private user: any = {
         id: null,
@@ -31,7 +34,8 @@ export class FolderPage implements OnInit {
         message: '',
         subjectName: '',
         level: '',
-        uuid: ''
+        uuid: '',
+        opened: false
     };
 
     private relationship: Relationship = {
@@ -61,6 +65,17 @@ export class FolderPage implements OnInit {
     saveNewUser() {
         this.httpclient.createUserInNeo4j(this.user).subscribe();
     }
+
+    openMessage(index,message) {
+        message.opened = true;
+        this.readMessage(index,message);
+
+    }
+    closeMessage(message) {
+        message.opened = false;
+
+    }
+
 
     async presentPopover(ev: any) {
         const popover = await this.popoverController.create({

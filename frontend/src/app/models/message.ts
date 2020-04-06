@@ -4,4 +4,5 @@ export class Message {
     level: string;
     subjectName: string;
     uuid: string;
+    opened: boolean;
 }
