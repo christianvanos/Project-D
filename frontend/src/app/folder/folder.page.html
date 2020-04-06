@@ -80,7 +80,7 @@
 <!--                  </ion-toolbar>-->
 <!--              </ion-header>,-->
 <!--              <ion-content>-->
-                  <ion-card *ngFor="let message of messageList" [color]="message.priority ? 'primary' : ''">
+                  <ion-card *ngFor="let message of messageList" [color]="message.level=='High' ? 'danger' : message.level=='Medium' ? 'warning' : 'secondary'">
                       <ion-card-header>
                           <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
                           <ion-card-title>{{message.subjectName}}</ion-card-title>

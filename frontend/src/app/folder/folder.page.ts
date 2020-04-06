@@ -25,8 +25,7 @@ export class FolderPage implements OnInit {
     id: null,
     message: '',
     subjectName: '',
-    level: '',
-    priority: 1
+    level: ''
   };
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -67,13 +66,13 @@ export class FolderPage implements OnInit {
     const staticMessage = {
       subjectName : '',
       message : this.message.message,
-      priority : 1
+      level: this.message.level
     };
     this.messageList.push(staticMessage);
     console.log(this.messageList);
-    // this.httpclient.createMessageInNeo4j(this.message).subscribe();
+    this.httpclient.createMessageInNeo4j(this.message).subscribe();
     this.user.subjectList.push(this.message);
-    // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
+    this.httpclient.createLinkUserAndMessage(this.user).subscribe();
     this.message.message = '';
   }
 

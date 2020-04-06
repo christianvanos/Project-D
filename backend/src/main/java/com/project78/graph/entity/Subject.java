@@ -16,7 +16,7 @@ public class Subject {
     private String subjectName;
 
     @Property
-    private Integer priority;
+    private String level;
 
     @Property
     private String message;

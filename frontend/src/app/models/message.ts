@@ -3,5 +3,4 @@ export class Message {
     message: string;
     level: string;
     subjectName: string;
-    priority: number;
 }

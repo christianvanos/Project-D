@@ -29,7 +29,7 @@ public class SubjectController {
     public ResponseEntity createPerson(@RequestBody Subject subject) {
         Subject newSubject = new Subject();
         newSubject.setSubjectName(subject.getSubjectName());
-        newSubject.setPriority(subject.getPriority());
+        newSubject.setLevel(subject.getLevel());
         newSubject.setMessage(subject.getMessage());
         subjectRepository.save(newSubject);
         return ResponseEntity.ok().build();
