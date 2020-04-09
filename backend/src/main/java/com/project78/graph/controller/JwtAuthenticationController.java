@@ -47,6 +47,7 @@ public class JwtAuthenticationController {
 			Person root = new Person();
 			root.setName("root");
 			root.setUsername("root");
+			root.setRole("ADMIN");
 			root.setPassword(passwordEncoder.encode("root"));
 			personRepository.save(root);
 		}

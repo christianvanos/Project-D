@@ -54,6 +54,7 @@ public class PersonController {
         newlyAddedPerson.setName(person.getName());
         newlyAddedPerson.setUsername(person.getUsername());
         newlyAddedPerson.setPassword(passwordEncoder.encode(person.getPassword()));
+        newlyAddedPerson.setRole(newlyAddedPerson.getRole());
         personRepository.save(person);
         return ResponseEntity.ok().build();
     }
