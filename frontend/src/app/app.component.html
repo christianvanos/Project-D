@@ -49,12 +49,14 @@
 
 
 <ion-app *ngIf="login">
+
+
   <ion-split-pane contentId="main-content">
+
     <ion-menu *ngIf="location != '/login'" contentId="main-content" type="overlay">
       <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header *ngIf="user">{{user.name}} </ion-list-header>
-          <ion-note *ngIf="user">{{user.username}}</ion-note>
+          <ion-title>{{title}}</ion-title>
+          <br>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item (click)="selectedIndex = i; clickedMenuButton(i)" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
@@ -62,9 +64,8 @@
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
-        </ion-list>
       </ion-content>
-        <ion-button color="danger" (click)="onLogout()">Logout</ion-button>
+<!--        <ion-button color="danger" (click)="onLogout()">Logout</ion-button>-->
     </ion-menu>
 
     <ion-router-outlet id="main-content"></ion-router-outlet>

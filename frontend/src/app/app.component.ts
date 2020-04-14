@@ -7,6 +7,7 @@ import {HttpclientService} from './service/httpclient.service';
 import {UserModalComponent} from './user-modal/user-modal.component';
 import {AuthenticationService} from './service/authentication.service';
 import {Router} from '@angular/router';
+import {AppPage} from "../../e2e/src/app.po";
 
 @Component({
     selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit {
     password: string;
     error = '';
     private location;
+    public title = "Feed";
 
     public appPages = [
         {
@@ -58,11 +60,7 @@ export class AppComponent implements OnInit {
     }
 
     clickedMenuButton(index) {
-        if (index === 0) {
-            console.log('nieuw account aanmaken');
-        } else {
-            console.log('berichtenfeed zien');
-        }
+        this.title = this.appPages[index].title;
     }
 
     onLogout() {
