@@ -54,7 +54,7 @@ public class PersonController {
         newlyAddedPerson.setName(person.getName());
         newlyAddedPerson.setUsername(person.getUsername());
         newlyAddedPerson.setPassword(passwordEncoder.encode(person.getPassword()));
-        System.out.println(newlyAddedPerson.getPassword() + " encryoted");
+        newlyAddedPerson.setRole(person.getRole());
         personRepository.save(newlyAddedPerson);
         return ResponseEntity.ok().build();
     }
