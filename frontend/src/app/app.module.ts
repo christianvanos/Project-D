@@ -12,7 +12,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {UserModalComponent} from './user-modal/user-modal.component';
 import {PopoverComponent} from './popover/popover.component';
 import {HttpInterceptorService} from './http-interceptor/http-interceptor.service';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, UserModalComponent, PopoverComponent],
@@ -22,7 +22,8 @@ import {FormsModule} from '@angular/forms';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     StatusBar,

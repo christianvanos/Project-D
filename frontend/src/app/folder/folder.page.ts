@@ -6,6 +6,7 @@ import {Message} from '../models/message';
 import {PopoverController} from '@ionic/angular';
 import {PopoverComponent} from '../popover/popover.component';
 import {Relationship} from '../models/relationship';
+import { ViewChild } from '@angular/core';
 
 @Component({
     selector: 'app-folder',
@@ -59,8 +60,9 @@ export class FolderPage implements OnInit {
         this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     }
 
-    saveNewUser() {
-        this.httpclient.createUserInNeo4j(this.user).subscribe();
+    saveNewUser(data) {
+        const newUser = {name: data.name, username: data.username, role: data.role, password: data.password};
+        this.httpclient.createUserInNeo4j(newUser).subscribe();
     }
 
     async presentPopover(ev: any) {

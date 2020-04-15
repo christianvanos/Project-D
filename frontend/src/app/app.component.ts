@@ -23,9 +23,9 @@ export class AppComponent implements OnInit {
     private location;
     public appPages = [
         {
-            title: 'Maak nieuw account',
+            title: 'Account',
             url: '/folder/Account',
-            icon: 'mail'
+            icon: 'person'
         },
         {
             title: 'Feed',
@@ -85,6 +85,9 @@ export class AppComponent implements OnInit {
                         user => {
                             this.user = user;
                             sessionStorage.setItem('name', this.user.name);
+                            if (this.user.role === 'ADMIN') {
+                                this.appPages.push({title: 'Maak account', url: '/folder/Create', icon: 'mail'});
+                            }
                         }
                     );
                     // }
@@ -108,6 +111,9 @@ export class AppComponent implements OnInit {
                 user => {
                     this.user = user;
                     sessionStorage.setItem('name', this.user.name);
+                    if (this.user.role === 'ADMIN') {
+                        this.appPages.push({title: 'Maak account', url: '/folder/Create', icon: 'mail'});
+                    }
                 }
             );
         } else  {
