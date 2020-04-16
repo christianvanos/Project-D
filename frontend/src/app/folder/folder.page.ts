@@ -7,6 +7,9 @@ import {PopoverController} from '@ionic/angular';
 import {PopoverComponent} from '../popover/popover.component';
 import {Relationship} from '../models/relationship';
 import { ViewChild } from '@angular/core';
+import {NgForm} from '@angular/forms';
+import { ToastController } from '@ionic/angular';
+import {AlertController} from '@ionic/angular';
 
 @Component({
     selector: 'app-folder',
@@ -43,7 +46,9 @@ export class FolderPage implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,
                 private httpclient: HttpclientService,
-                private popoverController: PopoverController) {
+                private popoverController: PopoverController,
+                private toastCtrl: ToastController,
+                public alertController: AlertController) {
     }
 
     ngOnInit() {
@@ -60,9 +65,46 @@ export class FolderPage implements OnInit {
         this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     }
 
-    saveNewUser(data) {
-        const newUser = {name: data.name, username: data.username, role: data.role, password: data.password};
-        this.httpclient.createUserInNeo4j(newUser).subscribe();
+    saveNewUser(data, form: NgForm) {
+        if (data.role === '' || data.name === '' || data.username === '' || data.password === '' || data.confirmPassword === '') {
+            this.empty();
+        } else if (data.password === data.confirmPassword) {
+            const newUser = {name: data.name, username: data.username, role: data.role, password: data.password};
+            this.httpclient.createUserInNeo4j(newUser).subscribe();
+            form.resetForm();
+            this.saveCompleted();
+        } else {
+            this.presentAlert();
+        }
+    }
+
+    async empty() {
+        const empty = await this.alertController.create({
+            message: 'whoops, something is empty check again',
+            buttons: ['ok']
+        });
+
+        await empty.present();
+        const result = await empty.onDidDismiss();
+        console.log(result);
+    }
+
+    async saveCompleted() {
+        const toast = await this.toastCtrl.create({
+            message: 'User is created!',
+            position: 'top',
+            buttons: ['Dismiss']
+        });
+        await toast.present();
+    }
+
+    async presentAlert() {
+        const toast = await this.toastCtrl.create({
+            message: 'Passwords do not match, please try again',
+            position: 'top',
+            buttons: ['Dismiss']
+        });
+        await toast.present();
     }
 
     async presentPopover(ev: any) {

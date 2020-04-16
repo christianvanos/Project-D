@@ -67,6 +67,8 @@ export class AppComponent implements OnInit {
     onLogout() {
         sessionStorage.removeItem('username');
         sessionStorage.removeItem('jwtToken');
+        const index = this.appPages.findIndex(x => x.title === 'Maak account');
+        this.appPages.splice(index, 1);
         this.login = null;
         this.router.navigate(['']);
     }

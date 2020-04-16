@@ -72,35 +72,35 @@
         </div>
     </div>
       <div *ngIf="folder == 'Create'">
-          <form #userForm="ngForm" (ngSubmit)="saveNewUser(userForm.value);" >
+          <form #userForm="ngForm" (ngSubmit)="saveNewUser(userForm.value, userForm);" >
               <ion-item class="ion-text-left">
                   <ion-label position="floating">Naam:</ion-label>
-                  <ion-input style="font-weight: bold;" type="text" name="name" ngModel=""></ion-input>
+                  <ion-input style="font-weight: bold;" type="text" name="name" ngModel="" required="true"></ion-input>
               </ion-item>
               <!--        <div class="alert alert-danger" role="alert">-->
               <!--          <p>Please enter a valid name.</p>-->
               <!--        </div>-->
               <ion-item class="ion-text-left">
                   <ion-label position="floating">Username:</ion-label>
-                  <ion-input style="font-weight: bold;" type="text" name="username" ngModel=""></ion-input>
+                  <ion-input style="font-weight: bold;" type="text" name="username" ngModel="" required="true"></ion-input>
               </ion-item>
               <ion-item class="ion-text-left">
                   <ion-label position="floating">Kies Rol:</ion-label>
-                  <ion-select placeholder="Select One" name="role" ngModel="">
+                  <ion-select placeholder="Select One" name="role" ngModel="" required="true">
                       <ion-select-option value="ADMIN">Admin</ion-select-option>
                       <ion-select-option value="USER">User</ion-select-option>
                   </ion-select>
               </ion-item>
               <ion-item class="ion-text-left">
                   <ion-label position="floating">Wachtwoord:</ion-label>
-                  <ion-input type="password" name="password" ngModel=""></ion-input>
+                  <ion-input type="password" name="password" ngModel="" required="true"></ion-input>
               </ion-item>
               <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
               <!--          <p>Invalid password (min 8 characters)</p>-->
               <!--        </div>-->
               <ion-item class="ion-text-left">
                   <ion-label position="floating">Herhaal Wachtwoord:</ion-label>
-                  <ion-input type="password"></ion-input>
+                  <ion-input type="password" name="confirmPassword" ngModel="" required="true"></ion-input>
               </ion-item>
               <!--        <div class="alert alert-danger" role="alert" *ngIf="validateForm.hasError('passwordNotMatch')">-->
               <!--          <p>Passwords don't match</p>-->
