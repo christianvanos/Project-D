@@ -8,6 +8,8 @@ import {PopoverComponent} from '../popover/popover.component';
 import {Relationship} from '../models/relationship';
 
 
+
+
 @Component({
     selector: 'app-folder',
     templateUrl: './folder.page.html',
@@ -39,9 +41,13 @@ export class FolderPage implements OnInit {
     };
 
     private relationship: Relationship = {
-        username : '',
-        uuid : ''
+        username: '',
+        uuid: ''
     };
+
+
+    userPopover = false;
+
 
     constructor(private activatedRoute: ActivatedRoute,
                 private httpclient: HttpclientService,
@@ -66,14 +72,25 @@ export class FolderPage implements OnInit {
         this.httpclient.createUserInNeo4j(this.user).subscribe();
     }
 
-    openMessage(index,message) {
+    openMessage(index, message) {
         message.opened = true;
-        this.readMessage(index,message);
+        this.readMessage(index, message);
 
     }
+
     closeMessage(message) {
         message.opened = false;
 
+    }
+
+
+    async presentUserPopover(ev: any) {
+        const popover = await this.popoverController.create({
+            component: PopoverComponent,
+            event: ev,
+            translucent: true
+        });
+        return await popover.present();
     }
 
 
@@ -117,6 +134,14 @@ export class FolderPage implements OnInit {
         this.httpclient.createLinkUserAndMessage(this.user).subscribe();
         this.message.message = '';
         this.message.level = '';
+    }
+
+
+/// ooit verplaatsen naar popover...
+
+
+    dismissPopover() {
+        this.popoverController.dismiss();
     }
 
 }

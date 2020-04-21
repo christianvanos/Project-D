@@ -9,6 +9,7 @@ import {PopoverController} from '@ionic/angular';
 export class PopoverComponent implements OnInit {
 
   levelSelected = false;
+  userPopover = false;
   levelValue;
   constructor(private popoverController: PopoverController) { }
 
@@ -27,5 +28,13 @@ export class PopoverComponent implements OnInit {
     const message = {subject, level : this.levelValue};
     this.popoverController.dismiss(message);
   }
+
+  userPopoverButton(type){
+    this.userPopover = true;
+    if(type == "Logout"){
+
+    }
+  }
+
 
 }
