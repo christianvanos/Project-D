@@ -17,35 +17,17 @@
 <!--    </ion-menu>-->
 
 <ion-header [translucent]="true">
-<!--  <ion-toolbar>-->
-<!--      <nav class="navbar navbar-expand-sm bg-app navbar-dark">-->
-<!--          <ul class="navbar-nav">-->
-<!--              <li class="nav-item active">-->
-<!--                  <a class="nav-link" href="#">Active</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                  <a class="nav-link" href="#">Link</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                  <a class="nav-link" href="#">Link</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                  <a class="nav-link disabled" href="#">Disabled</a>-->
-<!--              </li>-->
-<!--          </ul>-->
-<!--      </nav>-->
-<!--  </ion-toolbar>-->
 
     <ion-toolbar color="main">
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-buttons slot="secondary">
-            <ion-button (click)="presentUserPopover($event)">
-                <ion-icon slot="icon-only"   name="person-circle"></ion-icon>
-            </ion-button>
             <ion-button>
                 <ion-icon slot="icon-only" name="search"></ion-icon>
+            </ion-button>
+            <ion-button (click)="presentUserPopover($event)">
+                <ion-icon slot="icon-only"   name="person-circle"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
@@ -99,7 +81,8 @@
     </div>
 
       <div style="overflow: auto" *ngIf="folder === 'Feed'">
-
+          <!-- TODO Terug omvormen naar Ionic? Indien mogelijk.. -->
+          <!-- TODO Mobile weergaven fixen -->
 <!--          <ion-app>-->
 <!--              <ion-header translucent>-->
 <!--                  <ion-toolbar>-->
@@ -191,6 +174,7 @@
       </div>
 <!--    <p *ngIf="folder != 'Feed'">Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>-->
   </div>
+    <!--- TODO Bericht aanmaken en hoe dit gevisueleerd zoals op wireframe-->
     <ion-item *ngIf="folder === 'Feed'" style=" position: absolute; bottom: 0; width: 100%">
         <ion-input *ngIf="message.level" [(ngModel)]="message.message" placeholder="typ een bericht" type="text"></ion-input>
         <ion-button *ngIf="message.level" slot="end" (click)="sendMessage()">Send</ion-button>
@@ -201,3 +185,4 @@
         <ion-icon slot="end" *ngIf="message.level" (click)="restartInput()" name="close-circle-outline"></ion-icon>
     </ion-item>
 </ion-content>
+

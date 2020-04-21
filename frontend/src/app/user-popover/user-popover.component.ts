@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {PopoverController} from '@ionic/angular';
 import {AppComponent} from "../app.component";
 
+
+
 @Component({
   selector: 'app-user-popover',
   templateUrl: './user-popover.component.html',
@@ -16,7 +18,7 @@ export class UserPopoverComponent implements OnInit {
     this.popoverController.dismiss();
   }
 
-
+// TODO Use app.component's logout function
   onClick(type){
     if(type == "Logout"){
       console.log("logout pressed")

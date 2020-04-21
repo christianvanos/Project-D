@@ -9,6 +9,8 @@ import {AuthenticationService} from './service/authentication.service';
 import {Router} from '@angular/router';
 import {AppPage} from "../../e2e/src/app.po";
 
+import { Subject }    from 'rxjs';
+
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
