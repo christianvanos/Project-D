@@ -5,6 +5,7 @@ import {Person} from '../models/person';
 import {Message} from '../models/message';
 import {PopoverController} from '@ionic/angular';
 import {PopoverComponent} from '../popover/popover.component';
+import {UserPopoverComponent} from '../user-popover/user-popover.component';
 import {Relationship} from '../models/relationship';
 
 
@@ -46,7 +47,6 @@ export class FolderPage implements OnInit {
     };
 
 
-    userPopover = false;
 
 
     constructor(private activatedRoute: ActivatedRoute,
@@ -83,10 +83,10 @@ export class FolderPage implements OnInit {
 
     }
 
-
+    // TODO Refactor van Popovercomponent voor generalisation i.p.v. extra components.
     async presentUserPopover(ev: any) {
         const popover = await this.popoverController.create({
-            component: PopoverComponent,
+            component: UserPopoverComponent,
             event: ev,
             translucent: true
         });
@@ -136,12 +136,5 @@ export class FolderPage implements OnInit {
         this.message.level = '';
     }
 
-
-/// ooit verplaatsen naar popover...
-
-
-    dismissPopover() {
-        this.popoverController.dismiss();
-    }
 
 }

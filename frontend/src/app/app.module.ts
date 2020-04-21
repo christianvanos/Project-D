@@ -11,12 +11,13 @@ import { AppRoutingModule } from './app-routing.module';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {UserModalComponent} from './user-modal/user-modal.component';
 import {PopoverComponent} from './popover/popover.component';
+import {UserPopoverComponent} from './user-popover/user-popover.component';
 import {HttpInterceptorService} from './http-interceptor/http-interceptor.service';
 import {FormsModule} from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, UserModalComponent, PopoverComponent],
-  entryComponents: [UserModalComponent, PopoverComponent],
+  declarations: [AppComponent, UserModalComponent, PopoverComponent,UserPopoverComponent],
+  entryComponents: [UserModalComponent, PopoverComponent,UserPopoverComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

@@ -29,12 +29,7 @@ export class PopoverComponent implements OnInit {
     this.popoverController.dismiss(message);
   }
 
-  userPopoverButton(type){
-    this.userPopover = true;
-    if(type == "Logout"){
 
-    }
-  }
 
 
 }
