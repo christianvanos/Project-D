@@ -10,6 +10,13 @@ ion-menu.md ion-content {
 }
 
 
+.split-pane-md.split-pane-visible >.split-pane-side {
+  min-width: 270px;
+  max-width: 300px;
+
+  border-right: none !important ;
+}
+
 ion-menu.md ion-list {
   padding: 20px 0;
 }

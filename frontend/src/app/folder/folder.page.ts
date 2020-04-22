@@ -22,6 +22,19 @@ export class FolderPage implements OnInit {
     private messageList;
     private allReadMessagesList;
     private allUnreadMessagesList;
+    private toolbar =  `   <ion-toolbar color="main">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button>
+                <ion-icon slot="icon-only" name="search"></ion-icon>
+            </ion-button>
+            <ion-button (click)="presentUserPopover($event)">
+                <ion-icon slot="icon-only"   name="person-circle"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>`;
 
     messageShown = true;
     private newCreatedList = [];
