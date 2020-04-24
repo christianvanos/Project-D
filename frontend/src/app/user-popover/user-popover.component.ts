@@ -24,8 +24,7 @@ export class UserPopoverComponent implements OnInit {
   onClick(type){
     if(type == "Logout"){
       this.loginService.logOut();
+      this.dismissPopover();
     }
-    this.dismissPopover();
-
   }
 }

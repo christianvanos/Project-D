@@ -28,9 +28,9 @@ export class AppComponent implements OnInit {
 
     public appPages = [
         {
-            title: 'Maak nieuw account',
+            title: 'Account',
             url: '/folder/Account',
-            icon: 'mail'
+            icon: 'person'
         },
         {
             title: 'Feed',
@@ -68,6 +68,8 @@ export class AppComponent implements OnInit {
     onLogout() {
         sessionStorage.removeItem('username');
         sessionStorage.removeItem('jwtToken');
+        const index = this.appPages.findIndex(x => x.title === 'Maak account');
+        this.appPages.splice(index, 1);
         this.login = null;
         this.router.navigate(['']);
     }
@@ -86,6 +88,9 @@ export class AppComponent implements OnInit {
                         user => {
                             this.user = user;
                             sessionStorage.setItem('name', this.user.name);
+                            if (this.user.role === 'ADMIN') {
+                                this.appPages.push({title: 'Maak account', url: '/folder/Create', icon: 'mail'});
+                            }
                         }
                     );
                     // }
@@ -109,6 +114,9 @@ export class AppComponent implements OnInit {
                 user => {
                     this.user = user;
                     sessionStorage.setItem('name', this.user.name);
+                    if (this.user.role === 'ADMIN') {
+                        this.appPages.push({title: 'Maak account', url: '/folder/Create', icon: 'mail'});
+                    }
                 }
             );
         } else  {

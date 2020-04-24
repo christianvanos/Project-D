@@ -1,9 +1,4 @@
-<ion-app *ngIf="!login" >
-<!--    <ion-header>-->
-<!--        <ion-toolbar class="ion-text-center">-->
-<!--            <ion-title>Meldkamer Portal</ion-title>-->
-<!--        </ion-toolbar>-->
-<!--    </ion-header>-->
+<ion-app *ngIf="!this.loginService.isUserLoggedIn()" >
 
 
 <ion-content style="text-align: center;" color="light">
@@ -48,12 +43,11 @@
 </ion-app>
 
 
-<ion-app *ngIf="login">
-
+<ion-app *ngIf="this.loginService.isUserLoggedIn()">
 
   <ion-split-pane contentId="main-content">
 
-    <ion-menu *ngIf="location != '/login'" contentId="main-content" type="overlay">
+    <ion-menu contentId="main-content" type="overlay">
       <ion-content>
           <ion-title style="color:white;">{{title}}</ion-title>
           <br>
