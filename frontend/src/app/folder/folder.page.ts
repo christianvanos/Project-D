@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit,  Renderer2 } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpclientService} from '../service/httpclient.service';
 import {Person} from '../models/person';
@@ -8,6 +8,7 @@ import {PopoverComponent} from '../popover/popover.component';
 import {UserPopoverComponent} from '../user-popover/user-popover.component';
 import {Relationship} from '../models/relationship';
 
+import { DatePipe } from '@angular/common';
 
 
 
@@ -15,6 +16,7 @@ import {Relationship} from '../models/relationship';
     selector: 'app-folder',
     templateUrl: './folder.page.html',
     styleUrls: ['./folder.page.scss'],
+    providers: [DatePipe]
 })
 export class FolderPage implements OnInit {
     public folder: string;
@@ -22,21 +24,8 @@ export class FolderPage implements OnInit {
     private messageList;
     private allReadMessagesList;
     private allUnreadMessagesList;
-    private toolbar =  `   <ion-toolbar color="main">
-        <ion-buttons slot="start">
-            <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-        <ion-buttons slot="secondary">
-            <ion-button>
-                <ion-icon slot="icon-only" name="search"></ion-icon>
-            </ion-button>
-            <ion-button (click)="presentUserPopover($event)">
-                <ion-icon slot="icon-only"   name="person-circle"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>`;
-
     messageShown = true;
+    createMessageOpen = false;
     private newCreatedList = [];
     private user: any = {
         id: null,
@@ -48,6 +37,8 @@ export class FolderPage implements OnInit {
     private message: Message = {
         id: null,
         message: '',
+        title: '',
+        datetimePosted: null,
         subjectName: '',
         level: '',
         uuid: '',
@@ -64,7 +55,8 @@ export class FolderPage implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,
                 private httpclient: HttpclientService,
-                private popoverController: PopoverController) {
+                private popoverController: PopoverController,
+                private datePipe: DatePipe) {
     }
 
     ngOnInit() {
@@ -94,6 +86,10 @@ export class FolderPage implements OnInit {
     closeMessage(message) {
         message.opened = false;
 
+    }
+
+    openMessageCreation(){
+       this.createMessageOpen = true;
     }
 
     // TODO Refactor van Popovercomponent voor generalisation i.p.v. extra components.
@@ -126,7 +122,15 @@ export class FolderPage implements OnInit {
     restartInput() {
         this.message.message = '';
         this.message.level = '';
+        this.message.subjectName = '';
+        this.message.title = '';
     }
+    closeInput(){
+        this.createMessageOpen = false;
+
+        this.restartInput();
+    }
+
 
     readMessage(index, message) {
         this.messageRead[index] = true;
@@ -137,7 +141,10 @@ export class FolderPage implements OnInit {
     }
 
     sendMessage() {
+
         const staticMessage = {
+            title: this.message.title,
+            dateTimePosted: this.datePipe.transform(new Date(), 'dd-MM-yyy hh:mm:ss').toString(),
             subjectName: this.message.subjectName,
             message: this.message.message,
             level: this.message.level
@@ -145,8 +152,7 @@ export class FolderPage implements OnInit {
         this.newCreatedList.push(staticMessage);
         this.user.subjectList.push(this.message);
         this.httpclient.createLinkUserAndMessage(this.user).subscribe();
-        this.message.message = '';
-        this.message.level = '';
+        this.closeInput();
     }
 
 

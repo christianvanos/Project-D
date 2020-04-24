@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {PopoverController} from '@ionic/angular';
 import {AppComponent} from "../app.component";
+import {AuthenticationService} from "../service/authentication.service";
 
 
 
@@ -11,18 +12,20 @@ import {AppComponent} from "../app.component";
 })
 export class UserPopoverComponent implements OnInit {
 
-  constructor(private popoverController: PopoverController) { }
+  constructor(private popoverController: PopoverController,
+              private loginService: AuthenticationService,
+  ) { }
   ngOnInit() {}
 
   dismissPopover() {
     this.popoverController.dismiss();
   }
 
-// TODO Use app.component's logout function
   onClick(type){
     if(type == "Logout"){
-      console.log("logout pressed")
-      this.dismissPopover();
+      this.loginService.logOut();
     }
+    this.dismissPopover();
+
   }
 }

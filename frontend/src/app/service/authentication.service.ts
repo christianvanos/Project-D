@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {Router} from "@angular/router";
 const httpOptions = {
     headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -12,7 +13,8 @@ const httpOptions = {
 export class AuthenticationService {
     url = 'http://localhost:8080';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,        private router: Router,
+    ) { }
     authenticate(username: string, password: string) {
         const url = `${this.url}/authenticate`;
         return this.http.post<any>(url, {username, password}, httpOptions).pipe(
@@ -40,5 +42,6 @@ export class AuthenticationService {
     logOut() {
         sessionStorage.removeItem('username');
         sessionStorage.removeItem('jwtToken');
+        this.router.navigate(['']);
     }
 }

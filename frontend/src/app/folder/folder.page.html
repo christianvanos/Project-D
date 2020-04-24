@@ -16,8 +16,7 @@
 <!--        <ion-button color="danger">Logout</ion-button>-->
 <!--    </ion-menu>-->
 
-<ion-header [translucent]="true">
-
+<ion-header [translucent]="true" >
     <ion-toolbar color="main">
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
@@ -31,11 +30,12 @@
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
+
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <div id="container">
+
     <div *ngIf="folder != 'Feed'">
 <!--      <form [formGroup]="validateForm">-->
         <ion-item class="ion-text-left">
@@ -75,9 +75,54 @@
         </div>
     </div>
 
+
       <div style="overflow: auto" *ngIf="folder === 'Feed'">
-          <!-- TODO Terug omvormen naar Ionic? Indien mogelijk.. -->
-          <!-- TODO Mobile weergaven fixen -->
+          <ion-card (click)="openMessageCreation()">
+              <ion-card-content *ngIf="!createMessageOpen">
+              <ion-grid>
+                  <ion-row>
+                      <ion-col size="1">
+                          <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
+                      </ion-col>
+
+                      <ion-col>
+                          <br>
+                          <ion-label> Tik bericht... </ion-label>
+                      </ion-col>
+                  </ion-row>
+              </ion-grid>
+              </ion-card-content>
+              <ion-card-content *ngIf="createMessageOpen">
+                  <ion-grid>
+                      <ion-row>
+                          <ion-col size="1">
+                              <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
+                          </ion-col>
+
+                          <ion-col>
+                              <ion-input   [(ngModel)]="message.title"  id="titleInput" placeholder="Title..." type="text"></ion-input>
+                              <br>
+                              <ion-input [(ngModel)]="message.message" id="messageInput" placeholder="Bericht..." type="text"></ion-input>
+                          </ion-col>
+                          <ion-col>
+                              <ion-chip slot="end"  (click)="presentPopover($event)" color="primary">
+                                  <ion-label>Type</ion-label>
+                                  <ion-icon name="add-outline"></ion-icon>
+                              </ion-chip>
+                          </ion-col>
+                      </ion-row>
+                  </ion-grid>
+                  <ion-chip slot="end" id="priority" (click)="presentPopover($event)" color="primary">
+                      <ion-label>Prioriteit</ion-label>
+                      <ion-icon name="add-outline"></ion-icon>
+                  </ion-chip>
+                  <ion-button *ngIf="message.level" slot="end" (click)="sendMessage()">Send</ion-button>
+                  <ion-icon slot="end" (click)="closeInput()" name="close-circle-outline"></ion-icon>
+
+              </ion-card-content>
+
+          </ion-card>
+
 <!--          <ion-app>-->
 <!--              <ion-header translucent>-->
 <!--                  <ion-toolbar>-->
@@ -85,56 +130,93 @@
 <!--                  </ion-toolbar>-->
 <!--              </ion-header>,-->
 <!--              <ion-content>-->
+
+<!--          <div class="{{message.level === 'High' ? 'card bg-danger' : 'card'}}"  >-->
+<!--              <div class="card-body">-->
+<!--                  <div class="container">-->
+<!--                      <div class="row">-->
+<!--                          <div class="col-1">-->
+<!--                              <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">-->
+<!--                          </div>-->
+<!--                          <div class="col-sm">-->
+<!--                              <div class="row">-->
+<!--                                  <div class="col-sm">-->
+<!--                                      <p class="text-left"*ngIf="user">{{user.name}}</p>-->
+<!--                                      <p class="text-left">10 minuten geleden</p>-->
+<!--                                  </div>-->
+<!--                                  <div class="col-sm">-->
+<!--                                      <h5 class="card-title">Bericht titel</h5>-->
+<!--                                  </div>-->
+<!--                                  <div class="col-sm">-->
+<!--                                  </div>-->
+<!--                              </div>-->
+<!--                              <div class="row" *ngIf="!message.opened">-->
+<!--                                  <div class="col-sm" style="border-style:none none dashed none;"></div>-->
+<!--                                  <div class="col-2">-->
+<!--                                      <div (click) = openMessage(i,message) > Open bericht-->
+<!--                                      </div>-->
+<!--                                  </div>-->
+<!--                                  <div class="col-sm" style="border-style:none none dashed none;"></div>-->
+<!--                              </div>-->
+<!--                          </div>-->
+<!--                      </div>-->
+<!--                      <div class="row">-->
+<!--                          <div class="col">-->
+<!--                              <div *ngIf="message.opened">-->
+<!--                                  <br>-->
+<!--                                  <p class="card-text text-left"> {{message.message}} </p>-->
+<!--                                  <div class="row">-->
+<!--                                      <div class="col-sm" style="border-style:none none dashed none;"></div>-->
+<!--                                      <div class="col-2">-->
+<!--                                          <div data-toggle="collapse" href="#test" role="button"  (click) = closeMessage(message) aria-expanded="false" aria-controls="collapseExample"> Sluit bericht-->
+<!--                                          </div>-->
+<!--                                      </div>-->
+<!--                                      <div class="col-sm" style="border-style:none none dashed none;"></div>-->
+<!--                                  </div>-->
+<!--                              </div>-->
+<!--                          </div>-->
+<!--                      </div>-->
+<!--                  </div>-->
+<!--              </div>-->
+<!--          </div>-->
+
+
+
               <div *ngFor="let message of newCreatedList.slice().reverse()  index as i" >
-                  <div class="{{message.level === 'High' ? 'card bg-danger' : 'card'}}"  >
-                      <div class="card-body">
-                          <div class="container">
-                              <div class="row">
-                                  <div class="col-1">
+                  <ion-card>
+                      <ion-card-content>
+                          <ion-grid>
+                              <ion-row>
+                                  <ion-col size="1">
                                       <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
-                                      </div>
-                                  <div class="col-sm">
-                                      <div class="row">
-                                          <div class="col-sm">
-                                              <p class="text-left"*ngIf="user">{{user.name}}</p>
-                                          <p class="text-left">10 minuten geleden</p>
-                                          </div>
-                                          <div class="col-sm">
-                                              <h5 class="card-title">Bericht titel</h5>
-                                          </div>
-                                          <div class="col-sm">
-                                              {{message.subjectName}}
-                                          </div>
-                                    </div>
-                                      <div class="row" *ngIf="!message.opened">
-                                          <div class="col-sm" style="border-style:none none dashed none;"></div>
-                                          <div class="col-2">
-                                              <div (click) = openMessage(i,message) > Open bericht
-                                              </div>
-                                          </div>
-                                          <div class="col-sm" style="border-style:none none dashed none;"></div>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row">
-                                  <div class="col">
-                                      <div *ngIf="message.opened">
-                                          <br>
-                                          <p class="card-text text-left"> {{message.message}} </p>
-                                          <div class="row">
-                                              <div class="col-sm" style="border-style:none none dashed none;"></div>
-                                              <div class="col-2">
-                                                  <div data-toggle="collapse" href="#test" role="button"  (click) = closeMessage(message) aria-expanded="false" aria-controls="collapseExample"> Sluit bericht
-                                                  </div>
-                                              </div>
-                                              <div class="col-sm" style="border-style:none none dashed none;"></div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
+                                  </ion-col>
+
+                                  <ion-col>
+                                      <ion-label> {{user.name}}</ion-label>
+                                      <br>
+                                      <ion-label >{{message.datetimePosted}}</ion-label>
+                                  </ion-col>
+                                  <ion-col>
+                                      <ion-label>{{message.title}}</ion-label>
+                                  </ion-col>
+                                  <ion-col>
+                                      <ion-label>
+                                          {{message.subjectName}}</ion-label>
+                                  </ion-col >
+                              </ion-row>
+                          </ion-grid>
+                          <ion-item *ngIf="!message.opened" >
+                              <ion-label style="text-align:center;"   (click) = openMessage(i,message)>Open bericht</ion-label>
+                          </ion-item>
+                          <div *ngIf="message.opened">
+                              <br>
+                              <p class="card-text text-left"> {{message.message}} </p>
+                              <ion-item  >
+                                  <ion-label style="text-align:center;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
+                              </ion-item>
                           </div>
-                      </div>
-                  </div>
+                      </ion-card-content>
+                  </ion-card>
               <br>
           </div>
 
@@ -168,16 +250,6 @@
 <!--          </ion-app>-->
       </div>
 <!--    <p *ngIf="folder != 'Feed'">Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>-->
-  </div>
-    <!--- TODO Bericht aanmaken en hoe dit gevisueleerd zoals op wireframe-->
-    <ion-item *ngIf="folder === 'Feed'" style=" position: absolute; bottom: 0; width: 100%">
-        <ion-input *ngIf="message.level" [(ngModel)]="message.message" placeholder="typ een bericht" type="text"></ion-input>
-        <ion-button *ngIf="message.level" slot="end" (click)="sendMessage()">Send</ion-button>
-        <ion-chip slot="end" *ngIf="!message.level" (click)="presentPopover($event)" color="primary">
-            <ion-label>Nieuw</ion-label>
-            <ion-icon name="add-outline"></ion-icon>
-        </ion-chip>
-        <ion-icon slot="end" *ngIf="message.level" (click)="restartInput()" name="close-circle-outline"></ion-icon>
-    </ion-item>
+
 </ion-content>
 
