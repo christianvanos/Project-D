@@ -53,10 +53,12 @@
           <br>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+              <ng-template [ngIf]="userHasAccess(p)">
             <ion-item (click)="selectedIndex = i; clickedMenuButton(i)" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
               <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
+              </ng-template>
           </ion-menu-toggle>
       </ion-content>
 <!--        <ion-button color="danger" (click)="onLogout()">Logout</ion-button>-->

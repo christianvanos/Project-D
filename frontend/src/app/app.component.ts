@@ -30,12 +30,20 @@ export class AppComponent implements OnInit {
         {
             title: 'Account',
             url: '/folder/Account',
-            icon: 'person'
+            icon: 'person',
+            accessPermission: 'USER'
         },
         {
             title: 'Feed',
             url: '/folder/Feed',
-            icon: 'paper-plane'
+            icon: 'paper-plane',
+            accessPermission: 'USER'
+        },
+        {
+            title: 'Maak Account',
+            url: '/folder/Create',
+            icon: 'mail',
+            accessPermission: 'ADMIN'
         }
     ];
     public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
@@ -67,9 +75,7 @@ export class AppComponent implements OnInit {
 
     onLogout() {
         sessionStorage.removeItem('username');
-        sessionStorage.removeItem('jwtToken');
-        const index = this.appPages.findIndex(x => x.title === 'Maak account');
-        this.appPages.splice(index, 1);
+        sessionStorage.removeItem('jwtToken')
         this.login = null;
         this.router.navigate(['']);
     }
@@ -88,9 +94,6 @@ export class AppComponent implements OnInit {
                         user => {
                             this.user = user;
                             sessionStorage.setItem('name', this.user.name);
-                            if (this.user.role === 'ADMIN') {
-                                this.appPages.push({title: 'Maak account', url: '/folder/Create', icon: 'mail'});
-                            }
                         }
                     );
                     // }
@@ -106,6 +109,17 @@ export class AppComponent implements OnInit {
         );
         this.username = this.password = '';
     }
+    userHasAccess(page){
+        if(page.accessPermission == "USER"){
+            return true;
+        }
+        if(page.accessPermission == "ADMIN" && this.user.role == "ADMIN"){
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 
     ngOnInit() {
         if (sessionStorage.getItem('username') != null) {
@@ -114,9 +128,7 @@ export class AppComponent implements OnInit {
                 user => {
                     this.user = user;
                     sessionStorage.setItem('name', this.user.name);
-                    if (this.user.role === 'ADMIN') {
-                        this.appPages.push({title: 'Maak account', url: '/folder/Create', icon: 'mail'});
-                    }
+
                 }
             );
         } else  {
