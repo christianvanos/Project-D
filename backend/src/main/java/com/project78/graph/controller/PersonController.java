@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -52,6 +54,7 @@ public class PersonController {
         newlyAddedPerson.setName(person.getName());
         newlyAddedPerson.setUsername(person.getUsername());
         newlyAddedPerson.setPassword(passwordEncoder.encode(person.getPassword()));
+        newlyAddedPerson.setRole(newlyAddedPerson.getRole());
         personRepository.save(person);
         return ResponseEntity.ok().build();
     }

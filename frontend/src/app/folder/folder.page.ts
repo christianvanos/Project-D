@@ -32,6 +32,7 @@ export class FolderPage implements OnInit {
         name: '',
         username: '',
         password: '',
+        role: '',
         subjectList: []
     };
     private message: Message = {
@@ -136,7 +137,7 @@ export class FolderPage implements OnInit {
         this.messageRead[index] = true;
         this.relationship.username = this.user.username;
         this.relationship.uuid = message.uuid;
-        console.log(message)
+        console.log(message);
         this.httpclient.createRelationshipBetweenExistingNodes(this.relationship).subscribe();
     }
 
