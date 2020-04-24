@@ -21,6 +21,10 @@ export class UserPopoverComponent implements OnInit {
     this.popoverController.dismiss();
   }
 
+  getName(){
+    return sessionStorage.getItem('name');
+  }
+
   onClick(type){
     if(type == "Logout"){
       this.loginService.logOut();

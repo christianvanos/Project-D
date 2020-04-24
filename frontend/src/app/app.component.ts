@@ -19,7 +19,6 @@ import { Subject }    from 'rxjs';
 export class AppComponent implements OnInit {
     public selectedIndex = 1;
     private user;
-    private login;
     username: string;
     password: string;
     error = '';
@@ -76,7 +75,6 @@ export class AppComponent implements OnInit {
     onLogout() {
         sessionStorage.removeItem('username');
         sessionStorage.removeItem('jwtToken')
-        this.login = null;
         this.router.navigate(['']);
     }
 
@@ -87,7 +85,6 @@ export class AppComponent implements OnInit {
                     //   this.error = 'No permissions to access this platform.';
                     // } else {
                     // this.alertService.presentToast('Logged In');
-                    this.login = true;
                     this.router.navigate(['/main-menu']);
                     this.error = '';
                     this.httpclient.getUserFromNeo4J().subscribe(
@@ -123,7 +120,6 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         if (sessionStorage.getItem('username') != null) {
-            this.login = true;
             this.httpclient.getUserFromNeo4J().subscribe(
                 user => {
                     this.user = user;
@@ -131,10 +127,7 @@ export class AppComponent implements OnInit {
 
                 }
             );
-        } else  {
-            this.login = false;
         }
-        console.log(this.login);
         this.location = window.location.pathname;
         const path = window.location.pathname.split('folder/')[1];
         if (path !== undefined) {
