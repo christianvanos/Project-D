@@ -78,6 +78,30 @@ export class FolderPage implements OnInit {
     this.folder = this.activatedRoute.snapshot.paramMap.get("id");
   }
 
+  getCreateMessageSubjectName(){
+    return this.message.subjectName != ""? this.message.subjectName: 'Type' ;
+  }
+
+  getCreateMessageLevel(){
+    switch(this.message.level){
+      case "":
+        return "Prioriteit";
+        break;
+      case "High":
+        return "Hoog";
+        break;
+      case "Medium":
+        return "Neutraal";
+        break;
+      case "Low":
+        return "Laag";
+        break;
+      default:
+        return "Error: Wrong level variable";
+        break;
+    }
+  }
+
   saveNewUser(data, form: NgForm) {
     if (
       data.role === "" ||
@@ -99,6 +123,44 @@ export class FolderPage implements OnInit {
       this.saveCompleted();
     } else {
       this.presentAlert();
+    }
+  }
+
+  async setCreateMessageLevel(event){
+    if(this.message.level == ""){
+      const popover = await this.popoverController.create({
+        component: PopoverComponent,
+        event: event,
+        componentProps: {"type":"level"},
+        translucent: true
+      });
+      popover.onDidDismiss().then(result => {
+        if (result.data) {
+          this.message.level = result.data;
+        }
+      });
+      return await popover.present();
+    } else {
+      this.message.level = "";
+    }
+  }
+
+  async setCreateMessageSubjectName(event){
+    if(this.message.subjectName == ""){
+      const popover = await this.popoverController.create({
+        component: PopoverComponent,
+        event: event,
+        componentProps: {"type":"subject"},
+        translucent: true
+      });
+      popover.onDidDismiss().then(result => {
+        if (result.data) {
+          this.message.subjectName = result.data;
+        }
+      });
+      return await popover.present();
+    } else {
+      this.message.subjectName = "";
     }
   }
 
@@ -152,14 +214,15 @@ export class FolderPage implements OnInit {
   // TODO Refactor van Popovercomponent voor generalisation i.p.v. extra components. Indien Mogelijk??
   async presentUserPopover(ev: any) {
     const popover = await this.popoverController.create({
-      component: UserPopoverComponent,
+      component: PopoverComponent,
       event: ev,
-      translucent: true
+      translucent: true,
+      componentProps: {"type":"user"}
     });
     return await popover.present();
   }
 
-  async presentPopover(ev: any) {
+  async presentPopover(ev: any,data) {
     const popover = await this.popoverController.create({
       component: PopoverComponent,
       event: ev,
@@ -183,7 +246,6 @@ export class FolderPage implements OnInit {
   }
   closeInput() {
     this.createMessageOpen = false;
-
     this.restartInput();
   }
 

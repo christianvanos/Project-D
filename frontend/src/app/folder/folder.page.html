@@ -148,24 +148,20 @@
                           </ion-col>
                           <ion-col>
                               <ion-icon class="ion-float-right" (click)="closeInput()"  name="close-circle-outline"></ion-icon>
-                              <ion-chip class="ion-float-right" color="primary">
-                                  <ng-template *ngIf="this.message.subjectName != null ">
-                                      <ion-label>{{this.message.subjectName}}</ion-label>
-                                      <ion-icon name="close-circle-outline"></ion-icon>
-                                  </ng-template>
-                                  <ng-template *ngIf="this.message.subjectName == null ">
-                                      <ion-label>Type</ion-label>
-                                      <ion-icon name="add-outline"></ion-icon>
-                                  </ng-template>
+                              <ion-chip class="ion-float-right" color="primary" (click)="setCreateMessageSubjectName($event)">
+                                  <ion-label>{{getCreateMessageSubjectName()}}</ion-label>
+                                  <ion-icon *ngIf="getCreateMessageSubjectName() != 'Type'" name="close-circle-outline"></ion-icon>
+                                  <ion-icon  *ngIf="getCreateMessageSubjectName() == 'Type'"  name="add-outline"></ion-icon>
 
                               </ion-chip>
                           </ion-col>
                       </ion-row>
                   </ion-grid>
                   <ion-button *ngIf="message.level && message.subjectName" class="ion-float-right" slot="end" (click)="sendMessage()">Plaats</ion-button>
-                  <ion-chip slot="end" id="priority" class="ion-float-right" (click)="presentPopover($event)" color="primary">
-                      <ion-label>Prioriteit</ion-label>
-                      <ion-icon name="add-outline"></ion-icon>
+                  <ion-chip slot="end" id="priority" class="ion-float-right" (click)="setCreateMessageLevel($event)" color="primary">
+                      <ion-label>{{getCreateMessageLevel()}}</ion-label>
+                      <ion-icon *ngIf="getCreateMessageLevel() != 'Prioriteit'" name="close-circle-outline"></ion-icon>
+                      <ion-icon  *ngIf="getCreateMessageLevel() == 'Prioriteit'"  name="add-outline"></ion-icon>
                   </ion-chip>
 
               </ion-card-content>

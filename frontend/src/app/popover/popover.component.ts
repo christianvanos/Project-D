@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {PopoverController} from '@ionic/angular';
+import {NavParams, PopoverController} from '@ionic/angular';
+import {AuthenticationService} from "../service/authentication.service";
 
 @Component({
   selector: 'app-popover',
@@ -8,27 +9,59 @@ import {PopoverController} from '@ionic/angular';
 })
 export class PopoverComponent implements OnInit {
 
-  levelSelected = false;
-  userPopover = false;
-  levelValue;
-  constructor(private popoverController: PopoverController) { }
+  subjectPopover = false;
+  levelPopover = false;
+  userOptionsPopover = false;
+  constructor(private popoverController: PopoverController, public navParams:NavParams,
+              private loginService: AuthenticationService,) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    switch (this.navParams.get('type')) {
+      case "level":
+        this.levelPopover = true;
+        break;
+      case "subject":
+        this.subjectPopover = true;
+        break;
+      case "user":
+        this.userOptionsPopover = true;
+        break;
+      default:
+        break;
+
+    }
+  }
 
   dismissPopover() {
    this.popoverController.dismiss();
   }
 
-  levelChoosed(messageLevel) {
-    this.levelValue = messageLevel;
-    this.levelSelected = true;
+  chooseLevel(messageLevel) {
+    this.levelPopover = false;
+    this.popoverController.dismiss(messageLevel);
+
   }
 
-  subjectChoosed(subject) {
-    const message = {subject, level : this.levelValue};
-    this.popoverController.dismiss(message);
+  chooseSubject(subject) {
+    this.subjectPopover = false;
+    this.popoverController.dismiss(subject);
   }
 
+  getName(){
+    return sessionStorage.getItem('name');
+  }
+
+  userOptionClicked(type){
+    switch(type.toUpperCase()){
+      case "LOGOUT":
+        this.loginService.logOut();
+        break;
+      default:
+        break;
+    }
+    this.userOptionsPopover = false;
+    this.dismissPopover();
+  }
 
 
 
