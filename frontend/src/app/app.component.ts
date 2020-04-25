@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 
 import {ModalController, Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
@@ -8,6 +8,7 @@ import {UserModalComponent} from './user-modal/user-modal.component';
 import {AuthenticationService} from './service/authentication.service';
 import {Router} from '@angular/router';
 import {AppPage} from "../../e2e/src/app.po";
+
 
 import { Subject }    from 'rxjs';
 
@@ -24,6 +25,8 @@ export class AppComponent implements OnInit {
     error = '';
     private location;
     public title = "Feed";
+    private mobileMode = false;
+    private mobileWidth = 992;
 
     public appPages = [
         {
@@ -70,6 +73,15 @@ export class AppComponent implements OnInit {
 
     clickedMenuButton(index) {
         this.title = this.appPages[index].title;
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+        if(window.innerWidth < this.mobileWidth && !this.mobileMode){
+            this.mobileMode = true;
+        } else if(window.innerWidth >= this.mobileWidth && this.mobileMode){
+            this.mobileMode = false;
+        };
     }
 
     onLogout() {

@@ -144,7 +144,12 @@ export class FolderPage implements OnInit {
     this.createMessageOpen = true;
   }
 
-  // TODO Refactor van Popovercomponent voor generalisation i.p.v. extra components.
+
+  getName(){
+    return sessionStorage.getItem('name');
+  }
+
+  // TODO Refactor van Popovercomponent voor generalisation i.p.v. extra components. Indien Mogelijk??
   async presentUserPopover(ev: any) {
     const popover = await this.popoverController.create({
       component: UserPopoverComponent,

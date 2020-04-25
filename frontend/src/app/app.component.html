@@ -49,14 +49,20 @@
 
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
-          <ion-title style="color:white;">{{title}}</ion-title>
+<!--          <ion-title style="color:white;">{{title}}</ion-title>-->
+          <br>
           <br>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
               <ng-template [ngIf]="userHasAccess(p)">
             <ion-item (click)="selectedIndex = i; clickedMenuButton(i)" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">
-              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
+                <ng-template [ngIf]="!mobileMode">
+                <ion-icon class="ion-margin-start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                </ng-template>
+                <ng-template [ngIf]="mobileMode">
+                    <ion-icon slot="start" class="ion-margin-start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+                    <ion-label>{{ p.title }}</ion-label>
+                </ng-template>
             </ion-item>
               </ng-template>
           </ion-menu-toggle>

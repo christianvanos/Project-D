@@ -18,16 +18,18 @@
 
 <ion-header [translucent]="true" >
     <ion-toolbar color="main">
+        <ion-title style="color:white;">Feed</ion-title>
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-buttons slot="secondary">
             <ion-button>
-                <ion-icon slot="icon-only" name="search"></ion-icon>
+                <ion-icon slot="icon-only"  style="color:white;" name="search"></ion-icon>
             </ion-button>
             <ion-button (click)="presentUserPopover($event)">
-                <ion-icon slot="icon-only"   name="person-circle"></ion-icon>
+                <ion-icon slot="icon-only"  style="color:white;" name="person-circle"></ion-icon>
             </ion-button>
+            <ion-label  (click)="presentUserPopover($event)" class="ion-margin-end" style="color:white;">{{getName()}}</ion-label>
         </ion-buttons>
     </ion-toolbar>
 
@@ -142,22 +144,29 @@
                           <ion-col>
                               <ion-input   [(ngModel)]="message.title"  id="titleInput" placeholder="Title..." type="text"></ion-input>
                               <br>
-                              <ion-input [(ngModel)]="message.message" id="messageInput" placeholder="Bericht..." type="text"></ion-input>
+                              <ion-textarea [(ngModel)]="message.message" id="messageInput" placeholder="Bericht..." ></ion-textarea>
                           </ion-col>
                           <ion-col>
-                              <ion-chip slot="end"  (click)="presentPopover($event)" color="primary">
-                                  <ion-label>Type</ion-label>
-                                  <ion-icon name="add-outline"></ion-icon>
+                              <ion-icon class="ion-float-right" (click)="closeInput()"  name="close-circle-outline"></ion-icon>
+                              <ion-chip class="ion-float-right" color="primary">
+                                  <ng-template *ngIf="this.message.subjectName != null ">
+                                      <ion-label>{{this.message.subjectName}}</ion-label>
+                                      <ion-icon name="close-circle-outline"></ion-icon>
+                                  </ng-template>
+                                  <ng-template *ngIf="this.message.subjectName == null ">
+                                      <ion-label>Type</ion-label>
+                                      <ion-icon name="add-outline"></ion-icon>
+                                  </ng-template>
+
                               </ion-chip>
                           </ion-col>
                       </ion-row>
                   </ion-grid>
-                  <ion-chip slot="end" id="priority" (click)="presentPopover($event)" color="primary">
+                  <ion-button *ngIf="message.level && message.subjectName" class="ion-float-right" slot="end" (click)="sendMessage()">Plaats</ion-button>
+                  <ion-chip slot="end" id="priority" class="ion-float-right" (click)="presentPopover($event)" color="primary">
                       <ion-label>Prioriteit</ion-label>
                       <ion-icon name="add-outline"></ion-icon>
                   </ion-chip>
-                  <ion-button *ngIf="message.level" slot="end" (click)="sendMessage()">Send</ion-button>
-                  <ion-icon slot="end" (click)="closeInput()" name="close-circle-outline"></ion-icon>
 
               </ion-card-content>
 
@@ -223,7 +232,7 @@
 
 
               <div *ngFor="let message of newCreatedList.slice().reverse()  index as i" >
-                  <ion-card>
+                  <ion-card  [color]="message.level === 'High' ? 'danger' : ''">
                       <ion-card-content>
                           <ion-grid>
                               <ion-row>
@@ -241,7 +250,7 @@
                                       <ion-label>{{message.title}}</ion-label>
                                   </ion-col>
                                   <ion-col>
-                                      <ion-label>
+                                      <ion-label class="ion-float-right">
                                           {{message.subjectName}}</ion-label>
                                   </ion-col >
                               </ion-row>
