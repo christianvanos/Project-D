@@ -5,7 +5,6 @@ import { Person } from "../models/person";
 import { Message } from "../models/message";
 import { PopoverController } from "@ionic/angular";
 import { PopoverComponent } from "../popover/popover.component";
-import { UserPopoverComponent } from "../user-popover/user-popover.component";
 import { Relationship } from "../models/relationship";
 import { ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
@@ -211,29 +210,12 @@ export class FolderPage implements OnInit {
     return sessionStorage.getItem('name');
   }
 
-  // TODO Refactor van Popovercomponent voor generalisation i.p.v. extra components. Indien Mogelijk??
-  async presentUserPopover(ev: any) {
+  async showUserOptionsPopover(ev: any) {
     const popover = await this.popoverController.create({
       component: PopoverComponent,
       event: ev,
       translucent: true,
       componentProps: {"type":"user"}
-    });
-    return await popover.present();
-  }
-
-  async presentPopover(ev: any,data) {
-    const popover = await this.popoverController.create({
-      component: PopoverComponent,
-      event: ev,
-      translucent: true
-    });
-    popover.onDidDismiss().then(level => {
-      if (level.data) {
-        this.message.subjectName = level.data.subject;
-        this.message.level = level.data.level;
-        console.log(level.data);
-      }
     });
     return await popover.present();
   }
@@ -262,7 +244,7 @@ export class FolderPage implements OnInit {
   sendMessage() {
     const staticMessage = {
       title: this.message.title,
-      dateTimePosted: this.datePipe
+      datetimePosted: this.datePipe
         .transform(new Date(), "dd-MM-yyy hh:mm:ss")
         .toString(),
       subjectName: this.message.subjectName,

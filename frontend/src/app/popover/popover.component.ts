@@ -16,21 +16,21 @@ export class PopoverComponent implements OnInit {
               private loginService: AuthenticationService,) { }
 
   ngOnInit() {
-    switch (this.navParams.get('type')) {
-      case "level":
+    switch (this.navParams.get('type').toUpperCase()) {
+      case "LEVEL":
         this.levelPopover = true;
         break;
-      case "subject":
+      case "SUBJECT":
         this.subjectPopover = true;
         break;
-      case "user":
+      case "USER":
         this.userOptionsPopover = true;
         break;
       default:
         break;
-
     }
   }
+
 
   dismissPopover() {
    this.popoverController.dismiss();

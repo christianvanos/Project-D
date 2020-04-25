@@ -4,7 +4,7 @@ export class Message {
     title: string;
     level: string;
     subjectName: string;
-    datetimePosted: Date;
+    datetimePosted: string;
     uuid: string;
     opened: boolean;
 }
