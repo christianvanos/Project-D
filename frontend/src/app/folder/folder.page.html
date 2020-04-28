@@ -177,7 +177,6 @@
                                   <ion-col size="1">
                                       <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
                                   </ion-col>
-
                                   <ion-col>
                                       <ion-label> {{user.name}}</ion-label>
                                       <br>
@@ -187,18 +186,27 @@
                                       <ion-label>{{message.title}}</ion-label>
                                   </ion-col>
                                   <ion-col>
+                                      <ion-card *ngFor="let card of cards">
+                                        <ion-row>
+                                            <ion-col>
+                                                <button ion-button icon-left clear small (click)="toggleLiked(card)">
+                                                    <ion-icon [name]="card.icon"></ion-icon>
+                                                </button>
+                                            </ion-col>
+                                        </ion-row>
+                                    </ion-card>
                                       <ion-label class="ion-float-right">
                                           {{message.subjectName}}</ion-label>
                                   </ion-col >
                               </ion-row>
                           </ion-grid>
-                          <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-bottom" >
-                              <ion-label style="text-align:center;"   (click) = openMessage(i,message)>Open bericht</ion-label>
+                          <ion-item lines="none" [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-bottom" >
+                              <ion-label style="text-align:center; cursor:pointer;"  (click) = openMessage(i,message)>open bericht</ion-label>
                           </ion-item>
                           <div *ngIf="message.opened">
                               <p class="card-text text-left"> {{message.message}} </p>
-                              <ion-item [color]="message.level === 'High' ? 'priority': ''" >
-                                  <ion-label style="text-align:center;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
+                              <ion-item lines="none" [color]="message.level === 'High' ? 'priority': ''" >
+                                  <ion-label style="text-align:center; cursor:pointer;" (click) = closeMessage(message) >Sluit bericht</ion-label>
                               </ion-item>
                           </div>
                       </ion-card-content>

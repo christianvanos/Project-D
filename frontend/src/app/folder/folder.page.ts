@@ -13,6 +13,12 @@ import { AlertController } from "@ionic/angular";
 
 import { DatePipe } from "@angular/common";
 
+class CardsInterface {
+  title: string;
+  name: string;
+  icon: string;
+}
+
 @Component({
   selector: "app-folder",
   templateUrl: "./folder.page.html",
@@ -51,6 +57,9 @@ export class FolderPage implements OnInit {
     username: "",
     uuid: ""
   };
+  cards: CardsInterface[] = [
+    { title: 'Card Two', name: 'Card2', icon: 'star-outline' }
+  ];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -141,6 +150,15 @@ export class FolderPage implements OnInit {
       return await popover.present();
     } else {
       this.message.level = "";
+    }
+  }
+
+  toggleLiked(card: any) {
+
+    if (card.icon === 'star') {
+      card.icon = 'star-outline';
+    } else {
+      card.icon = 'star';
     }
   }
 
