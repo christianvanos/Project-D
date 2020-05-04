@@ -34,6 +34,33 @@ public class SubjectController {
 //        return subjects;
     }
 
+    @GetMapping("findSubject/{username}/{type}")
+    public Messages get(@PathVariable String username, @PathVariable String type) {
+        System.out.println(username + type);
+        Messages messages = this.get(username);
+        List<Subject> readMessages = messages.getReadMassages();
+        List <Subject> notReadmessages = messages.getUnreadMassages();
+
+        for (int i=0; i < readMessages.size(); i++) {
+            Subject curr_subject = readMessages.get(i);
+            if (curr_subject.getSubjectName().toString().compareTo(type) != 0) {
+                readMessages.remove(curr_subject);
+            }
+        }
+
+        for (int i=0; i < notReadmessages.size(); i++) {
+            Subject curr_subject = notReadmessages.get(i);
+            if (curr_subject.getSubjectName().toString().compareTo(type) != 0) {
+                System.out.println(curr_subject.getSubjectName() + " " + type);
+                notReadmessages.remove(curr_subject);
+            }
+        }
+
+        messages = new Messages(readMessages, notReadmessages);
+        System.out.println(messages);
+        return messages;
+    }
+
     @PutMapping("createSubject")
     public ResponseEntity createPerson(@RequestBody Subject subject) {
         Subject newSubject = new Subject();

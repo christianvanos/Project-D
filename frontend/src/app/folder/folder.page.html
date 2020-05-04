@@ -168,9 +168,21 @@
                   </ion-chip>
               </ion-card-content>
           </ion-card>
+          <ion-card>
+              <form #filterForm="ngForm" (ngSubmit)="filter(filterForm.value, filterForm);" >
+                  <ion-item class="ion-text-left">
+                      <ion-label position="floating">Kies Type:</ion-label>
+                      <ion-select placeholder="Kies Type:" name="type" ngModel="" required="true">
+                          <ion-select-option value="Verjaardag">Verjaardag</ion-select-option>
+                          <ion-select-option value="Management">Management</ion-select-option>
+                          <ion-select-option value="Vergadering">Vergadering</ion-select-option>
+                      </ion-select>
+                      <ion-button  type="submit">filter</ion-button>
+                  </ion-item>
+              </form>
+          </ion-card>
 
-
-                  <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority': ''">
+                  <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority': message.level=='Medium' ? 'warning' : 'secondary'">
                       <ion-card-content>
                           <ion-grid>
                               <ion-row>

@@ -153,6 +153,22 @@ export class FolderPage implements OnInit {
     }
   }
 
+  filter(data, form: NgForm) {
+    console.log(data.type);
+    this.httpclient.getUserFromNeo4J().subscribe(res => {
+      this.user = res;
+      this.httpclient
+          .getAllMessagesFromNeo4jFilter(this.user.username, data.type)
+          .subscribe(messages => {
+            this.messageList = messages;
+            this.allReadMessagesList = this.messageList.readMassages;
+            this.allUnreadMessagesList = this.messageList.unreadMassages;
+            console.log(this.allReadMessagesList);
+            console.log(this.allUnreadMessagesList);
+          });
+    });
+  }
+
   toggleLiked(card: any) {
 
     if (card.icon === 'star') {
