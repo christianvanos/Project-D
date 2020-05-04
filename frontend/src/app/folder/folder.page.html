@@ -119,7 +119,7 @@
           </form>
       </div>
       <div style="overflow: auto" *ngIf="folder === 'Feed'">
-          <ion-card>
+          <ion-card style="background-color: white;">
               <ion-card-content *ngIf="!createMessageOpen" (click)="openMessageCreation()">
               <ion-grid>
                   <ion-row>
@@ -143,7 +143,11 @@
                           </ion-col>
 
                           <ion-col>
-                              <ion-input   [(ngModel)]="message.title"  id="titleInput" placeholder="Titel van het bericht..." type="text"></ion-input>
+                              <ion-row>
+                              <ion-col>
+                                  <ion-input style="background-color:lightgray;"   [(ngModel)]="message.title"  id="titleInput" placeholder="Titel van het bericht..." type="text"></ion-input>
+                              </ion-col>
+                              </ion-row>
                               <ion-row>
                                   <ion-col>
                                       <ion-textarea style="background-color:lightgray;"  [(ngModel)]="message.message" id="messageInput" placeholder="Wat wil je delen?..." ></ion-textarea>
@@ -157,15 +161,15 @@
                                   <ion-icon *ngIf="getCreateMessageSubjectName() != 'Type'" name="close-circle-outline"></ion-icon>
                                   <ion-icon  *ngIf="getCreateMessageSubjectName() == 'Type'"  name="add-outline"></ion-icon>
                               </ion-chip>
+                              <ion-chip id="priority" class="ion-float-right" (click)="setCreateMessageLevel($event)" color="primary">
+                                  <ion-label>{{getCreateMessageLevel()}}</ion-label>
+                                  <ion-icon *ngIf="getCreateMessageLevel() != 'Prioriteit'" name="close-circle-outline"></ion-icon>
+                                  <ion-icon  *ngIf="getCreateMessageLevel() == 'Prioriteit'"  name="add-outline"></ion-icon>
+                              </ion-chip>
                           </ion-col>
                       </ion-row>
                   </ion-grid>
                   <ion-button *ngIf="message.level && message.subjectName" class="ion-float-right" slot="end" (click)="sendMessage()">Plaats</ion-button>
-                  <ion-chip slot="end" id="priority" class="ion-float-right" (click)="setCreateMessageLevel($event)" color="primary">
-                      <ion-label>{{getCreateMessageLevel()}}</ion-label>
-                      <ion-icon *ngIf="getCreateMessageLevel() != 'Prioriteit'" name="close-circle-outline"></ion-icon>
-                      <ion-icon  *ngIf="getCreateMessageLevel() == 'Prioriteit'"  name="add-outline"></ion-icon>
-                  </ion-chip>
               </ion-card-content>
           </ion-card>
           <ion-card>
@@ -186,41 +190,40 @@
                       <ion-card-content>
                           <ion-grid>
                               <ion-row>
-                                  <ion-col size="1">
+                                  <ion-col size="1" class="header">
                                       <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
                                   </ion-col>
-                                  <ion-col>
-                                      <ion-label> {{user.name}}</ion-label>
-                                      <br>
-                                      <ion-label >{{message.datetimePosted}}</ion-label>
+                                  <ion-col size="11">
+                                      <ion-row>
+                                          <ion-col size="4" class="subheader">
+                                              <ion-label> {{user.name}}</ion-label>
+                                              <br>
+                                              <ion-label >{{message.datetimePosted}}</ion-label>
+                                          </ion-col>
+                                          <ion-col size="4" style="text-align: center;">
+                                              <ion-label style="font-weight: bold; font-size: 175%;">{{message.title}}</ion-label>
+                                          </ion-col>
+                                          <ion-col size="4" >
+                                              <ion-label class="ion-float-right">
+                                                  {{message.subjectName}}</ion-label>
+                                          </ion-col>
+                                      </ion-row>
+                                      <ion-row>
+                                          <ion-col size="12" class="subheader">
+                                              <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top" lines="none">
+                                                  <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>--------------------------------------------------------------------------------------- Open bericht  ---------------------------------------------------------------------------------------</ion-label>
+                                              </ion-item>
+                                              <div *ngIf="message.opened">
+                                                  <p class="card-text text-left"> {{message.message}} </p>
+                                                  <ion-item [color]="message.level === 'High' ? 'priority': ''" lines="none" >
+                                                      <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >--------------------------------------------------------------------------------------- Sluit bericht  ---------------------------------------------------------------------------------------</ion-label>
+                                                  </ion-item>
+                                              </div>
+                                          </ion-col>
+                                      </ion-row>
                                   </ion-col>
-                                  <ion-col>
-                                      <ion-label>{{message.title}}</ion-label>
-                                  </ion-col>
-                                  <ion-col>
-                                      <ion-card *ngFor="let card of cards">
-                                        <ion-row>
-                                            <ion-col>
-                                                <button ion-button icon-left clear small (click)="toggleLiked(card)">
-                                                    <ion-icon [name]="card.icon"></ion-icon>
-                                                </button>
-                                            </ion-col>
-                                        </ion-row>
-                                    </ion-card>
-                                      <ion-label class="ion-float-right">
-                                          {{message.subjectName}}</ion-label>
-                                  </ion-col >
                               </ion-row>
                           </ion-grid>
-                          <ion-item lines="none" [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-bottom" >
-                              <ion-label style="text-align:center; cursor:pointer;"  (click) = openMessage(i,message)>open bericht</ion-label>
-                          </ion-item>
-                          <div *ngIf="message.opened">
-                              <p class="card-text text-left"> {{message.message}} </p>
-                              <ion-item lines="none" [color]="message.level === 'High' ? 'priority': ''" >
-                                  <ion-label style="text-align:center; cursor:pointer;" (click) = closeMessage(message) >Sluit bericht</ion-label>
-                              </ion-item>
-                          </div>
                       </ion-card-content>
                   </ion-card>
 
