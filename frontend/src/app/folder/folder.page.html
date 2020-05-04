@@ -212,7 +212,7 @@
                       </ion-card-content>
                   </ion-card>
 
-                  <ion-card *ngFor="let message of allReadMessagesList" [color]="message.level === 'High' ? 'danger' : ''">
+                  <ion-card *ngFor="let message of allReadMessagesList" [color]="message.level === 'High' ? 'danger' : message.level=='Medium' ? 'warning' : 'secondary'">
                       <ion-card-header>
                           <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
                           <ion-card-title>{{message.subjectName}}</ion-card-title>
