@@ -13,6 +13,12 @@ import { AlertController } from "@ionic/angular";
 
 import { DatePipe } from "@angular/common";
 
+class CardsInterface {
+  title: string;
+  name: string;
+  icon: string;
+}
+
 @Component({
   selector: "app-folder",
   templateUrl: "./folder.page.html",
@@ -51,6 +57,9 @@ export class FolderPage implements OnInit {
     username: "",
     uuid: ""
   };
+  cards: CardsInterface[] = [
+    { title: 'Card Two', name: 'Card2', icon: 'star-outline' }
+  ];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -141,6 +150,31 @@ export class FolderPage implements OnInit {
       return await popover.present();
     } else {
       this.message.level = "";
+    }
+  }
+
+  filter(data, form: NgForm) {
+    console.log(data.type);
+    this.httpclient.getUserFromNeo4J().subscribe(res => {
+      this.user = res;
+      this.httpclient
+          .getAllMessagesFromNeo4jFilter(this.user.username, data.type)
+          .subscribe(messages => {
+            this.messageList = messages;
+            this.allReadMessagesList = this.messageList.readMassages;
+            this.allUnreadMessagesList = this.messageList.unreadMassages;
+            console.log(this.allReadMessagesList);
+            console.log(this.allUnreadMessagesList);
+          });
+    });
+  }
+
+  toggleLiked(card: any) {
+
+    if (card.icon === 'star') {
+      card.icon = 'star-outline';
+    } else {
+      card.icon = 'star';
     }
   }
 

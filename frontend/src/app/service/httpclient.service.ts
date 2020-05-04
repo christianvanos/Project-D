@@ -26,6 +26,11 @@ export class HttpclientService {
     return this.http.put(url, person, httpOptions);
   }
 
+  getAllMessagesFromNeo4jFilter(username, type) {
+    const url = `${this.url}/findSubject/${username}/${type}`;
+    return this.http.get(url);
+  }
+
   createMessageInNeo4j(message) {
     const url = `${this.url}/createSubject`;
     return this.http.put(url, message, httpOptions);
