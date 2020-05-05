@@ -19,8 +19,7 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
             "RETURN s")
     List<Subject> allUnreadMessages(@Param("username") String username);
 
-    @Query("MATCH (a:Person),(b:Subject)\n" +
-            "WHERE a.username = $username AND b.uuid = {uuid}\n" +
+    @Query("MATCH (a:Person),(b:Subject)\n" + 
             "WHERE a.username = $username AND b.uuid = $uuid\n" +
             "CREATE (a)-[r:READ_MESSAGE]->(b)\n" +
             "RETURN type(r)")
