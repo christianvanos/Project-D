@@ -92,6 +92,10 @@ public class SubjectController {
                 break;
             case "MESSAGE_POSTED_BY":
                 subjectRepository.createPostedByRelation(relationship.getUsername(), relationship.getUUID());
+                subjectRepository.createRelationship(relationship.getUsername(), relationship.getUUID());
+                break;
+            case "MESSAGE_LIKED":
+                subjectRepository.createLikedRelation(relationship.getUsername(), relationship.getUUID());
                 break;
             default:
                 break;

@@ -256,6 +256,9 @@
                                       </ion-item>
                                       <div *ngIf="message.opened">
                                           <p class="card-text text-left"> {{message.message}} </p>
+                                          <br>
+
+                                          <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
                                           <ion-item [color]="message.level === 'High' ? 'priority': ''" class="ion-margin-top">
                                               <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
                                           </ion-item>

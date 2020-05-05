@@ -282,6 +282,19 @@ export class FolderPage implements OnInit {
       .subscribe();
   }
 
+  likeMessage(message){
+    this.relationship.username = this.user.username;
+    this.relationship.uuid = message.uuid;
+    this.relationship.relation = 'MESSAGE_LIKED'; 
+    this.httpclient
+        .createRelationshipBetweenExistingNodes(this.relationship)
+        .subscribe();
+  }
+
+  unLikeMessage(message){
+
+  }
+
   sendMessage() {
     const staticMessage = {
       title: this.message.title,
