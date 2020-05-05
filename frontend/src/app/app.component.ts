@@ -38,13 +38,13 @@ export class AppComponent implements OnInit {
         {
             title: 'Maak Account',
             url: '/folder/Create',
-            icon: 'mail',
+            icon: 'person',
             accessPermission: 'ADMIN'
         },
         {
             title: 'Account',
             url: '/folder/Account',
-            icon: 'person',
+            icon: 'mail',
             accessPermission: 'USER'
         }
     ];

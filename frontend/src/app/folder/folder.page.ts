@@ -77,10 +77,11 @@ export class FolderPage implements OnInit {
         .getAllMessagesFromNeo4j(this.user.username)
         .subscribe(messages => {
           this.messageList = messages;
-          this.allReadMessagesList = this.messageList.readMessages;
+          this.allReadMessagesList = this.messageList.readMassages;
           this.allUnreadMessagesList = this.messageList.unreadMassages;
           console.log(this.allReadMessagesList);
           console.log(this.allUnreadMessagesList);
+          console.log(this.messageList.readMassages);
         });
     });
     this.folder = this.activatedRoute.snapshot.paramMap.get("id");
