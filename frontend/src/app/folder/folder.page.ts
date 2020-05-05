@@ -77,7 +77,7 @@ export class FolderPage implements OnInit {
         .getAllMessagesFromNeo4j(this.user.username)
         .subscribe(messages => {
           this.messageList = messages;
-          this.allReadMessagesList = this.messageList.readMassages;
+          this.allReadMessagesList = this.messageList.readMessages;
           this.allUnreadMessagesList = this.messageList.unreadMassages;
           console.log(this.allReadMessagesList);
           console.log(this.allUnreadMessagesList);
