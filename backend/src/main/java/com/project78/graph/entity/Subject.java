@@ -54,6 +54,25 @@ public class Subject {
         this.message = message;
     }
 
+    public String getDatetimePosted() {
+        return datetimePosted;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    public void setDatetimePosted(String datetimePosted) {
+        this.datetimePosted = datetimePosted;
+    }
+
+
+
     private String subjectName;
 
     private String level;
@@ -61,8 +80,9 @@ public class Subject {
     private String message;
 
     private String datetimePosted;
+    private String postedBy;
 
-    @Relationship(type = MessageRead.TYPE, direction = Relationship.INCOMING)
+    @Relationship(type = MessagePosted.TYPE, direction = Relationship.INCOMING)
     private ArrayList<Subject> messageList = new ArrayList<>();
 
     @Override

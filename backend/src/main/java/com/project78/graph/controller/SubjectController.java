@@ -67,17 +67,35 @@ public class SubjectController {
         newSubject.setSubjectName(subject.getSubjectName());
         newSubject.setLevel(subject.getLevel());
         newSubject.setMessage(subject.getMessage());
+        newSubject.setTitle(subject.getTitle());
+        newSubject.setDatetimePosted(subject.getDatetimePosted());
         UUID uuid = UUID.randomUUID();
         newSubject.setUUID(uuid.toString());
         System.out.println(newSubject.toString());
         subjectRepository.save(newSubject);
+
+        Relationship relationship = new Relationship();
+        relationship.setUUID(uuid.toString());
+        relationship.setUsername(subject.getPostedBy());
+        relationship.setRelation("MESSAGE_POSTED_BY");
+        createRelationshipBetweenExistingNodes(relationship);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("createRelationship")
     public ResponseEntity createRelationshipBetweenExistingNodes(@RequestBody Relationship relationship) {
-        System.out.println(relationship.getUsername() + "  " + relationship.getUUID());
-        subjectRepository.createRelationship(relationship.getUsername(), relationship.getUUID());
+        System.out.println(relationship.getUsername() + "  " + relationship.getUUID() + "  " + relationship.getRelation() );
+
+        switch (relationship.getRelation().toUpperCase()){
+            case "READ_MESSAGE":
+                subjectRepository.createRelationship(relationship.getUsername(), relationship.getUUID());
+                break;
+            case "MESSAGE_POSTED_BY":
+                subjectRepository.createPostedByRelation(relationship.getUsername(), relationship.getUUID());
+                break;
+            default:
+                break;
+        }
         return ResponseEntity.ok().build();
     }
 

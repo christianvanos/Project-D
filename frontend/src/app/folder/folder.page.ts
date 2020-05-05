@@ -45,6 +45,8 @@ export class FolderPage implements OnInit {
   private message: Message = {
     id: null,
     message: "",
+    postedBy: "",
+    read: false,
     title: "",
     datetimePosted: null,
     subjectName: "",
@@ -55,7 +57,8 @@ export class FolderPage implements OnInit {
 
   private relationship: Relationship = {
     username: "",
-    uuid: ""
+    uuid: "",
+    relation:""
   };
   cards: CardsInterface[] = [
     { title: 'Card Two', name: 'Card2', icon: 'star-outline' }
@@ -229,7 +232,9 @@ export class FolderPage implements OnInit {
 
   openMessage(index, message) {
     message.opened = true;
+    if (!message.read) {
     this.readMessage(index, message);
+    }
   }
 
   closeMessage(message) {
@@ -270,6 +275,7 @@ export class FolderPage implements OnInit {
     this.messageRead[index] = true;
     this.relationship.username = this.user.username;
     this.relationship.uuid = message.uuid;
+    this.relationship.relation = 'READ_MESSAGE';
     console.log(message);
     this.httpclient
       .createRelationshipBetweenExistingNodes(this.relationship)
@@ -284,11 +290,14 @@ export class FolderPage implements OnInit {
         .toString(),
       subjectName: this.message.subjectName,
       message: this.message.message,
-      level: this.message.level
+      level: this.message.level,
+      opened: true,
+      postedBy: this.user.username
     };
     this.newCreatedList.push(staticMessage);
-    this.user.subjectList.push(this.message);
-    this.httpclient.createLinkUserAndMessage(this.user).subscribe();
+    this.user.subjectList.push(staticMessage);
+    this.httpclient.createMessageInNeo4j(staticMessage).subscribe();
+    // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
     this.closeInput();
   }
 }

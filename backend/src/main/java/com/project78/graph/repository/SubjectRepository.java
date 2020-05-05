@@ -25,4 +25,16 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
             "RETURN type(r)")
     List<Subject> createRelationship(@Param("username") String username, @Param("uuid") String uuid);
 
+    @Query("MATCH (a:Person),(b:Subject)\n" +
+            "WHERE a.username = $username AND b.uuid = $uuid\n" +
+            "CREATE (a)-[r:MESSAGE_POSTED_BY]->(b)\n" +
+            "RETURN type(r)")
+    List<Subject> createPostedByRelation(@Param("username") String username, @Param("uuid") String uuid);
+//
+//    @Query("MATCH (a:Subject { uuid: $uuid})<-[:MESSAGE_POSTED_BY]-(b)\n" +
+//            "    RETURN b.username")
+//    String getPostedBy(@Param("uuid") String uuid);
+
+
+
 }
