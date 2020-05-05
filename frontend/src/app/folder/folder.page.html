@@ -1,0 +1,259 @@
+<!--  <ion-split-pane contentId="main-content">-->
+<!--    <ion-menu *ngIf="location != '/login'" contentId="main-content" type="overlay">-->
+<!--      <ion-content>-->
+<!--        <ion-list id="inbox-list">-->
+<!--          <ion-list-header *ngIf="user">{{user.name}}</ion-list-header>-->
+<!--          <ion-note *ngIf="user">{{user.username}}</ion-note>-->
+
+<!--          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">-->
+<!--            <ion-item (click)="selectedIndex = i; clickedMenuButton(i)" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex == i">-->
+<!--              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>-->
+<!--              <ion-label>{{ p.title }}</ion-label>-->
+<!--            </ion-item>-->
+<!--          </ion-menu-toggle>-->
+<!--        </ion-list>-->
+<!--      </ion-content>-->
+<!--        <ion-button color="danger">Logout</ion-button>-->
+<!--    </ion-menu>-->
+
+<ion-header [translucent]="true" >
+    <ion-toolbar color="main">
+        <ion-title style="color:white;">Feed</ion-title>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button>
+                <ion-icon slot="icon-only"  style="color:white;" name="search"></ion-icon>
+            </ion-button>
+            <ion-button (click)="showUserOptionsPopover($event)">
+                <ion-icon slot="icon-only"  style="color:white;" name="person-circle"></ion-icon>
+            </ion-button>
+            <ion-label  (click)="showUserOptionsPopover($event)" class="ion-margin-end" style="color:white;">{{getName()}}</ion-label>
+        </ion-buttons>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+    <div *ngIf="folder == 'Account'">
+<!--      <form [formGroup]="validateForm">-->
+        <ion-item class="ion-text-left">
+          <ion-label position="floating">Naam:</ion-label>
+          <ion-input *ngIf="user" style="font-weight: bold;" type="text" [(ngModel)]="user.name"></ion-input>
+        </ion-item>
+<!--        <div class="alert alert-danger" role="alert">-->
+<!--          <p>Please enter a valid name.</p>-->
+<!--        </div>-->
+        <ion-item class="ion-text-left">
+          <ion-label position="floating">E-mail:</ion-label>
+          <ion-input style="font-weight: bold;" *ngIf="user" [(ngModel)]="user.username"></ion-input>
+        </ion-item>
+        <ion-item class="ion-text-left">
+          <ion-label position="floating">Wachtwoord:</ion-label>
+          <ion-input type="password"></ion-input>
+        </ion-item>
+<!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
+<!--          <p>Invalid password (min 8 characters)</p>-->
+<!--        </div>-->
+        <ion-item class="ion-text-left">
+          <ion-label position="floating">Herhaal Wachtwoord:</ion-label>
+          <ion-input type="password"></ion-input>
+        </ion-item>
+<!--        <div class="alert alert-danger" role="alert" *ngIf="validateForm.hasError('passwordNotMatch')">-->
+<!--          <p>Passwords don't match</p>-->
+<!--        </div>-->
+<!--      </form>-->
+        <div style="text-align: center">
+            <ion-button (click)="saveNewUser()">
+                <ion-icon slot="end" name="save"></ion-icon>
+                Opslaan
+            </ion-button>
+        </div>
+        <div>
+
+        </div>
+    </div>
+      <div *ngIf="folder == 'Create'">
+          <form #userForm="ngForm" (ngSubmit)="saveNewUser(userForm.value, userForm);" >
+              <ion-item class="ion-text-left">
+                  <ion-label position="floating">Naam:</ion-label>
+                  <ion-input style="font-weight: bold;" type="text" name="name" ngModel="" required="true"></ion-input>
+              </ion-item>
+              <!--        <div class="alert alert-danger" role="alert">-->
+              <!--          <p>Please enter a valid name.</p>-->
+              <!--        </div>-->
+              <ion-item class="ion-text-left">
+                  <ion-label position="floating">Username:</ion-label>
+                  <ion-input style="font-weight: bold;" type="text" name="username" ngModel="" required="true"></ion-input>
+              </ion-item>
+              <ion-item class="ion-text-left">
+                  <ion-label position="floating">Kies Rol:</ion-label>
+                  <ion-select placeholder="Select One" name="role" ngModel="" required="true">
+                      <ion-select-option value="ADMIN">Admin</ion-select-option>
+                      <ion-select-option value="USER">User</ion-select-option>
+                  </ion-select>
+              </ion-item>
+              <ion-item class="ion-text-left">
+                  <ion-label position="floating">Wachtwoord:</ion-label>
+                  <ion-input type="password" name="password" ngModel="" required="true"></ion-input>
+              </ion-item>
+              <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
+              <!--          <p>Invalid password (min 8 characters)</p>-->
+              <!--        </div>-->
+              <ion-item class="ion-text-left">
+                  <ion-label position="floating">Herhaal Wachtwoord:</ion-label>
+                  <ion-input type="password" name="confirmPassword" ngModel="" required="true"></ion-input>
+              </ion-item>
+              <!--        <div class="alert alert-danger" role="alert" *ngIf="validateForm.hasError('passwordNotMatch')">-->
+              <!--          <p>Passwords don't match</p>-->
+              <!--        </div>-->
+              <!--      </form>-->
+              <div style="text-align: center">
+                  <ion-button type="submit">
+                      <ion-icon slot="end" name="save"></ion-icon>
+                      Opslaan
+                  </ion-button>
+              </div>
+          </form>
+      </div>
+      <div style="overflow: auto" *ngIf="folder === 'Feed'">
+          <ion-card>
+              <ion-card-content *ngIf="!createMessageOpen" (click)="openMessageCreation()">
+              <ion-grid>
+                  <ion-row>
+                      <ion-col size="1">
+                          <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
+                      </ion-col>
+
+                      <ion-col>
+                          <br>
+                          <ion-label> Bericht aanmaken... </ion-label>
+                      </ion-col>
+                  </ion-row>
+              </ion-grid>
+              </ion-card-content>
+              <ion-card-content *ngIf="createMessageOpen">
+                  <ion-grid>
+
+                      <ion-row>
+                          <ion-col size="1">
+                              <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
+                          </ion-col>
+
+                          <ion-col>
+                              <ion-input   [(ngModel)]="message.title"  id="titleInput" placeholder="Titel van het bericht..." type="text"></ion-input>
+                              <ion-row>
+                                  <ion-col>
+                                      <ion-textarea style="background-color:lightgray;"  [(ngModel)]="message.message" id="messageInput" placeholder="Wat wil je delen?..." ></ion-textarea>
+                                  </ion-col>
+                              </ion-row>
+                          </ion-col>
+                          <ion-col size="2">
+                              <ion-icon class="ion-float-right" (click)="closeInput()" style="zoom:2.0;" name="close-circle-outline"></ion-icon>
+                              <ion-chip class="ion-float-right" color="primary" (click)="setCreateMessageSubjectName($event)">
+                                  <ion-label>{{getCreateMessageSubjectName()}}</ion-label>
+                                  <ion-icon *ngIf="getCreateMessageSubjectName() != 'Type'" name="close-circle-outline"></ion-icon>
+                                  <ion-icon  *ngIf="getCreateMessageSubjectName() == 'Type'"  name="add-outline"></ion-icon>
+                              </ion-chip>
+                          </ion-col>
+                      </ion-row>
+                  </ion-grid>
+                  <ion-button *ngIf="message.level && message.subjectName" class="ion-float-right" slot="end" (click)="sendMessage()">Plaats</ion-button>
+                  <ion-chip slot="end" id="priority" class="ion-float-right" (click)="setCreateMessageLevel($event)" color="primary">
+                      <ion-label>{{getCreateMessageLevel()}}</ion-label>
+                      <ion-icon *ngIf="getCreateMessageLevel() != 'Prioriteit'" name="close-circle-outline"></ion-icon>
+                      <ion-icon  *ngIf="getCreateMessageLevel() == 'Prioriteit'"  name="add-outline"></ion-icon>
+                  </ion-chip>
+              </ion-card-content>
+          </ion-card>
+          <ion-card>
+              <form #filterForm="ngForm" (ngSubmit)="filter(filterForm.value, filterForm);" >
+                  <ion-item class="ion-text-left">
+                      <ion-label position="floating">Kies Type:</ion-label>
+                      <ion-select placeholder="Kies Type:" name="type" ngModel="" required="true">
+                          <ion-select-option value="Verjaardag">Verjaardag</ion-select-option>
+                          <ion-select-option value="Management">Management</ion-select-option>
+                          <ion-select-option value="Vergadering">Vergadering</ion-select-option>
+                      </ion-select>
+                      <ion-button  type="submit">filter</ion-button>
+                  </ion-item>
+              </form>
+          </ion-card>
+
+                  <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority': message.level=='Medium' ? 'warning' : 'secondary'">
+                      <ion-card-content>
+                          <ion-grid>
+                              <ion-row>
+                                  <ion-col size="1">
+                                      <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
+                                  </ion-col>
+                                  <ion-col>
+                                      <ion-label> {{user.name}}</ion-label>
+                                      <br>
+                                      <ion-label >{{message.datetimePosted}}</ion-label>
+                                  </ion-col>
+                                  <ion-col>
+                                      <ion-label>{{message.title}}</ion-label>
+                                  </ion-col>
+                                  <ion-col>
+                                      <ion-card *ngFor="let card of cards">
+                                        <ion-row>
+                                            <ion-col>
+                                                <button ion-button icon-left clear small (click)="toggleLiked(card)">
+                                                    <ion-icon [name]="card.icon"></ion-icon>
+                                                </button>
+                                            </ion-col>
+                                        </ion-row>
+                                    </ion-card>
+                                      <ion-label class="ion-float-right">
+                                          {{message.subjectName}}</ion-label>
+                                  </ion-col >
+                              </ion-row>
+                          </ion-grid>
+                          <ion-item lines="none" [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-bottom" >
+                              <ion-label style="text-align:center; cursor:pointer;"  (click) = openMessage(i,message)>open bericht</ion-label>
+                          </ion-item>
+                          <div *ngIf="message.opened">
+                              <p class="card-text text-left"> {{message.message}} </p>
+                              <ion-item lines="none" [color]="message.level === 'High' ? 'priority': ''" >
+                                  <ion-label style="text-align:center; cursor:pointer;" (click) = closeMessage(message) >Sluit bericht</ion-label>
+                              </ion-item>
+                          </div>
+                      </ion-card-content>
+                  </ion-card>
+
+                  <ion-card *ngFor="let message of allReadMessagesList" [color]="message.level === 'High' ? 'danger' : message.level=='Medium' ? 'warning' : 'secondary'">
+                      <ion-card-header>
+                          <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
+                          <ion-card-title>{{message.subjectName}}</ion-card-title>
+                      </ion-card-header>
+                      <ion-card-content>
+                          {{message.message}}
+                      </ion-card-content>
+                  </ion-card>
+
+          <ion-card *ngFor="let message of allUnreadMessagesList; index as i;" [color]="message.level === 'High' ? 'danger' : ''">
+              <ion-card-header>
+                  <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
+                  <ion-card-title>{{message.subjectName}}</ion-card-title>
+                  <br *ngIf="!messageRead[i]">
+                  <ion-icon *ngIf="!messageRead[i]" (click)="readMessage(i,message)" name="open-outline"></ion-icon>
+              </ion-card-header>
+              <ion-card-content *ngIf="messageRead[i]">
+                  {{message.message}}
+              </ion-card-content>
+          </ion-card>
+
+
+
+
+
+<!--              </ion-content>-->
+<!--          </ion-app>-->
+      </div>
+<!--    <p *ngIf="folder != 'Feed'">Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>-->
+
+</ion-content>
+

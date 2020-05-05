@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar class="ion-text-center">
+    <ion-title>Meldkamer Portal - Test</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content style="text-align: center;">
+  <ion-card>
+    <ion-card-content>
+      <div style="height: 20%;" >
+        <ion-avatar class="avatar">
+          <ion-img src="../../../assets/icon/login.png"></ion-img>
+        </ion-avatar>
+      </div>
+      <ion-item class="ion-no-padding">
+        <ion-label class="ion-padding" position="floating">E-mail:</ion-label>
+        <ion-input style="text-align: center;" id="username" [(ngModel)]="username" type="text"></ion-input>
+      </ion-item>
+      <ion-item class="ion-no-padding">
+        <ion-label class="ion-padding" position="floating">Wachtwoord:</ion-label>
+        <ion-input style="text-align: center;" id="password" [(ngModel)]="password" type="password"></ion-input>
+      </ion-item>
+      <hr>
+      <div *ngIf="error" class="alert alert-danger" role="alert"> {{error}} </div>
+      <div>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-button class="loginButton" (click)="onLogin()">Log in</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
