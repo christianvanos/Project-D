@@ -34,6 +34,14 @@ public class SubjectController {
 //        return subjects;
     }
 
+    @GetMapping("getUnreadHighLevel/{username}")
+    public List<Subject> getUnreadHighLevelMessages(@PathVariable String username) {
+    return subjectRepository.allUnreadHighLevelMessages(username);
+
+    }
+
+
+
     @GetMapping("findSubject/{username}/{type}")
     public Messages get(@PathVariable String username, @PathVariable String type) {
         System.out.println(username + type);

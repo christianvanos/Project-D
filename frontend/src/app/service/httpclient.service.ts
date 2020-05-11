@@ -50,4 +50,9 @@ export class HttpclientService {
     const url = `${this.url}/findSubject/${username}`;
     return this.http.get(url);
   }
+
+  getAllUnreadHighLevelMessages(username) {
+    const url = `${this.url}/getUnreadHighLevel/${username}`;
+    return this.http.get(url);
+  }
 }

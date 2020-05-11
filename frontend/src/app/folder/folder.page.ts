@@ -31,6 +31,7 @@ export class FolderPage implements OnInit {
   private messageList;
   private allReadMessagesList;
   private allUnreadMessagesList;
+  private allUnreadHighLevelList;
   messageShown = true;
   createMessageOpen = false;
   private newCreatedList = [];
@@ -84,7 +85,18 @@ export class FolderPage implements OnInit {
         });
     });
     this.folder = this.activatedRoute.snapshot.paramMap.get("id");
+    this.httpclient.getUserFromNeo4J().subscribe(res => {
+      this.user = res;
+      this.httpclient
+          .getAllUnreadHighLevelMessages(this.user.username)
+          .subscribe(messages => {
+            this.allUnreadHighLevelList = messages;
+            console.log(this.allUnreadHighLevelList);
+          });
+    });
   }
+
+
 
   getCreateMessageSubjectName(){
     return this.message.subjectName != ""? this.message.subjectName: 'Type' ;
@@ -167,6 +179,10 @@ export class FolderPage implements OnInit {
             console.log(this.allUnreadMessagesList);
           });
     });
+  }
+
+  UnreadMessages() {
+
   }
 
   toggleLiked(card: any) {
@@ -283,7 +299,8 @@ export class FolderPage implements OnInit {
         .toString(),
       subjectName: this.message.subjectName,
       message: this.message.message,
-      level: this.message.level
+      level: this.message.level,
+      opened: true
     };
     this.newCreatedList.push(staticMessage);
     this.user.subjectList.push(this.message);
