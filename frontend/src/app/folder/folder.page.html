@@ -156,7 +156,12 @@
                           </ion-col>
                           <ion-col size="2">
                               <ion-icon class="ion-float-right" (click)="closeInput()" style="zoom:2.0;" name="close-circle-outline"></ion-icon>
-                              <ion-chip class="ion-float-right" color="primary" (click)="setCreateMessageSubjectName($event)">
+                              <ion-chip class="ion-float-right" color="primary" *ngIf="this.user.role === 'USER'" (click)="setCreateMessageSubjectName($event)">
+                                  <ion-label>{{getCreateMessageSubjectName()}}</ion-label>
+                                  <ion-icon *ngIf="getCreateMessageSubjectName() != 'Type'" name="close-circle-outline"></ion-icon>
+                                  <ion-icon  *ngIf="getCreateMessageSubjectName() == 'Type'"  name="add-outline"></ion-icon>
+                              </ion-chip>
+                              <ion-chip class="ion-float-right" color="primary" *ngIf="this.user.role === 'ADMIN'" (click)="setCreateMessageSubjectName($event)">
                                   <ion-label>{{getCreateMessageSubjectName()}}</ion-label>
                                   <ion-icon *ngIf="getCreateMessageSubjectName() != 'Type'" name="close-circle-outline"></ion-icon>
                                   <ion-icon  *ngIf="getCreateMessageSubjectName() == 'Type'"  name="add-outline"></ion-icon>
@@ -177,9 +182,7 @@
                   <ion-item class="ion-text-left">
                       <ion-label position="floating">Kies Type:</ion-label>
                       <ion-select placeholder="Kies Type:" name="type" ngModel="" required="true">
-                          <ion-select-option value="Verjaardag">Verjaardag</ion-select-option>
-                          <ion-select-option value="Management">Management</ion-select-option>
-                          <ion-select-option value="Vergadering">Vergadering</ion-select-option>
+                          <ion-select-option *ngFor="let item of subjectList[0]" value=item>{{item}}</ion-select-option>
                       </ion-select>
                       <ion-button  type="submit">filter</ion-button>
                   </ion-item>

@@ -34,6 +34,7 @@ export class FolderPage implements OnInit {
   messageShown = true;
   createMessageOpen = false;
   private newCreatedList = [];
+  private subjectList = [];
   private user: any = {
     id: null,
     name: "",
@@ -74,17 +75,17 @@ export class FolderPage implements OnInit {
     this.httpclient.getUserFromNeo4J().subscribe(res => {
       this.user = res;
       this.httpclient
-        .getAllMessagesFromNeo4j(this.user.username)
-        .subscribe(messages => {
-          this.messageList = messages;
-          this.allReadMessagesList = this.messageList.readMassages;
-          this.allUnreadMessagesList = this.messageList.unreadMassages;
-          console.log(this.allReadMessagesList);
-          console.log(this.allUnreadMessagesList);
-          console.log(this.messageList.readMassages);
-        });
+          .getAllMessagesFromNeo4j(this.user.username)
+          .subscribe(messages => {
+            this.messageList = messages;
+            this.allReadMessagesList = this.messageList.readMassages;
+            this.allUnreadMessagesList = this.messageList.unreadMassages;
+            console.log(this.allReadMessagesList);
+            console.log(this.allUnreadMessagesList);
+          });
     });
     this.folder = this.activatedRoute.snapshot.paramMap.get("id");
+    this.httpclient.getSubjectNames().subscribe((test => this.subjectList.push(test)));
   }
 
   getCreateMessageSubjectName(){
@@ -239,7 +240,6 @@ export class FolderPage implements OnInit {
   openMessageCreation() {
     this.createMessageOpen = true;
   }
-
 
   getName(){
     return sessionStorage.getItem('name');
