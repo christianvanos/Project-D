@@ -238,7 +238,7 @@ export class FolderPage implements OnInit {
 
   filter() {
     console.log(this.selectedValue);
-    if (this.selectedValue !== null && this.selectedValue !== '') {
+    if (this.selectedValue !== null && this.selectedValue !== '' && this.selectedValue !== undefined) {
       this.allUnreadMessagesList = this.messageList.unreadMassages.filter(subject => subject.subjectName === this.selectedValue);
       this.allReadMessagesList = this.messageList.readMassages.filter(subject => subject.subjectName === this.selectedValue);
     }
