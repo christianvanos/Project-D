@@ -27,6 +27,7 @@ class CardsInterface {
   providers: [DatePipe]
 })
 export class FolderPage implements OnInit {
+  selectedValue;
   public pieChartOptions: ChartOptions = {
     responsive: true,
     legend: {
@@ -126,7 +127,8 @@ export class FolderPage implements OnInit {
         .getAllMessagesFromNeo4j(this.user.username)
         .subscribe(messages => {
           this.messageList = messages;
-          this.allReadMessagesList = this.messageList.readMessages;
+          console.log(this.messageList)
+          this.allReadMessagesList = this.messageList.readMassages;
           this.allUnreadMessagesList = this.messageList.unreadMassages;
           console.log(this.allReadMessagesList);
           console.log(this.allUnreadMessagesList);
@@ -234,12 +236,18 @@ export class FolderPage implements OnInit {
     }
   }
 
-  filter(data, form: NgForm) {
-    console.log(data.type);
-    if (data.type != null && data.type !== '') {
-      this.allUnreadMessagesList = this.messageList.unreadMassages.filter(subject => subject.subjectName === data.type);
-      this.allReadMessagesList = this.messageList.readMassages.filter(subject => subject.subjectName === data.type);
+  filter() {
+    console.log(this.selectedValue);
+    if (this.selectedValue !== null && this.selectedValue !== '') {
+      this.allUnreadMessagesList = this.messageList.unreadMassages.filter(subject => subject.subjectName === this.selectedValue);
+      this.allReadMessagesList = this.messageList.readMassages.filter(subject => subject.subjectName === this.selectedValue);
     }
+  }
+
+  removeFilter() {
+    this.selectedValue = null;
+    this.allReadMessagesList = this.messageList.readMassages;
+    this.allUnreadMessagesList = this.messageList.unreadMassages;
   }
 
   toggleLiked(card: any) {

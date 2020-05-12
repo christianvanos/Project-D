@@ -161,15 +161,12 @@
               </ion-card-content>
           </ion-card>
           <ion-card>
-              <form #filterForm="ngForm" (ngSubmit)="filter(filterForm.value, filterForm);" >
-                  <ion-item class="ion-text-left">
-                      <ion-label position="floating">Kies Type:</ion-label>
-                      <ion-select placeholder="Kies Type:" name="type" ngModel="" required="true">
-                          <ion-select-option *ngFor="let item of subjectList[0]" value=item>{{item}}</ion-select-option>
-                      </ion-select>
-                      <ion-button  type="submit">filter</ion-button>
-                  </ion-item>
-              </form>
+              <ion-item>
+                  <ion-label>Filter</ion-label>
+                  <ion-select placeholder="Filter" cancelText="Wis selectie" [(ngModel)]="selectedValue" (ionChange)="filter()" (ionCancel)="removeFilter()">
+                      <ion-select-option *ngFor="let item of subjectList[0]" [value]="item">{{item}}</ion-select-option>
+                  </ion-select>
+              </ion-item>
           </ion-card>
 
           <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority': message.level=='Medium' ? 'warning' : 'secondary'">
@@ -298,6 +295,30 @@
 <!--              </ion-content>-->
 <!--          </ion-app>-->
       </div>
+
+    <div *ngIf="folder == 'Analytics'">
+        <div class="chart">
+            <canvas baseChart
+                    [data]="pieChartData"
+                    [labels]="pieChartLabels"
+                    [chartType]="pieChartType"
+                    [options]="pieChartOptions"
+                    [colors]="pieChartColors"
+                    [legend]="pieChartLegend">
+            </canvas>
+        </div>
+        <div style="display: block">
+            <canvas baseChart
+                    [datasets]="barChartData"
+                    [labels]="barChartLabels"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend"
+                    [chartType]="barChartType">
+            </canvas>
+        </div>
+    </div>
+
+
 <!--    <p *ngIf="folder != 'Feed'">Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>-->
 
 </ion-content>
