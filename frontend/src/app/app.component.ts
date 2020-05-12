@@ -18,7 +18,7 @@ import { Subject }    from 'rxjs';
     styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-    public selectedIndex = 1;
+    public selectedIndex = 0;
     private user;
     username: string;
     password: string;
@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
 
     onLogout() {
         sessionStorage.removeItem('username');
-        sessionStorage.removeItem('jwtToken')
+        sessionStorage.removeItem('jwtToken');
         this.router.navigate(['']);
     }
 

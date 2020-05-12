@@ -78,11 +78,9 @@ export class PopoverComponent implements OnInit {
   }
 
   createSubject() {
-    // const test = Object.keys(this.subject).map(key => ({type: key, value: this.subject[key]}));
-    // console.log(this.subject);
+    this.newCreatedList[0].push(this.subject);
+    this.subject = '';
     this.httpclient.addSubject(this.subject).subscribe();
-    this.subjectPopover = false;
-    this.popoverController.dismiss();
   }
 
 }
