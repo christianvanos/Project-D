@@ -192,7 +192,9 @@
                       {{message.message}}
                   </ion-card-content>
               </ion-card>
-          -------------------------------------------------------------------------------------------------------------------------------------------
+                <ion-label>
+                    Dit is wat je gemist hebt^
+                </ion-label>
                   <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority': message.level=='Medium' ? 'warning' : 'secondary'">
                       <ion-card-content>
                           <ion-grid>
