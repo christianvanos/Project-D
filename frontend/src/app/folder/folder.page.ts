@@ -10,9 +10,10 @@ import { ViewChild } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ToastController } from "@ionic/angular";
 import { AlertController } from "@ionic/angular";
-
 import { DatePipe } from "@angular/common";
-import {SubjectPerson} from "../models/subjectperson";
+import { Label, MultiDataSet } from "ng2-charts";
+import { ChartDataSets, ChartOptions, ChartType } from "chart.js";
+import { SubjectPerson } from "../models/subjectperson";
 
 class CardsInterface {
   title: string;
@@ -27,6 +28,73 @@ class CardsInterface {
   providers: [DatePipe]
 })
 export class FolderPage implements OnInit {
+  selectedValue;
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+    legend: {
+      position: "top"
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          const label = ctx.chart.data.labels[ctx.dataIndex];
+          return label;
+        }
+      }
+    }
+  };
+  public pieChartLabels: Label[] = [
+    ["Download", "Sales"],
+    ["In", "Store", "Sales"],
+    "Mail Sales"
+  ];
+  public pieChartData: number[] = [300, 500, 100];
+  public pieChartType: ChartType = "pie";
+  public pieChartLegend = true;
+  public pieChartColors = [
+    {
+      backgroundColor: [
+        "rgba(255,0,0,0.3)",
+        "rgba(0,255,0,0.3)",
+        "rgba(0,0,255,0.3)",
+        "rgba(248, 64, 22, 1)",
+        "rgba(189, 81, 144, 1)",
+        "rgba(81, 99, 189, 1)",
+        "rgba(81, 189, 124, 1)"
+      ]
+    }
+  ];
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      xAxes: [{}],
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true
+          }
+        }
+      ]
+    },
+    plugins: {
+      datalabels: {
+        anchor: "end",
+        align: "end"
+      }
+    }
+  };
+  public barChartLabels: Label[] = [
+    "Welke categorie wordt het meest geplaatst"
+  ];
+  public barChartType: ChartType = "bar";
+  public barChartLegend = true;
+  public barChartData: ChartDataSets[] = [
+    { data: [65, 59, 80, 81, 56, 55, 40], label: "Series A" },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: "Series B" }
+  ];
+  // tslint:disable-next-line:ban-types
+  dataFromBackend;
   public folder: string;
   messageRead: { [key: number]: boolean } = {};
   private messageList;
@@ -35,6 +103,7 @@ export class FolderPage implements OnInit {
   messageShown = true;
   createMessageOpen = false;
   private newCreatedList = [];
+  private subjectList = [];
   private user: any = {
     id: null,
     name: "",
@@ -43,7 +112,7 @@ export class FolderPage implements OnInit {
     role: "",
     subjectList: []
   };
-  private subjectPerson: SubjectPerson ={
+  private subjectPerson: SubjectPerson = {
     subject: null,
     person: null
   };
@@ -64,10 +133,10 @@ export class FolderPage implements OnInit {
   private relationship: Relationship = {
     username: "",
     uuid: "",
-    relation:""
+    relation: ""
   };
   cards: CardsInterface[] = [
-    { title: 'Card Two', name: 'Card2', icon: 'star-outline' }
+    { title: "Card Two", name: "Card2", icon: "star-outline" }
   ];
 
   constructor(
@@ -86,22 +155,56 @@ export class FolderPage implements OnInit {
         .getAllMessagesFromNeo4j(this.user.username)
         .subscribe(messages => {
           this.messageList = messages;
+          console.log(this.messageList);
           this.allReadMessagesList = this.messageList.readMassages;
           this.allUnreadMessagesList = this.messageList.unreadMassages;
           console.log(this.allReadMessagesList);
           console.log(this.allUnreadMessagesList);
-          console.log(this.messageList.readMassages);
         });
     });
     this.folder = this.activatedRoute.snapshot.paramMap.get("id");
+    this.httpclient
+      .getSubjectNames()
+      .subscribe(test => this.subjectList.push(test));
+    this.folder = this.activatedRoute.snapshot.paramMap.get("id");
+    this.createBarChart();
+    this.createPieChart();
   }
 
-  getCreateMessageSubjectName(){
-    return this.message.subjectName != ""? this.message.subjectName: 'Type' ;
+  createBarChart() {
+    if (this.folder === "Analytics") {
+      this.httpclient.getBarChartData().subscribe(data => {
+        this.dataFromBackend = data;
+        this.barChartData = [];
+        this.dataFromBackend.forEach(row => {
+          this.barChartData.push(row);
+        });
+      });
+    }
   }
 
-  getCreateMessageLevel(){
-    switch(this.message.level){
+  createPieChart() {
+    if (this.folder === "Analytics") {
+      this.httpclient.getPieData().subscribe(data => {
+        this.dataFromBackend = data;
+        this.pieChartData = [];
+        this.pieChartLabels = [];
+        this.dataFromBackend.data.forEach(row => {
+          this.pieChartData.push(row);
+        });
+        this.dataFromBackend.labels.forEach(row => {
+          this.pieChartLabels.push(row);
+        });
+      });
+    }
+  }
+
+  getCreateMessageSubjectName() {
+    return this.message.subjectName !== "" ? this.message.subjectName : "Type";
+  }
+
+  getCreateMessageLevel() {
+    switch (this.message.level) {
       case "":
         return "Prioriteit";
         break;
@@ -144,12 +247,12 @@ export class FolderPage implements OnInit {
     }
   }
 
-  async setCreateMessageLevel(event){
-    if(this.message.level == ""){
+  async setCreateMessageLevel(event) {
+    if (this.message.level === "") {
       const popover = await this.popoverController.create({
         component: PopoverComponent,
-        event: event,
-        componentProps: {"type":"level"},
+        event,
+        componentProps: { type: "level" },
         translucent: true
       });
       popover.onDidDismiss().then(result => {
@@ -163,37 +266,42 @@ export class FolderPage implements OnInit {
     }
   }
 
-  filter(data, form: NgForm) {
-    console.log(data.type);
-    this.httpclient.getUserFromNeo4J().subscribe(res => {
-      this.user = res;
-      this.httpclient
-          .getAllMessagesFromNeo4jFilter(this.user.username, data.type)
-          .subscribe(messages => {
-            this.messageList = messages;
-            this.allReadMessagesList = this.messageList.readMassages;
-            this.allUnreadMessagesList = this.messageList.unreadMassages;
-            console.log(this.allReadMessagesList);
-            console.log(this.allUnreadMessagesList);
-          });
-    });
-  }
-
-  toggleLiked(card: any) {
-
-    if (card.icon === 'star') {
-      card.icon = 'star-outline';
-    } else {
-      card.icon = 'star';
+  filter() {
+    console.log(this.selectedValue);
+    if (
+      this.selectedValue !== null &&
+      this.selectedValue !== "" &&
+      this.selectedValue !== undefined
+    ) {
+      this.allUnreadMessagesList = this.messageList.unreadMassages.filter(
+        subject => subject.subjectName === this.selectedValue
+      );
+      this.allReadMessagesList = this.messageList.readMassages.filter(
+        subject => subject.subjectName === this.selectedValue
+      );
     }
   }
 
-  async setCreateMessageSubjectName(event){
-    if(this.message.subjectName == ""){
+  removeFilter() {
+    this.selectedValue = null;
+    this.allReadMessagesList = this.messageList.readMassages;
+    this.allUnreadMessagesList = this.messageList.unreadMassages;
+  }
+
+  toggleLiked(card: any) {
+    if (card.icon === "star") {
+      card.icon = "star-outline";
+    } else {
+      card.icon = "star";
+    }
+  }
+
+  async setCreateMessageSubjectName(event) {
+    if (this.message.subjectName === "") {
       const popover = await this.popoverController.create({
         component: PopoverComponent,
-        event: event,
-        componentProps: {"type":"subject"},
+        event,
+        componentProps: { type: "subject" },
         translucent: true
       });
       popover.onDidDismiss().then(result => {
@@ -239,7 +347,7 @@ export class FolderPage implements OnInit {
   openMessage(index, message) {
     message.opened = true;
     if (!message.read) {
-    this.readMessage(index, message);
+      this.readMessage(index, message);
     }
   }
 
@@ -251,9 +359,8 @@ export class FolderPage implements OnInit {
     this.createMessageOpen = true;
   }
 
-
-  getName(){
-    return sessionStorage.getItem('name');
+  getName() {
+    return sessionStorage.getItem("name");
   }
 
   async showUserOptionsPopover(ev: any) {
@@ -261,7 +368,7 @@ export class FolderPage implements OnInit {
       component: PopoverComponent,
       event: ev,
       translucent: true,
-      componentProps: {"type":"user"}
+      componentProps: { type: "user" }
     });
     return await popover.present();
   }
@@ -281,28 +388,25 @@ export class FolderPage implements OnInit {
     this.messageRead[index] = true;
     this.relationship.username = this.user.username;
     this.relationship.uuid = message.uuid;
-    this.relationship.relation = 'READ_MESSAGE';
+    this.relationship.relation = "READ_MESSAGE";
     console.log(message);
     this.httpclient
       .createRelationshipBetweenExistingNodes(this.relationship)
       .subscribe();
   }
 
-  likeMessage(message){
+  likeMessage(message) {
     this.relationship.username = this.user.username;
     this.relationship.uuid = message.uuid;
-    this.relationship.relation = 'LIKED_MESSAGE';
+    this.relationship.relation = "LIKED_MESSAGE";
     this.httpclient
-        .createRelationshipBetweenExistingNodes(this.relationship)
-        .subscribe();
+      .createRelationshipBetweenExistingNodes(this.relationship)
+      .subscribe();
   }
 
-  unLikeMessage(message){
-
-  }
+  unLikeMessage(message) {}
 
   sendMessage() {
-
     const staticMessage = {
       title: this.message.title,
       datetimePosted: this.datePipe
@@ -312,9 +416,8 @@ export class FolderPage implements OnInit {
       message: this.message.message,
       level: this.message.level,
       opened: true
-
     };
-    const toServer = {subject: staticMessage, person: this.user};
+    const toServer = { subject: staticMessage, person: this.user };
     this.newCreatedList.push(staticMessage);
     this.user.subjectList.push(staticMessage);
     this.httpclient.createMessageInNeo4j(toServer).subscribe();

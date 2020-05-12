@@ -49,10 +49,10 @@ export class AppComponent implements OnInit {
             accessPermission: 'ADMIN'
         },
         {
-            title: 'Account',
-            url: '/folder/Account',
-            icon: 'mail',
-            accessPermission: 'USER'
+            title: 'Analytics',
+            url: '/folder/Analytics',
+            icon: 'analytics',
+            accessPermission: 'ADMIN'
         }
     ];
     public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];

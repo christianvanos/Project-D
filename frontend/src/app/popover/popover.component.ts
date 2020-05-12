@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NavParams, PopoverController} from '@ionic/angular';
 import {AuthenticationService} from "../service/authentication.service";
+import { HttpclientService } from "../service/httpclient.service";
 
 @Component({
   selector: 'app-popover',
@@ -8,12 +9,22 @@ import {AuthenticationService} from "../service/authentication.service";
   styleUrls: ['./popover.component.scss'],
 })
 export class PopoverComponent implements OnInit {
-
+  private user: any = {
+    id: null,
+    name: "",
+    username: "",
+    password: "",
+    role: "",
+    subjectList: []
+  };
   subjectPopover = false;
   levelPopover = false;
   userOptionsPopover = false;
-  constructor(private popoverController: PopoverController, public navParams:NavParams,
-              private loginService: AuthenticationService,) { }
+  private newCreatedList = [];
+  private subject: string;
+  constructor(private popoverController: PopoverController, public navParams: NavParams,
+              private loginService: AuthenticationService,
+              private httpclient: HttpclientService) { }
 
   ngOnInit() {
     switch (this.navParams.get('type').toUpperCase()) {
@@ -29,6 +40,10 @@ export class PopoverComponent implements OnInit {
       default:
         break;
     }
+    this.httpclient.getUserFromNeo4J().subscribe(res => {
+      this.user = res;
+    });
+    this.httpclient.getSubjectNames().subscribe((test => this.newCreatedList.push(test)));
   }
 
 
@@ -39,7 +54,6 @@ export class PopoverComponent implements OnInit {
   chooseLevel(messageLevel) {
     this.levelPopover = false;
     this.popoverController.dismiss(messageLevel);
-
   }
 
   chooseSubject(subject) {
@@ -47,12 +61,12 @@ export class PopoverComponent implements OnInit {
     this.popoverController.dismiss(subject);
   }
 
-  getName(){
+  getName() {
     return sessionStorage.getItem('name');
   }
 
-  userOptionClicked(type){
-    switch(type.toUpperCase()){
+  userOptionClicked(type) {
+    switch (type.toUpperCase()) {
       case "LOGOUT":
         this.loginService.logOut();
         break;
@@ -63,6 +77,12 @@ export class PopoverComponent implements OnInit {
     this.dismissPopover();
   }
 
-
+  createSubject() {
+    // const test = Object.keys(this.subject).map(key => ({type: key, value: this.subject[key]}));
+    // console.log(this.subject);
+    this.httpclient.addSubject(this.subject).subscribe();
+    this.subjectPopover = false;
+    this.popoverController.dismiss();
+  }
 
 }
