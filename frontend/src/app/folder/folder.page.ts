@@ -12,6 +12,7 @@ import { ToastController } from "@ionic/angular";
 import { AlertController } from "@ionic/angular";
 
 import { DatePipe } from "@angular/common";
+import {SubjectPerson} from "../models/subjectperson";
 
 class CardsInterface {
   title: string;
@@ -42,6 +43,11 @@ export class FolderPage implements OnInit {
     role: "",
     subjectList: []
   };
+  private subjectPerson: SubjectPerson ={
+    subject: null,
+    person: null
+  };
+
   private message: Message = {
     id: null,
     message: "",
@@ -285,7 +291,7 @@ export class FolderPage implements OnInit {
   likeMessage(message){
     this.relationship.username = this.user.username;
     this.relationship.uuid = message.uuid;
-    this.relationship.relation = 'MESSAGE_LIKED'; 
+    this.relationship.relation = 'LIKED_MESSAGE';
     this.httpclient
         .createRelationshipBetweenExistingNodes(this.relationship)
         .subscribe();
@@ -296,6 +302,7 @@ export class FolderPage implements OnInit {
   }
 
   sendMessage() {
+
     const staticMessage = {
       title: this.message.title,
       datetimePosted: this.datePipe
@@ -304,12 +311,13 @@ export class FolderPage implements OnInit {
       subjectName: this.message.subjectName,
       message: this.message.message,
       level: this.message.level,
-      opened: true,
-      postedBy: this.user.username
+      opened: true
+
     };
+    const toServer = {subject: staticMessage, person: this.user};
     this.newCreatedList.push(staticMessage);
     this.user.subjectList.push(staticMessage);
-    this.httpclient.createMessageInNeo4j(staticMessage).subscribe();
+    this.httpclient.createMessageInNeo4j(toServer).subscribe();
     // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
     this.closeInput();
   }

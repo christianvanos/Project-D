@@ -1,8 +1,10 @@
 package com.project78.graph.controller;
 
 import com.project78.graph.entity.Subject;
+import com.project78.graph.entity.Person;
 import com.project78.graph.model.Messages;
 import com.project78.graph.model.Relationship;
+import com.project78.graph.model.SubjectPerson;
 import com.project78.graph.repository.SubjectRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +27,27 @@ public class SubjectController {
 
     @GetMapping("findSubject/{username}")
     public Messages get(@PathVariable String username) {
-        List <Subject> notReadmessages = (List<Subject>) subjectRepository.findAll();
+        List<Subject> notReadmessages = (List<Subject>) subjectRepository.findAll();
         List<Subject> readMessages = subjectRepository.allReadMessages(username);
+//        List<Subject> likedMessages = subjectRepository.allLikedMessages(username);
+//        System.out.println(likedMessages);
+
+//        notReadmessages.forEach((message) -> {
+//            readMessages.forEach((val) -> {
+//                if(message.getUUID() == val.getUUID()){
+//                    message.setRead(true);
+//                    return;
+//                }
+//
+//            });
+//            likedMessages.forEach((likedMessage) -> {
+//                        if (message.getUUID() == likedMessage.getUUID()) {
+//                            message.setLiked(true);
+//                            return;
+//                        }
+//                    });
+//            System.out.println(message);
+//        });
         notReadmessages.removeAll(readMessages);
         Messages messages = new Messages(readMessages, notReadmessages);
         return messages;
@@ -62,13 +83,14 @@ public class SubjectController {
     }
 
     @PutMapping("createSubject")
-    public ResponseEntity createPerson(@RequestBody Subject subject) {
+    public ResponseEntity createPerson(@RequestBody SubjectPerson subjectPerson) {
         Subject newSubject = new Subject();
-        newSubject.setSubjectName(subject.getSubjectName());
-        newSubject.setLevel(subject.getLevel());
-        newSubject.setMessage(subject.getMessage());
-        newSubject.setTitle(subject.getTitle());
-        newSubject.setDatetimePosted(subject.getDatetimePosted());
+        newSubject.setSubjectName(subjectPerson.getSubject().getSubjectName());
+        newSubject.setLevel(subjectPerson.getSubject().getLevel());
+        newSubject.setMessage(subjectPerson.getSubject().getMessage());
+        newSubject.setTitle(subjectPerson.getSubject().getTitle());
+        newSubject.setPostedBy(subjectPerson.getPerson().getName());
+        newSubject.setDatetimePosted(subjectPerson.getSubject().getDatetimePosted());
         UUID uuid = UUID.randomUUID();
         newSubject.setUUID(uuid.toString());
         System.out.println(newSubject.toString());
@@ -76,7 +98,7 @@ public class SubjectController {
 
         Relationship relationship = new Relationship();
         relationship.setUUID(uuid.toString());
-        relationship.setUsername(subject.getPostedBy());
+        relationship.setUsername(subjectPerson.getPerson().getUsername());
         relationship.setRelation("MESSAGE_POSTED_BY");
         createRelationshipBetweenExistingNodes(relationship);
         return ResponseEntity.ok().build();
@@ -94,7 +116,7 @@ public class SubjectController {
                 subjectRepository.createPostedByRelation(relationship.getUsername(), relationship.getUUID());
                 subjectRepository.createRelationship(relationship.getUsername(), relationship.getUUID());
                 break;
-            case "MESSAGE_LIKED":
+            case "LIKED_MESSAGE":
                 subjectRepository.createLikedRelation(relationship.getUsername(), relationship.getUUID());
                 break;
             default:
