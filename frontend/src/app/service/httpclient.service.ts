@@ -63,6 +63,8 @@ export class HttpclientService {
 
   getAllUnreadHighLevelMessages(username) {
     const url = `${this.url}/getUnreadHighLevel/${username}`;
+    return this.http.get(url);
+  }
   getBarChartData() {
     const url = `${this.url}/eachReadSubject`;
     return this.http.get(url);

@@ -135,7 +135,6 @@ export class FolderPage implements OnInit {
           console.log(this.allUnreadMessagesList);
         });
     });
-    this.folder = this.activatedRoute.snapshot.paramMap.get("id");
     this.httpclient.getUserFromNeo4J().subscribe(res => {
       this.user = res;
       this.httpclient
@@ -145,12 +144,6 @@ export class FolderPage implements OnInit {
             console.log(this.allUnreadHighLevelList);
           });
     });
-  }
-
-
-
-  getCreateMessageSubjectName(){
-    return this.message.subjectName != ""? this.message.subjectName: 'Type' ;
     this.httpclient.getSubjectNames().subscribe((test => this.subjectList.push(test)));
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.createBarChart();
@@ -169,6 +162,10 @@ export class FolderPage implements OnInit {
     }
   }
 
+  getCreateMessageSubjectName(){
+    return this.message.subjectName != ""? this.message.subjectName: 'Type' ;
+  }
+
   createPieChart() {
     if (this.folder === 'Analytics') {
       this.httpclient.getPieData().subscribe(data => {
@@ -183,10 +180,6 @@ export class FolderPage implements OnInit {
         });
       });
     }
-  }
-
-  getCreateMessageSubjectName() {
-    return this.message.subjectName !== '' ? this.message.subjectName : 'Type' ;
   }
 
   getCreateMessageLevel() {
