@@ -90,20 +90,15 @@ public class SubjectController {
     @GetMapping("findSubjectName")
     public List<String> get() {
         if (subjectNameRepository.count() == 0) {
-            System.out.println("Geen subjectname node aanwezig");
-
             SubjectName newsubjectname = new SubjectName();
             newsubjectname.addSubject("Vergadering");
             newsubjectname.addSubject("Verjaardag");
             newsubjectname.addSubject("Management");
             subjectNameRepository.save(newsubjectname);
-        } else {
-            System.out.println(subjectNameRepository.count());
         }
 
         List<SubjectName> subjectNamesList = (List<SubjectName>) subjectNameRepository.findAll();
         List<String> subjectName = subjectNamesList.get(0).getSubjectNamesList();
-        System.out.println("All subjectnames:" + subjectName);
         return subjectName;
 
     }

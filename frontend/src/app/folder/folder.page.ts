@@ -136,7 +136,28 @@ export class FolderPage implements OnInit {
     }
   }
 
-  async setCreateMessageLevel(event){
+  saveNewPassword(data, form: NgForm) {
+    if (
+        data.oldPassword === "" ||
+        data.newPassword === "" ||
+        data.confirmNewPassword === ""
+    ) {
+      this.empty();
+    } else if (data.newPassword === data.confirmNewPassword) {
+      const changePassword = {
+        name: this.user.name,
+        username: this.user.username,
+        role: this.user.role,
+        password: data.confirmNewPassword
+      };
+      this.httpclient.changePasswordOfuserInNeo4j(changePassword).subscribe();
+      form.resetForm();
+      this.saveCompleted();
+    } else {
+      this.presentAlert();
+    }
+  }
+  async setCreateMessageLevel(event) {
     if(this.message.level == ""){
       const popover = await this.popoverController.create({
         component: PopoverComponent,

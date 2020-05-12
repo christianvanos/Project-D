@@ -24,7 +24,6 @@ public class SubjectName {
 
     public void addSubject(String subject) {
         subjectNamesList.add(subject);
-        System.out.println(this.subjectNamesList);
     }
 
 }

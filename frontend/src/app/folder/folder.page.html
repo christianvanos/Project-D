@@ -36,45 +36,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
-    <div *ngIf="folder == 'Account'">
-<!--      <form [formGroup]="validateForm">-->
-        <ion-item class="ion-text-left">
-          <ion-label position="floating">Naam:</ion-label>
-          <ion-input *ngIf="user" style="font-weight: bold;" type="text" [(ngModel)]="user.name"></ion-input>
-        </ion-item>
-<!--        <div class="alert alert-danger" role="alert">-->
-<!--          <p>Please enter a valid name.</p>-->
-<!--        </div>-->
-        <ion-item class="ion-text-left">
-          <ion-label position="floating">E-mail:</ion-label>
-          <ion-input style="font-weight: bold;" *ngIf="user" [(ngModel)]="user.username"></ion-input>
-        </ion-item>
-        <ion-item class="ion-text-left">
-          <ion-label position="floating">Wachtwoord:</ion-label>
-          <ion-input type="password"></ion-input>
-        </ion-item>
-<!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
-<!--          <p>Invalid password (min 8 characters)</p>-->
-<!--        </div>-->
-        <ion-item class="ion-text-left">
-          <ion-label position="floating">Herhaal Wachtwoord:</ion-label>
-          <ion-input type="password"></ion-input>
-        </ion-item>
-<!--        <div class="alert alert-danger" role="alert" *ngIf="validateForm.hasError('passwordNotMatch')">-->
-<!--          <p>Passwords don't match</p>-->
-<!--        </div>-->
-<!--      </form>-->
-        <div style="text-align: center">
-            <ion-button (click)="saveNewUser()">
-                <ion-icon slot="end" name="save"></ion-icon>
-                Opslaan
-            </ion-button>
-        </div>
-        <div>
-
-        </div>
-    </div>
       <div *ngIf="folder == 'Create'">
           <form #userForm="ngForm" (ngSubmit)="saveNewUser(userForm.value, userForm);" >
               <ion-item class="ion-text-left">
@@ -315,7 +276,42 @@
 <!--              </ion-content>-->
 <!--          </ion-app>-->
       </div>
-<!--    <p *ngIf="folder != 'Feed'">Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>-->
-
+    <div *ngIf="folder == 'Profile'">
+        <ion-card-header>
+            <ion-card-title>Verander wachtwoord</ion-card-title>
+        </ion-card-header>
+        <ion-card  style="width: 50%;">
+        <form #passwordForm="ngForm" (ngSubmit)="saveNewPassword(passwordForm.value, passwordForm);">
+            <ion-item class="ion-text-left">
+                <ion-label position="floating">Oud Wachtwoord:</ion-label>
+                <ion-input type="password" name="oldPassword" ngModel="" required="true"></ion-input>
+            </ion-item>
+            <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
+            <!--          <p>Invalid password (min 8 characters)</p>-->
+            <!--        </div>-->
+            <ion-item class="ion-text-left">
+                <ion-label position="floating">Nieuw Wachtwoord:</ion-label>
+                <ion-input type="password" name="newPassword" ngModel="" required="true"></ion-input>
+            </ion-item>
+            <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
+            <!--          <p>Invalid password (min 8 characters)</p>-->
+            <!--        </div>-->
+            <ion-item class="ion-text-left">
+                <ion-label position="floating">Herhaal nieuw Wachtwoord:</ion-label>
+                <ion-input type="password" name="confirmNewPassword" ngModel="" required="true"></ion-input>
+            </ion-item>
+            <!--        <div class="alert alert-danger" role="alert" *ngIf="validateForm.hasError('passwordNotMatch')">-->
+            <!--          <p>Passwords don't match</p>-->
+            <!--        </div>-->
+            <!--      </form>-->
+            <div style="text-align: center">
+                <ion-button type="submit">
+                    <ion-icon slot="end" name="save"></ion-icon>
+                    Opslaan
+                </ion-button>
+            </div>
+        </form>
+        </ion-card>
+    </div>
 </ion-content>
 

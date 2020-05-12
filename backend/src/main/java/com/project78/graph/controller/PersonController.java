@@ -59,6 +59,14 @@ public class PersonController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("changePassword")
+    public ResponseEntity alterPassword(@RequestBody Person person) {
+        Person personFromDB = personRepository.findByUsername(person.getUsername());
+        personFromDB.setPassword(passwordEncoder.encode(person.getPassword()));
+        personRepository.save(personFromDB);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("linkedMessage")
     public ResponseEntity linkMessageToPerson(@RequestBody Person person) {
         if (personRepository.findById(person.getId()).isPresent()) {

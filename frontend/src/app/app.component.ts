@@ -42,8 +42,8 @@ export class AppComponent implements OnInit {
             accessPermission: 'ADMIN'
         },
         {
-            title: 'Account',
-            url: '/folder/Account',
+            title: 'Profiel',
+            url: '/folder/Profile',
             icon: 'mail',
             accessPermission: 'USER'
         }
