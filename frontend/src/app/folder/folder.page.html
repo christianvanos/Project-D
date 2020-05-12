@@ -196,7 +196,7 @@
                           <ion-col size="11">
                               <ion-row>
                                   <ion-col size="4" class="subheader">
-                                      <ion-label> {{message.postedBy}}</ion-label>
+                                      <ion-label> {{user.name}}</ion-label>
                                       <br>
                                       <ion-label >{{message.datetimePosted}}</ion-label>
                                   </ion-col>
@@ -210,7 +210,7 @@
                               </ion-row>
                               <ion-row>
                                   <ion-col size="12" class="subheader">
-                                      <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top" lines="none">
+                                      <ion-item [color]="message.level === 'High' ? 'priority':  message.level=='Medium' ? 'warning' : 'secondary'" *ngIf="!message.opened" class="ion-margin-top" lines="none">
                                           <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
                                       </ion-item>
                                       <div *ngIf="message.opened">
@@ -251,7 +251,7 @@
                               </ion-row>
                               <ion-row>
                                   <ion-col size="12" class="subheader">
-                                      <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top">
+                                      <ion-item [color]="message.level === 'High' ? 'priority':  message.level=='Medium' ? 'warning' : 'secondary'" *ngIf="!message.opened" class="ion-margin-top">
                                           <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
                                       </ion-item>
                                       <div *ngIf="message.opened">
@@ -259,7 +259,7 @@
                                           <br>
 
                                           <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
-                                          <ion-item [color]="message.level === 'High' ? 'priority': ''" class="ion-margin-top">
+                                          <ion-item [color]="message.level === 'High' ? 'priority': message.level=='Medium' ? 'warning' : 'secondary'" class="ion-margin-top">
                                               <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
                                           </ion-item>
                                       </div>
@@ -271,7 +271,7 @@
               </ion-card-content>
           </ion-card>
 
-          <ion-card *ngFor="let message of allUnreadMessagesList; index as i;" [color]="message.level === 'High' ? 'danger' : ''">
+          <ion-card *ngFor="let message of allUnreadMessagesList; index as i;" [color]="message.level === 'High' ? 'danger' :  message.level=='Medium' ? 'warning' : 'secondary'">
               <ion-card-content>
                   <ion-grid>
                       <ion-row>
@@ -295,12 +295,12 @@
                               </ion-row>
                               <ion-row>
                                   <ion-col size="12" class="subheader">
-                                      <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top">
+                                      <ion-item [color]="message.level === 'High' ? 'priority':  message.level=='Medium' ? 'warning' : 'secondary'" *ngIf="!message.opened" class="ion-margin-top">
                                           <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
                                       </ion-item>
                                       <div *ngIf="message.opened">
                                           <p class="card-text text-left"> {{message.message}} </p>
-                                          <ion-item [color]="message.level === 'High' ? 'priority': ''" >
+                                          <ion-item [color]="message.level === 'High' ? 'priority':  message.level=='Medium' ? 'warning' : 'secondary'" >
                                               <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
                                           </ion-item>
                                       </div>
