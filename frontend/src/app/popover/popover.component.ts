@@ -9,7 +9,14 @@ import { HttpclientService } from "../service/httpclient.service";
   styleUrls: ['./popover.component.scss'],
 })
 export class PopoverComponent implements OnInit {
-
+  private user: any = {
+    id: null,
+    name: "",
+    username: "",
+    password: "",
+    role: "",
+    subjectList: []
+  };
   subjectPopover = false;
   levelPopover = false;
   userOptionsPopover = false;
@@ -33,6 +40,9 @@ export class PopoverComponent implements OnInit {
       default:
         break;
     }
+    this.httpclient.getUserFromNeo4J().subscribe(res => {
+      this.user = res;
+    });
     this.httpclient.getSubjectNames().subscribe((test => this.newCreatedList.push(test)));
   }
 
