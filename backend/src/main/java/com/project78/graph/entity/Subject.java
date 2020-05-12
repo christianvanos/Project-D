@@ -4,6 +4,7 @@ import lombok.Data;
 import org.neo4j.ogm.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 @Data
 @NodeEntity
@@ -15,6 +16,7 @@ public class Subject {
 
     private String uuid;
 
+    private String title;
 
     public String getUUID() {
         return uuid;
@@ -58,6 +60,8 @@ public class Subject {
 
     private String message;
 
+    private String datetimePosted;
+
     @Relationship(type = MessageRead.TYPE, direction = Relationship.INCOMING)
     private ArrayList<Subject> messageList = new ArrayList<>();
 
@@ -67,8 +71,10 @@ public class Subject {
                 "id=" + id +
                 ", UUID='" + uuid + '\'' +
                 ", subjectName='" + subjectName + '\'' +
+                ", title='" + title + '\'' +
                 ", level='" + level + '\'' +
                 ", message='" + message + '\'' +
+                ", datetimePosted='" + datetimePosted + '\'' +
                 ", messageList=" + messageList +
                 '}';
     }

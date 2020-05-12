@@ -13,6 +13,7 @@ import {UserModalComponent} from './user-modal/user-modal.component';
 import {PopoverComponent} from './popover/popover.component';
 import {HttpInterceptorService} from './http-interceptor/http-interceptor.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ChartsModule} from 'ng2-charts';
 
 @NgModule({
   declarations: [AppComponent, UserModalComponent, PopoverComponent],
@@ -20,6 +21,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
+    ChartsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

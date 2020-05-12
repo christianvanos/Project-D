@@ -21,6 +21,16 @@ export class HttpclientService {
     return this.http.get(url);
   }
 
+  getSubjectNames() {
+    const url = `${this.url}/findSubjectName`;
+    return this.http.get(url);
+  }
+
+  addSubject(subject) {
+    const url = `${this.url}/addSubjectName`;
+    return this.http.put(url, subject, httpOptions);
+  }
+
   createUserInNeo4j(person) {
     const url = `${this.url}/create`;
     return this.http.put(url, person, httpOptions);
@@ -53,6 +63,13 @@ export class HttpclientService {
 
   getAllUnreadHighLevelMessages(username) {
     const url = `${this.url}/getUnreadHighLevel/${username}`;
+  getBarChartData() {
+    const url = `${this.url}/eachReadSubject`;
+    return this.http.get(url);
+  }
+
+  getPieData() {
+    const url = `${this.url}/getCountOfImportantMessageRead`;
     return this.http.get(url);
   }
 }

@@ -30,21 +30,21 @@ export class AppComponent implements OnInit {
 
     public appPages = [
         {
-            title: 'Account',
-            url: '/folder/Account',
-            icon: 'person',
-            accessPermission: 'USER'
-        },
-        {
             title: 'Feed',
             url: '/folder/Feed',
-            icon: 'paper-plane',
+            icon: 'home',
             accessPermission: 'USER'
         },
         {
             title: 'Maak Account',
             url: '/folder/Create',
-            icon: 'mail',
+            icon: 'person',
+            accessPermission: 'ADMIN'
+        },
+        {
+            title: 'Analytics',
+            url: '/folder/Analytics',
+            icon: 'analytics',
             accessPermission: 'ADMIN'
         }
     ];
