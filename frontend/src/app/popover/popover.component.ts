@@ -12,8 +12,8 @@ export class PopoverComponent implements OnInit {
   subjectPopover = false;
   levelPopover = false;
   userOptionsPopover = false;
-  constructor(private popoverController: PopoverController, public navParams:NavParams,
-              private loginService: AuthenticationService,) { }
+  constructor(private popoverController: PopoverController, public navParams: NavParams,
+              private loginService: AuthenticationService) { }
 
   ngOnInit() {
     switch (this.navParams.get('type').toUpperCase()) {

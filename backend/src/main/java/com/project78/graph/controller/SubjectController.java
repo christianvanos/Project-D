@@ -81,15 +81,4 @@ public class SubjectController {
         return ResponseEntity.ok().build();
     }
 
-
-
-//    @PutMapping("linkedMessage")
-//    public ResponseEntity linkMessageToPerson(@RequestBody Person person) {
-//        if (personRepository.findById(person.getId()).isPresent()) {
-//            Person personFromDB = personRepository.findById(person.getId()).get();
-//            person.getSubjectList().forEach(personFromDB::readMessage);
-//            personRepository.save(personFromDB);
-//        }
-//        return ResponseEntity.ok().build();
-//    }
 }

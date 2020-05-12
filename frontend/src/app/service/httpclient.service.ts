@@ -50,4 +50,14 @@ export class HttpclientService {
     const url = `${this.url}/findSubject/${username}`;
     return this.http.get(url);
   }
+
+  getBarChartData() {
+    const url = `${this.url}/eachReadSubject`;
+    return this.http.get(url);
+  }
+
+  getPieData() {
+    const url = `${this.url}/getCountOfImportantMessageRead`;
+    return this.http.get(url);
+  }
 }
