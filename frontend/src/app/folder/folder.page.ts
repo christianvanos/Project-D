@@ -82,6 +82,7 @@ export class FolderPage implements OnInit {
   messageShown = true;
   createMessageOpen = false;
   private newCreatedList = [];
+  private subjectList = [];
   private user: any = {
     id: null,
     name: '',
@@ -131,6 +132,8 @@ export class FolderPage implements OnInit {
           console.log(this.allUnreadMessagesList);
         });
     });
+    this.folder = this.activatedRoute.snapshot.paramMap.get("id");
+    this.httpclient.getSubjectNames().subscribe((test => this.subjectList.push(test)));
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.createBarChart();
     this.createPieChart();
@@ -308,7 +311,6 @@ export class FolderPage implements OnInit {
   openMessageCreation() {
     this.createMessageOpen = true;
   }
-
 
   getName() {
     return sessionStorage.getItem('name');

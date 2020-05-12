@@ -139,7 +139,12 @@
                           </ion-col>
                           <ion-col size="2">
                               <ion-icon class="ion-float-right" (click)="closeInput()" style="zoom:2.0;" name="close-circle-outline"></ion-icon>
-                              <ion-chip class="ion-float-right" color="primary" (click)="setCreateMessageSubjectName($event)">
+                              <ion-chip class="ion-float-right" color="primary" *ngIf="this.user.role === 'USER'" (click)="setCreateMessageSubjectName($event)">
+                                  <ion-label>{{getCreateMessageSubjectName()}}</ion-label>
+                                  <ion-icon *ngIf="getCreateMessageSubjectName() != 'Type'" name="close-circle-outline"></ion-icon>
+                                  <ion-icon  *ngIf="getCreateMessageSubjectName() == 'Type'"  name="add-outline"></ion-icon>
+                              </ion-chip>
+                              <ion-chip class="ion-float-right" color="primary" *ngIf="this.user.role === 'ADMIN'" (click)="setCreateMessageSubjectName($event)">
                                   <ion-label>{{getCreateMessageSubjectName()}}</ion-label>
                                   <ion-icon *ngIf="getCreateMessageSubjectName() != 'Type'" name="close-circle-outline"></ion-icon>
                                   <ion-icon  *ngIf="getCreateMessageSubjectName() == 'Type'"  name="add-outline"></ion-icon>
@@ -160,96 +165,94 @@
                   <ion-item class="ion-text-left">
                       <ion-label position="floating">Kies Type:</ion-label>
                       <ion-select placeholder="Kies Type:" name="type" ngModel="" required="true">
-                          <ion-select-option value="Verjaardag">Verjaardag</ion-select-option>
-                          <ion-select-option value="Management">Management</ion-select-option>
-                          <ion-select-option value="Vergadering">Vergadering</ion-select-option>
+                          <ion-select-option *ngFor="let item of subjectList[0]" value=item>{{item}}</ion-select-option>
                       </ion-select>
                       <ion-button  type="submit">filter</ion-button>
                   </ion-item>
               </form>
           </ion-card>
 
-                  <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority': message.level=='Medium' ? 'warning' : 'secondary'">
-                      <ion-card-content>
-                          <ion-grid>
+          <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority': message.level=='Medium' ? 'warning' : 'secondary'">
+              <ion-card-content>
+                  <ion-grid>
+                      <ion-row>
+                          <ion-col size="1" class="header">
+                              <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
+                          </ion-col>
+                          <ion-col size="11">
                               <ion-row>
-                                  <ion-col size="1" class="header">
-                                      <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
+                                  <ion-col size="4" class="subheader">
+                                      <ion-label> {{user.name}}</ion-label>
+                                      <br>
+                                      <ion-label >{{message.datetimePosted}}</ion-label>
                                   </ion-col>
-                                  <ion-col size="11">
-                                      <ion-row>
-                                          <ion-col size="4" class="subheader">
-                                              <ion-label> {{user.name}}</ion-label>
-                                              <br>
-                                              <ion-label >{{message.datetimePosted}}</ion-label>
-                                          </ion-col>
-                                          <ion-col size="4" style="text-align: center;">
-                                              <ion-label style="font-weight: bold; font-size: 175%;">{{message.title}}</ion-label>
-                                          </ion-col>
-                                          <ion-col size="4" >
-                                              <ion-label class="ion-float-right">
-                                                  {{message.subjectName}}</ion-label>
-                                          </ion-col>
-                                      </ion-row>
-                                      <ion-row>
-                                          <ion-col size="12" class="subheader">
-                                              <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top" lines="none">
-                                                  <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>--------------------------------------------------------------------------------------- Open bericht  ---------------------------------------------------------------------------------------</ion-label>
-                                              </ion-item>
-                                              <div *ngIf="message.opened">
-                                                  <p class="card-text text-left"> {{message.message}} </p>
-                                                  <ion-item [color]="message.level === 'High' ? 'priority': ''" lines="none" >
-                                                      <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >--------------------------------------------------------------------------------------- Sluit bericht  ---------------------------------------------------------------------------------------</ion-label>
-                                                  </ion-item>
-                                              </div>
-                                          </ion-col>
-                                      </ion-row>
+                                  <ion-col size="4" style="text-align: center;">
+                                      <ion-label style="font-weight: bold; font-size: 175%;">{{message.title}}</ion-label>
+                                  </ion-col>
+                                  <ion-col size="4" >
+                                      <ion-label class="ion-float-right">
+                                          {{message.subjectName}}</ion-label>
                                   </ion-col>
                               </ion-row>
-                          </ion-grid>
-                      </ion-card-content>
-                  </ion-card>
+                              <ion-row>
+                                  <ion-col size="12" class="subheader">
+                                      <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top" lines="none">
+                                          <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>--------------------------------------------------------------------------------------- Open bericht  ---------------------------------------------------------------------------------------</ion-label>
+                                      </ion-item>
+                                      <div *ngIf="message.opened">
+                                          <p class="card-text text-left"> {{message.message}} </p>
+                                          <ion-item [color]="message.level === 'High' ? 'priority': ''" lines="none" >
+                                              <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >--------------------------------------------------------------------------------------- Sluit bericht  ---------------------------------------------------------------------------------------</ion-label>
+                                          </ion-item>
+                                      </div>
+                                  </ion-col>
+                              </ion-row>
+                          </ion-col>
+                      </ion-row>
+                  </ion-grid>
+              </ion-card-content>
+          </ion-card>
 
-                  <ion-card *ngFor="let message of allReadMessagesList" [color]="message.level === 'High' ? 'danger' : message.level=='Medium' ? 'warning' : 'secondary'">
-                      <ion-card-content>
-                          <ion-grid>
+          <ion-card *ngFor="let message of allReadMessagesList index as i" [color]="message.level === 'High' ? 'danger' : message.level=='Medium' ? 'warning' : 'secondary'">
+              <ion-card-content>
+                  <ion-grid>
+                      <ion-row>
+                          <ion-col size="1" class="header">
+                              <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
+                          </ion-col>
+                          <ion-col size="11">
                               <ion-row>
-                                  <ion-col size="1" class="header">
-                                      <img src="https://via.placeholder.com/100" class="rounded float-left" alt="...">
+                                  <ion-col size="4" class="subheader">
+                                      <ion-label> {{user.name}}</ion-label>
+                                      <br>
+                                      <ion-label >{{message.datetimePosted}}</ion-label>
                                   </ion-col>
-                                  <ion-col size="11">
-                                      <ion-row>
-                                          <ion-col size="4" class="subheader">
-                                              <ion-label> {{user.name}}</ion-label>
-                                              <br>
-                                              <ion-label >{{message.datetimePosted}}</ion-label>
-                                          </ion-col>
-                                          <ion-col size="4" style="text-align: center;">
-                                              <ion-label style="font-weight: bold; font-size: 175%;">{{message.title}}</ion-label>
-                                          </ion-col>
-                                          <ion-col size="4" >
-                                              <ion-label class="ion-float-right">
-                                                  {{message.subjectName}}</ion-label>
-                                          </ion-col>
-                                      </ion-row>
-                                      <ion-row>
-                                          <ion-col size="12" class="subheader">
-                                              <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top" lines="none">
-                                                  <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>--------------------------------------------------------------------------------------- Open bericht  ---------------------------------------------------------------------------------------</ion-label>
-                                              </ion-item>
-                                              <div *ngIf="message.opened">
-                                                  <p class="card-text text-left"> {{message.message}} </p>
-                                                  <ion-item [color]="message.level === 'High' ? 'priority': ''" lines="none" >
-                                                      <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >--------------------------------------------------------------------------------------- Sluit bericht  ---------------------------------------------------------------------------------------</ion-label>
-                                                  </ion-item>
-                                              </div>
-                                          </ion-col>
-                                      </ion-row>
+                                  <ion-col size="4" style="text-align: center;">
+                                      <ion-label style="font-weight: bold; font-size: 175%;">{{message.title}}</ion-label>
+                                  </ion-col>
+                                  <ion-col size="4" >
+                                      <ion-label class="ion-float-right">
+                                          {{message.subjectName}}</ion-label>
                                   </ion-col>
                               </ion-row>
-                          </ion-grid>
-                      </ion-card-content>
-                  </ion-card>
+                              <ion-row>
+                                  <ion-col size="12" class="subheader">
+                                      <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top">
+                                          <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>--------------------------------------------------------------------------------------- Open bericht  ---------------------------------------------------------------------------------------</ion-label>
+                                      </ion-item>
+                                      <div *ngIf="message.opened">
+                                          <p class="card-text text-left"> {{message.message}} </p>
+                                          <ion-item [color]="message.level === 'High' ? 'priority': ''" class="ion-margin-top">
+                                              <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >--------------------------------------------------------------------------------------- Sluit bericht  ---------------------------------------------------------------------------------------</ion-label>
+                                          </ion-item>
+                                      </div>
+                                  </ion-col>
+                              </ion-row>
+                          </ion-col>
+                      </ion-row>
+                  </ion-grid>
+              </ion-card-content>
+          </ion-card>
 
           <ion-card *ngFor="let message of allUnreadMessagesList; index as i;" [color]="message.level === 'High' ? 'danger' : ''">
               <ion-card-content>
@@ -291,10 +294,6 @@
                   </ion-grid>
               </ion-card-content>
           </ion-card>
-
-
-
-
 
 <!--              </ion-content>-->
 <!--          </ion-app>-->

@@ -3,9 +3,11 @@ package com.project78.graph.controller;
 
 import com.project78.graph.config.JwtTokenUtil;
 import com.project78.graph.entity.Person;
+import com.project78.graph.entity.SubjectName;
 import com.project78.graph.model.JwtRequest;
 import com.project78.graph.model.JwtResponse;
 import com.project78.graph.repository.PersonRepository;
+import com.project78.graph.repository.SubjectNameRepository;
 import com.project78.graph.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,9 @@ public class JwtAuthenticationController {
 	private PersonRepository personRepository;
 
 	@Autowired
+	private SubjectNameRepository subjectNameRepository;
+
+	@Autowired
 	PasswordEncoder passwordEncoder;
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
@@ -51,7 +56,8 @@ public class JwtAuthenticationController {
 			root.setPassword(passwordEncoder.encode("root"));
 			personRepository.save(root);
 		}
-
+//		SubjectName defaultvalues = new SubjectName();
+//		subjectNameRepository.save(defaultvalues);
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
 		final UserDetails userDetails = jwtUserDetailsService

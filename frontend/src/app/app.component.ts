@@ -30,12 +30,6 @@ export class AppComponent implements OnInit {
 
     public appPages = [
         {
-            title: 'Account',
-            url: '/folder/Account',
-            icon: 'person',
-            accessPermission: 'USER'
-        },
-        {
             title: 'Feed',
             url: '/folder/Feed',
             icon: 'home',
@@ -44,7 +38,7 @@ export class AppComponent implements OnInit {
         {
             title: 'Maak Account',
             url: '/folder/Create',
-            icon: 'mail',
+            icon: 'person',
             accessPermission: 'ADMIN'
         },
         {
