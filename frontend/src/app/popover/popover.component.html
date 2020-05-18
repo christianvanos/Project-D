@@ -19,6 +19,6 @@
 </ion-list>
 
 <ion-list *ngIf="userOptionsPopover">
-  <ion-list-header>{{getName()}}</ion-list-header>
+  <ion-list-header [routerLink]="['/folder/Account']" (click)="userOptionClicked('')">{{getName()}}</ion-list-header>
   <ion-item button (click)="userOptionClicked('Logout')">Log uit</ion-item>
 </ion-list>

@@ -45,15 +45,15 @@ export class AppComponent implements OnInit {
         {
             title: 'Maak Account',
             url: '/folder/Create',
-            icon: 'person',
+            icon: 'person-add',
             accessPermission: 'ADMIN'
         },
-        {
-            title: 'Account',
-            url: '/folder/Account',
-            icon: 'mail',
-            accessPermission: 'USER'
-        },
+        // {
+        //     title: 'Account',
+        //     url: '/folder/Account',
+        //     icon: 'mail',
+        //     accessPermission: 'USER'
+        // },
         {
             title: 'Analytics',
             url: '/folder/Analytics',

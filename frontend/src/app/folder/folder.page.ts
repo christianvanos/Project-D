@@ -44,9 +44,7 @@ export class FolderPage implements OnInit {
     }
   };
   public pieChartLabels: Label[] = [
-    ["Download", "Sales"],
-    ["In", "Store", "Sales"],
-    "Mail Sales"
+    "Laden..."
   ];
   public pieChartData: number[] = [300, 500, 100];
   public pieChartType: ChartType = "pie";
@@ -85,7 +83,7 @@ export class FolderPage implements OnInit {
     }
   };
   public barChartLabels: Label[] = [
-    "Welke categorie wordt het meest geplaatst"
+      "Welke categorie het meest in wordt geplaatst"
   ];
   public barChartType: ChartType = "bar";
   public barChartLegend = true;
