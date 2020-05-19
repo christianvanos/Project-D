@@ -1,3 +1,21 @@
-<p>
-  user-modal works!
-</p>
+<ion-content scroll-y="true">
+  <ion-title style="margin-top: 10px;">Ongelezen berichten:</ion-title>
+  <ion-card *ngFor="let message of list; index as i;" [color]="message.level === 'High' ? 'danger' : ''" style="min-height: 100px;">
+    <ion-card-header>
+      <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
+      <ion-card-title>{{message.subjectName}}</ion-card-title>
+      <br *ngIf="!messageRead[i]">
+      <ion-icon *ngIf="!messageRead[i]" (click)="readMessage(i,message)" name="open-outline"></ion-icon>
+    </ion-card-header>
+    <ion-card-content *ngIf="messageRead[i]">
+      {{message.message}}
+    </ion-card-content>
+  </ion-card>
+  <ng-container>
+    <ion-list style="text-align:center">
+      <ion-button style="align-self: center;" (click)="closeModal()">
+        Sluiten
+      </ion-button>
+    </ion-list>
+  </ng-container>
+</ion-content>

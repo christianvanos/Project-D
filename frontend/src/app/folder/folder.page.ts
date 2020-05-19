@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpclientService } from '../service/httpclient.service';
 import { Person } from '../models/person';
 import { Message } from '../models/message';
-import { PopoverController } from '@ionic/angular';
+import {ModalController, PopoverController} from '@ionic/angular';
 import { PopoverComponent } from '../popover/popover.component';
 import { Relationship } from '../models/relationship';
 import { ViewChild } from '@angular/core';
@@ -13,6 +13,7 @@ import { AlertController } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
 import {Label, MultiDataSet} from 'ng2-charts';
 import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
+import {UserModalComponent} from '../user-modal/user-modal.component';
 
 class CardsInterface {
   title: string;
@@ -80,6 +81,7 @@ export class FolderPage implements OnInit {
   private messageList;
   private allReadMessagesList;
   private allUnreadMessagesList;
+  private allUnreadHighLevelList;
   messageShown = true;
   createMessageOpen = false;
   private newCreatedList = [];
@@ -107,9 +109,6 @@ export class FolderPage implements OnInit {
     username: '',
     uuid: ''
   };
-  cards: CardsInterface[] = [
-    { title: 'Card Two', name: 'Card2', icon: 'star-outline' }
-  ];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -117,7 +116,8 @@ export class FolderPage implements OnInit {
     private popoverController: PopoverController,
     private datePipe: DatePipe,
     private toastCtrl: ToastController,
-    public alertController: AlertController
+    private alertController: AlertController,
+    private modalController: ModalController
   ) {}
 
   ngOnInit() {
@@ -129,11 +129,8 @@ export class FolderPage implements OnInit {
             this.messageList = messages;
             this.allReadMessagesList = this.messageList.readMassages;
             this.allUnreadMessagesList = this.messageList.unreadMassages;
-            console.log(this.allReadMessagesList);
-            console.log(this.allUnreadMessagesList);
           });
     });
-    this.folder = this.activatedRoute.snapshot.paramMap.get("id");
     this.httpclient.getSubjectNames().subscribe((test => this.subjectList.push(test)));
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
     this.createBarChart();
@@ -212,7 +209,7 @@ export class FolderPage implements OnInit {
       form.resetForm();
       this.saveCompleted();
     } else {
-      this.presentAlert();
+      this.presentPasswordAlert();
     }
   }
 
@@ -234,7 +231,7 @@ export class FolderPage implements OnInit {
       form.resetForm();
       this.saveCompleted();
     } else {
-      this.presentAlert();
+      this.presentPasswordAlert();
     }
   }
   async setCreateMessageLevel(event) {
@@ -300,7 +297,7 @@ export class FolderPage implements OnInit {
 
   async empty() {
     const empty = await this.alertController.create({
-      message: 'whoops, something is empty check again',
+      message: 'Oeps, niet alles is ingevuld, probeer het opnieuw!',
       buttons: ['ok']
     });
 
@@ -311,16 +308,16 @@ export class FolderPage implements OnInit {
 
   async saveCompleted() {
     const toast = await this.toastCtrl.create({
-      message: 'User is created!',
+      message: 'Gebruiker is aangemaakt!',
       position: 'top',
       buttons: ['Dismiss']
     });
     await toast.present();
   }
 
-  async presentAlert() {
+  async presentPasswordAlert() {
     const toast = await this.toastCtrl.create({
-      message: 'Passwords do not match, please try again',
+      message: 'Wachtwoorden komen niet overeen, probeer het opnieuw.',
       position: 'top',
       buttons: ['Dismiss']
     });
@@ -341,7 +338,7 @@ export class FolderPage implements OnInit {
   }
 
   getName() {
-    return sessionStorage.getItem('name');
+    return sessionStorage.getItem('username');
   }
 
   async showUserOptionsPopover(ev: any) {

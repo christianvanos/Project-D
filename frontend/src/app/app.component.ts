@@ -1,6 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 
-import {ModalController, Platform} from '@ionic/angular';
+import {AlertController, ModalController, Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {HttpclientService} from './service/httpclient.service';
@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
     public title = "Feed";
     private mobileMode = false;
     private mobileWidth = 992;
+    private allUnreadHighLevelList;
 
     public appPages = [
         {
@@ -63,6 +64,7 @@ export class AppComponent implements OnInit {
         private httpclient: HttpclientService,
         private loginService: AuthenticationService,
         private router: Router,
+        private alertController: AlertController,
         private modalController: ModalController
     ) {
         console.log(window.location);
@@ -108,16 +110,27 @@ export class AppComponent implements OnInit {
                     this.httpclient.getUserFromNeo4J().subscribe(
                         user => {
                             this.user = user;
-                            sessionStorage.setItem('name', this.user.name);
+                            sessionStorage.setItem('username', this.user.name);
                         }
                     );
+                    this.httpclient.getUserFromNeo4J().subscribe(res => {
+                        this.user = res;
+                        this.httpclient
+                            .getAllUnreadHighLevelMessages(this.user.username)
+                            .subscribe(messages => {
+                                this.allUnreadHighLevelList = messages;
+                                if (this.allUnreadHighLevelList.length > 0) {
+                                    this.presentUnreadMessagesAlert();
+                                }
+                            });
+                    });
                     // }
                 },
                 error => {
                     if ( error.status === 0) {
                         this.error = 'Service Temporarily Unavailable';
                     } else {
-                        this.error = 'Incorrect Username or Password';
+                        this.error = 'Incorrect Username of Wachtwoord';
                     }
                 }
             )
@@ -136,14 +149,40 @@ export class AppComponent implements OnInit {
 
     }
 
+    async presentUnreadMessagesAlert() {
+        const alert = await this.alertController.create({
+            header: 'Ongelezen berichten',
+            cssClass: 'alertDanger',
+            message: 'Je heb belangrijke berichten die niet gelezen zijn, wil je die nu lezen?',
+            buttons: ['Niet nu', {
+                text: 'Lees',
+                role: 'Read',
+                handler: () => {
+                    this.presentModal();
+                }
+            }]
+        });
+        await alert.present();
+    }
+
+    async presentModal() {
+        const modal = await this.modalController.create({
+            component: UserModalComponent,
+            cssClass: 'custom-modal',
+            componentProps: {
+                list: this.allUnreadHighLevelList
+            }
+        });
+        return await modal.present();
+    }
+
     ngOnInit() {
         if (sessionStorage.getItem('username') != null) {
-            this.httpclient.getUserFromNeo4J().subscribe(
-                user => {
-                    this.user = user;
-                    sessionStorage.setItem('name', this.user.name);
-
-                }
+             this.httpclient.getUserFromNeo4J().subscribe(
+                 user => {
+                     this.user = user;
+                     sessionStorage.setItem('username', this.user.name);
+                 }
             );
         }
         this.location = window.location.pathname;

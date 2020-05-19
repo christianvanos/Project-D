@@ -14,6 +14,11 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
     @Query("match (n:Person {username : $username})-[r:READ_MESSAGE]-(s:Subject) return s")
     List<Subject> allReadMessages(@Param("username") String username);
 
+    @Query("MATCH  (s:Subject)\n" +
+            "WHERE NOT (:Person {username : $username})-[:READ_MESSAGE]->(s:Subject) AND s.level = 'High'\n" +
+            "RETURN s")
+    List<Subject> allUnreadHighLevelMessages(@Param("username") String username);
+
     @Query("MATCH  (n:Person )-[r:READ_MESSAGE]->(s:Subject)\n" +
             "WHERE NOT (n:Person {username : $username})-[r:READ_MESSAGE]->(s:Subject)\n" +
             "RETURN s")
@@ -25,7 +30,7 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
             "RETURN type(r)")
     List<Subject> createRelationship(@Param("username") String username, @Param("uuid") String uuid);
 
-    @Query("match (n:Person)-[r:READ_MESSAGE]-(s:Subject {subjectName: {subjectName}}) return count(s)")
+    @Query("match (n:Person)-[r:READ_MESSAGE]-(s:Subject {subjectName: $subjectName}) return count(s)")
     Integer getBarChartData(@Param("subjectName") String subjectName);
 
     //Match (n)

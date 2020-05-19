@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NavParams, PopoverController} from '@ionic/angular';
 import {AuthenticationService} from "../service/authentication.service";
 import { HttpclientService } from "../service/httpclient.service";
+import {Relationship} from "../models/relationship";
 
 @Component({
   selector: 'app-popover',
@@ -62,7 +63,7 @@ export class PopoverComponent implements OnInit {
   }
 
   getName() {
-    return sessionStorage.getItem('name');
+    return sessionStorage.getItem('username');
   }
 
   userOptionClicked(type) {

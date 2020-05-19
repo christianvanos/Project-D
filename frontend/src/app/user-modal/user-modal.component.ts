@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Relationship} from "../models/relationship";
+import {HttpclientService} from "../service/httpclient.service";
+import {ModalController} from "@ionic/angular";
 
 @Component({
   selector: 'app-user-modal',
@@ -6,9 +9,41 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-modal.component.scss'],
 })
 export class UserModalComponent implements OnInit {
+  messageRead: { [key: number]: boolean } = {};
+  private relationship: Relationship = {
+    username: '',
+    uuid: ''
+  };
+  private user: any = {
+    id: null,
+    name: '',
+    username: '',
+    password: '',
+    role: '',
+    subjectList: []
+  };
+  // Data passed in by componentProps
+  @Input() list: any;
+  constructor(
+      private httpclient: HttpclientService,
+      private modalController: ModalController
+  ) { }
 
-  constructor() { }
+  ngOnInit() {
+    this.httpclient.getUserFromNeo4J().subscribe(res => {
+      this.user = res;
+    });
+  }
 
-  ngOnInit() {}
-
+  readMessage(index, message) {
+    this.messageRead[index] = true;
+    this.relationship.username = this.user.username;
+    this.relationship.uuid = message.uuid;
+    this.httpclient
+        .createRelationshipBetweenExistingNodes(this.relationship)
+        .subscribe();
+  }
+  closeModal() {
+    this.modalController.dismiss();
+  }
 }

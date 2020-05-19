@@ -251,6 +251,15 @@
   }
 }
 
+.custom-modal .modal-wrapper{
+  min-width: 400px;
+  border-radius: 8px;
+}
+
+.alertDanger {
+  transform: scale(1.3);
+}
+
 .ion-color-priority {
   --ion-color-base: var(--ion-color-priority);
   --ion-color-base-rgb: var(--ion-color-priority-rgb);
@@ -259,7 +268,6 @@
   --ion-color-shade: var(--ion-color-priority-shade);
   --ion-color-tint: var(--ion-color-priority-tint);
 }
-
 
 .ion-color-main {
   --ion-color-base: var(--ion-color-main);
