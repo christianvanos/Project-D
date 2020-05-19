@@ -12,10 +12,10 @@ import {Relationship} from "../models/relationship";
 export class PopoverComponent implements OnInit {
   private user: any = {
     id: null,
-    name: "",
-    username: "",
-    password: "",
-    role: "",
+    name: '',
+    username: '',
+    password: '',
+    role: '',
     subjectList: []
   };
   subjectPopover = false;
@@ -33,6 +33,7 @@ export class PopoverComponent implements OnInit {
         this.levelPopover = true;
         break;
       case "SUBJECT":
+        this.loadUserData();
         this.loadSubjects();
         this.subjectPopover = true;
         break;
@@ -48,6 +49,7 @@ export class PopoverComponent implements OnInit {
   // Further improvements: Server sided caching.
   loadSubjects() {
     this.httpclient.getSubjectNames().subscribe((res => this.newCreatedList.push(res)));
+    console.log(this.newCreatedList, this.user.name);
   }
 
   loadUserData() {
@@ -88,7 +90,7 @@ export class PopoverComponent implements OnInit {
     this.newCreatedList[0].push(this.subject);
     this.subject = '';
     this.httpclient.addSubject(this.subject).subscribe();
-    this.chooseSubject(this.subject);
+    // this.chooseSubject(this.subject);
   }
 
 }

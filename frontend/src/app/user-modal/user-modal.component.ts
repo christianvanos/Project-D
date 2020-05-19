@@ -12,7 +12,8 @@ export class UserModalComponent implements OnInit {
   messageRead: { [key: number]: boolean } = {};
   private relationship: Relationship = {
     username: '',
-    uuid: ''
+    uuid: '',
+    relation: ''
   };
   private user: any = {
     id: null,

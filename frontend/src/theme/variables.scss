@@ -251,9 +251,21 @@
   }
 }
 
-.custom-modal .modal-wrapper{
-  min-width: 400px;
-  border-radius: 8px;
+//.custom-modal .modal-wrapper{
+//  min-width: 400px;
+//  min-height: auto;
+//  border-radius: 8px;
+//}
+
+.custom-modal .modal-wrapper {
+  height: auto;
+  max-height: 80%;
+  width: 40%;
+  //top: 20%;
+  padding: 10%;
+  //position: absolute;
+  display: block;
+  border-radius: 15px;
 }
 
 .alertDanger {
