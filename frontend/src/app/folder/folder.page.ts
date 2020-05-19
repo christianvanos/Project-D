@@ -227,11 +227,8 @@ export class FolderPage implements OnInit {
       case 'High':
         return 'Hoog';
         break;
-      case 'Medium':
-        return 'Neutraal';
-        break;
-      case 'Low':
-        return 'Laag';
+      case 'Normal':
+        return 'Normaal';
         break;
       default:
         return 'Error: Wrong level variable';

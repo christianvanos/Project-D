@@ -1,8 +1,7 @@
 <ion-list *ngIf="levelPopover">
   <ion-list-header>Kies prioriteit van bericht</ion-list-header>
   <ion-item button (click)="chooseLevel('High')">Hoog</ion-item>
-  <ion-item button (click)="chooseLevel('Medium')">Neutraal</ion-item>
-  <ion-item button (click)="chooseLevel('Low')">Laag</ion-item>
+  <ion-item button (click)="chooseLevel('Normal')">Normaal</ion-item>
   <ion-item lines="none" detail="false" button (click)="dismissPopover()">Close</ion-item>
 </ion-list>
 
@@ -19,6 +18,6 @@
 </ion-list>
 
 <ion-list *ngIf="userOptionsPopover">
-  <ion-list-header [routerLink]="['/folder/Account']" (click)="userOptionClicked('')">{{getName()}}</ion-list-header>
+  <ion-item [routerLink]="['/folder/Profile']" (click)="userOptionClicked('')">{{getName()}}</ion-item>
   <ion-item button (click)="userOptionClicked('Logout')">Log uit</ion-item>
 </ion-list>
