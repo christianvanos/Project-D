@@ -71,4 +71,7 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
     @Query("MATCH (n:Subject)-[r]-() WHERE n.uuid = $uuid\n" + "RETURN COUNT(r)")
     Integer getReadCountSubject(@Param("uuid") String uuid);
 
+
+    @Query("match (n:Subject)-[r:LIKED_MESSAGE]-() WHERE n.subjectName = $subjectName\n" + "RETURN COUNT(r)")
+    Integer getLikedMessages(@Param("subjectName") String subjectName);
 }

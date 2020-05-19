@@ -70,4 +70,9 @@ export class HttpclientService {
     const url = `${this.url}/getCountOfImportantMessageRead`;
     return this.http.get(url);
   }
+
+  getRadarData() {
+    const url = `${this.url}/getLikedMessages`;
+    return this.http.get(url);
+  }
 }

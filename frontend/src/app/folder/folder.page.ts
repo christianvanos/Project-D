@@ -12,7 +12,7 @@ import { ToastController } from "@ionic/angular";
 import { AlertController } from "@ionic/angular";
 import { DatePipe } from "@angular/common";
 import { Label, MultiDataSet } from "ng2-charts";
-import { ChartDataSets, ChartOptions, ChartType } from "chart.js";
+import {ChartDataSets, ChartOptions, ChartType, RadialChartOptions} from "chart.js";
 import { SubjectPerson } from "../models/subjectperson";
 
 class CardsInterface {
@@ -29,6 +29,14 @@ class CardsInterface {
 })
 export class FolderPage implements OnInit {
   selectedValue;
+  public radarChartOptions: RadialChartOptions = {
+    responsive: true,
+  };
+  public barChartLabels2: Label[] = ['Welke onderwerpen worden het meest geliked'];
+
+  public barChartData2: ChartDataSets[] = [
+    { data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B' }
+  ];
   public pieChartOptions: ChartOptions = {
     responsive: true,
     legend: {
@@ -166,6 +174,7 @@ export class FolderPage implements OnInit {
     this.folder = this.activatedRoute.snapshot.paramMap.get("id");
     this.createBarChart();
     this.createPieChart();
+    this.createRadarChart();
   }
 
   createBarChart() {
@@ -187,10 +196,24 @@ export class FolderPage implements OnInit {
         this.pieChartData = [];
         this.pieChartLabels = [];
         this.dataFromBackend.data.forEach(row => {
+          console.log(row);
           this.pieChartData.push(row);
         });
         this.dataFromBackend.labels.forEach(row => {
           this.pieChartLabels.push(row);
+        });
+      });
+      console.log(this.pieChartLabels);
+    }
+  }
+
+  createRadarChart() {
+    if (this.folder === "Analytics") {
+      this.httpclient.getRadarData().subscribe(data => {
+        this.dataFromBackend = data;
+        this.barChartData2 = [];
+        this.dataFromBackend.data.forEach(row => {
+          this.barChartData2.push(row);
         });
       });
     }
