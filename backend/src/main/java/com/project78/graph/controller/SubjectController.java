@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,21 +40,32 @@ public class SubjectController {
         System.out.println(username + type);
         Messages messages = this.get(username);
         List<Subject> readMessages = messages.getReadMassages();
-        List <Subject> notReadmessages = messages.getUnreadMassages();
+        List<Subject> notReadmessages = messages.getUnreadMassages();
+        List<Subject> readMessagesIndexes = new ArrayList<Subject>();
+        List<Subject> notReadMessagesIndexes = new ArrayList<Subject>();
 
-        for (int i=0; i < readMessages.size(); i++) {
+        for (Integer i=0; i < readMessages.size(); i++) {
             Subject curr_subject = readMessages.get(i);
-            if (curr_subject.getSubjectName().toString().compareTo(type) != 0) {
-                readMessages.remove(curr_subject);
+            String compareString = curr_subject.getSubjectName();
+            if (compareString.compareTo(type) != 0) {
+                readMessagesIndexes.add(curr_subject);
             }
         }
 
         for (int i=0; i < notReadmessages.size(); i++) {
             Subject curr_subject = notReadmessages.get(i);
-            if (curr_subject.getSubjectName().toString().compareTo(type) != 0) {
-                System.out.println(curr_subject.getSubjectName() + " " + type);
-                notReadmessages.remove(curr_subject);
+            String compareString = curr_subject.getSubjectName();
+            if (compareString.compareTo(type) != 0) {
+                notReadMessagesIndexes.add(curr_subject);
             }
+        }
+
+        for (Subject subject : readMessagesIndexes) {
+            readMessages.remove(subject);
+        }
+
+        for (Subject subject : notReadMessagesIndexes) {
+            notReadmessages.remove(subject);
         }
 
         messages = new Messages(readMessages, notReadmessages);
