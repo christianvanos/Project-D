@@ -3,7 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { HttpclientService } from "../service/httpclient.service";
 import { Person } from "../models/person";
 import { Message } from "../models/message";
-import { PopoverController } from "@ionic/angular";
+import {ModalController, PopoverController} from "@ionic/angular";
 import { PopoverComponent } from "../popover/popover.component";
 import { Relationship } from "../models/relationship";
 import { ViewChild } from "@angular/core";
@@ -142,9 +142,6 @@ export class FolderPage implements OnInit {
     uuid: '',
     relation: ''
   };
-  cards: CardsInterface[] = [
-    { title: "Card Two", name: "Card2", icon: "star-outline" }
-  ];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -207,7 +204,7 @@ export class FolderPage implements OnInit {
   }
 
   createRadarChart() {
-    if (this.folder === "Analytics") {
+    if (this.folder === 'Analytics') {
       this.httpclient.getRadarData().subscribe(data => {
         this.dataFromBackend = data;
         this.barChartData2 = [];

@@ -62,7 +62,7 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
 //    String getPostedBy(@Param("uuid") String uuid);
 
 
-    @Query("match (n:Person)-[r:READ_MESSAGE]-(s:Subject {subjectName: $subjectName}) return count(s)")
+    @Query("match (n:Person)-[r:MESSAGE_POSTED_BY]-(s:Subject {subjectName: $subjectName}) return count(s)")
     Integer getBarChartData(@Param("subjectName") String subjectName);
 
     //Match (n)
@@ -73,7 +73,7 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
     @Query("Match (n:Subject {level:'High'}) Return n Limit 7")
     List<Subject> getTheLastSevenSubject();
 
-    @Query("MATCH (n:Subject)-[r]-() WHERE n.uuid = $uuid\n" + "RETURN COUNT(r)")
+    @Query("MATCH (n:Subject)-[r:READ_MESSAGE]-() WHERE n.uuid = $uuid\n" + "RETURN COUNT(r)")
     Integer getReadCountSubject(@Param("uuid") String uuid);
 
 
