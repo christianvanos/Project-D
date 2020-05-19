@@ -33,20 +33,26 @@ export class PopoverComponent implements OnInit {
         this.levelPopover = true;
         break;
       case "SUBJECT":
+        this.loadSubjects();
         this.subjectPopover = true;
         break;
       case "USER":
+        this.loadUserData();
         this.userOptionsPopover = true;
         break;
       default:
         break;
     }
-    this.httpclient.getUserFromNeo4J().subscribe(res => {
-      this.user = res;
-    });
-    this.httpclient.getSubjectNames().subscribe((test => this.newCreatedList.push(test)));
   }
 
+  // Further improvements: Server sided caching.
+  loadSubjects() {
+    this.httpclient.getSubjectNames().subscribe((res => this.newCreatedList.push(res)));
+  }
+
+  loadUserData() {
+    this.httpclient.getUserFromNeo4J().subscribe(res => {this.user = res;});
+  }
 
   dismissPopover() {
    this.popoverController.dismiss();
@@ -82,6 +88,7 @@ export class PopoverComponent implements OnInit {
     this.newCreatedList[0].push(this.subject);
     this.subject = '';
     this.httpclient.addSubject(this.subject).subscribe();
+    this.chooseSubject(this.subject);
   }
 
 }

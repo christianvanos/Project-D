@@ -11,9 +11,10 @@ import { NgForm } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { DatePipe } from '@angular/common';
-import {Label, MultiDataSet} from 'ng2-charts';
-import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
-import {UserModalComponent} from '../user-modal/user-modal.component';
+import { Label, MultiDataSet} from 'ng2-charts';
+import { ChartDataSets, ChartOptions, ChartType} from 'chart.js';
+import { UserModalComponent} from '../user-modal/user-modal.component';
+import { SubjectPerson } from '../models/subjectperson';
 
 class CardsInterface {
   title: string;
@@ -39,40 +40,56 @@ export class FolderPage implements OnInit {
         formatter: (value, ctx) => {
           const label = ctx.chart.data.labels[ctx.dataIndex];
           return label;
-        },
-      },
+        }
+      }
     }
   };
-  public pieChartLabels: Label[] = [['Download', 'Sales'], ['In', 'Store', 'Sales'], 'Mail Sales'];
+  public pieChartLabels: Label[] = [
+    'Laden...'
+  ];
   public pieChartData: number[] = [300, 500, 100];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartColors = [
     {
-      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)',
-        'rgba(248, 64, 22, 1)', 'rgba(189, 81, 144, 1)', 'rgba(81, 99, 189, 1)', 'rgba(81, 189, 124, 1)'],
-    },
+      backgroundColor: [
+        "rgba(255,0,0,0.3)",
+        "rgba(0,255,0,0.3)",
+        "rgba(0,0,255,0.3)",
+        "rgba(248, 64, 22, 1)",
+        "rgba(189, 81, 144, 1)",
+        "rgba(81, 99, 189, 1)",
+        "rgba(81, 189, 124, 1)"
+      ]
+    }
   ];
   public barChartOptions: ChartOptions = {
     responsive: true,
     // We use these empty structures as placeholders for dynamic theming.
-    scales: { xAxes: [{}], yAxes: [{
-      ticks: {
-          beginAtZero: true
-        }}] },
+    scales: {
+      xAxes: [{}],
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true
+          }
+        }
+      ]
+    },
     plugins: {
       datalabels: {
-        anchor: 'end',
-        align: 'end',
+        anchor: "end",
+        align: "end"
       }
     }
   };
-  public barChartLabels: Label[] = ['Welke categorie wordt het meest geplaatst'];
-  public barChartType: ChartType = 'bar';
+  public barChartLabels: Label[] = [
+      "Welke categorie het meest in wordt geplaatst"
+  ];
+  public barChartType: ChartType = "bar";
   public barChartLegend = true;
   public barChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
+    { data: [90], label: "Laden..." }
   ];
   // tslint:disable-next-line:ban-types
   dataFromBackend;
@@ -94,9 +111,16 @@ export class FolderPage implements OnInit {
     role: '',
     subjectList: []
   };
+  private subjectPerson: SubjectPerson = {
+    subject: null,
+    person: null
+  };
+
   private message: Message = {
     id: null,
     message: '',
+    postedBy: '',
+    read: false,
     title: '',
     datetimePosted: null,
     subjectName: '',
@@ -107,8 +131,12 @@ export class FolderPage implements OnInit {
 
   private relationship: Relationship = {
     username: '',
-    uuid: ''
+    uuid: '',
+    relation: ''
   };
+  cards: CardsInterface[] = [
+    { title: "Card Two", name: "Card2", icon: "star-outline" }
+  ];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -131,8 +159,10 @@ export class FolderPage implements OnInit {
             this.allUnreadMessagesList = this.messageList.unreadMassages;
           });
     });
-    this.httpclient.getSubjectNames().subscribe((test => this.subjectList.push(test)));
-    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+    this.httpclient
+      .getSubjectNames()
+      .subscribe(test => this.subjectList.push(test));
+    this.folder = this.activatedRoute.snapshot.paramMap.get("id");
     this.createBarChart();
     this.createPieChart();
   }
@@ -234,6 +264,7 @@ export class FolderPage implements OnInit {
       this.presentPasswordAlert();
     }
   }
+
   async setCreateMessageLevel(event) {
     if (this.message.level === '') {
       const popover = await this.popoverController.create({
@@ -255,9 +286,17 @@ export class FolderPage implements OnInit {
 
   filter() {
     console.log(this.selectedValue);
-    if (this.selectedValue !== null && this.selectedValue !== '' && this.selectedValue !== undefined) {
-      this.allUnreadMessagesList = this.messageList.unreadMassages.filter(subject => subject.subjectName === this.selectedValue);
-      this.allReadMessagesList = this.messageList.readMassages.filter(subject => subject.subjectName === this.selectedValue);
+    if (
+      this.selectedValue !== null &&
+      this.selectedValue !== "" &&
+      this.selectedValue !== undefined
+    ) {
+      this.allUnreadMessagesList = this.messageList.unreadMassages.filter(
+        subject => subject.subjectName === this.selectedValue
+      );
+      this.allReadMessagesList = this.messageList.readMassages.filter(
+        subject => subject.subjectName === this.selectedValue
+      );
     }
   }
 
@@ -268,11 +307,10 @@ export class FolderPage implements OnInit {
   }
 
   toggleLiked(card: any) {
-
-    if (card.icon === 'star') {
-      card.icon = 'star-outline';
+    if (card.icon === "star") {
+      card.icon = "star-outline";
     } else {
-      card.icon = 'star';
+      card.icon = "star";
     }
   }
 
@@ -326,7 +364,9 @@ export class FolderPage implements OnInit {
 
   openMessage(index, message) {
     message.opened = true;
-    this.readMessage(index, message);
+    if (!message.read) {
+      this.readMessage(index, message);
+    }
   }
 
   closeMessage(message) {
@@ -366,11 +406,23 @@ export class FolderPage implements OnInit {
     this.messageRead[index] = true;
     this.relationship.username = this.user.username;
     this.relationship.uuid = message.uuid;
+    this.relationship.relation = "READ_MESSAGE";
     console.log(message);
     this.httpclient
       .createRelationshipBetweenExistingNodes(this.relationship)
       .subscribe();
   }
+
+  likeMessage(message) {
+    this.relationship.username = this.user.username;
+    this.relationship.uuid = message.uuid;
+    this.relationship.relation = "LIKED_MESSAGE";
+    this.httpclient
+      .createRelationshipBetweenExistingNodes(this.relationship)
+      .subscribe();
+  }
+
+  unLikeMessage(message) {}
 
   sendMessage() {
     const staticMessage = {
@@ -380,13 +432,14 @@ export class FolderPage implements OnInit {
         .toString(),
       subjectName: this.message.subjectName,
       message: this.message.message,
-      level: this.message.level
+      level: this.message.level,
+      opened: true
     };
+    const toServer = { subject: staticMessage, person: this.user };
     this.newCreatedList.push(staticMessage);
-    const message = [];
-    message.push(this.message);
-    this.user.subjectList = Array.from(new Set(message));
-    this.httpclient.createLinkUserAndMessage(this.user).subscribe();
+    this.user.subjectList.push(staticMessage);
+    this.httpclient.createMessageInNeo4j(toServer).subscribe();
+    // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
     this.closeInput();
   }
 }

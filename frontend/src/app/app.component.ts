@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
         {
             title: 'Maak Account',
             url: '/folder/Create',
-            icon: 'person',
+            icon: 'person-add',
             accessPermission: 'ADMIN'
         },
         {
@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });
+        this.setViewingMode();
     }
 
     clickedMenuButton(index) {
@@ -85,9 +86,13 @@ export class AppComponent implements OnInit {
 
     @HostListener('window:resize', ['$event'])
     onResize(event) {
-        if(window.innerWidth < this.mobileWidth && !this.mobileMode){
+        this.setViewingMode();
+    }
+
+    setViewingMode() {
+        if (window.innerWidth < this.mobileWidth && !this.mobileMode) {
             this.mobileMode = true;
-        } else if(window.innerWidth >= this.mobileWidth && this.mobileMode){
+        } else if (window.innerWidth >= this.mobileWidth && this.mobileMode) {
             this.mobileMode = false;
         };
     }

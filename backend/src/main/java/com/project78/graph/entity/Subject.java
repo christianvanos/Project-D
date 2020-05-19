@@ -2,6 +2,8 @@ package com.project78.graph.entity;
 
 import lombok.Data;
 import org.neo4j.ogm.annotation.*;
+import com.project78.graph.entity.Subject;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,15 +56,67 @@ public class Subject {
         this.message = message;
     }
 
+    public String getDatetimePosted() {
+        return datetimePosted;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+
+    public String getPostedBy() {
+        return postedBy;
+    }
+
+    public void setPostedBy(String postedBy) {
+        this.postedBy = postedBy;
+    }
+
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean value) {
+        this.liked = value;
+    }
+
+
+    public boolean isRead() {
+        return read;
+    }
+    public void setRead(boolean value) {
+        this.read = value;
+    }
+
+
+    public void setDatetimePosted(String datetimePosted) {
+        this.datetimePosted = datetimePosted;
+    }
+
+
+
+
     private String subjectName;
 
     private String level;
 
     private String message;
+    private boolean read;
+    private boolean liked;
 
     private String datetimePosted;
+    private String postedBy;
 
-    @Relationship(type = MessageRead.TYPE, direction = Relationship.INCOMING)
+
+
+    @Relationship(type = MessagePosted.TYPE, direction = Relationship.INCOMING)
     private ArrayList<Subject> messageList = new ArrayList<>();
 
     @Override
@@ -75,6 +129,9 @@ public class Subject {
                 ", level='" + level + '\'' +
                 ", message='" + message + '\'' +
                 ", datetimePosted='" + datetimePosted + '\'' +
+                ", postedBy='" + postedBy + '\'' +
+                ", liked='" + liked + '\'' +
+                ", read='" + read + '\'' +
                 ", messageList=" + messageList +
                 '}';
     }

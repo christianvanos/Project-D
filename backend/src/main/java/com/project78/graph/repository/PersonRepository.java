@@ -16,4 +16,8 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
 
     Person findByUsername(String username);
 
+
+//
+//    @Query("match (n:Person)-[r:MESSAGE_POSTED_BY]-(s:Subject {uuid : uuid}) return n")
+//    List<Person> allPostedMessages(@Param("uuid") String subject);
 }

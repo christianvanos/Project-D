@@ -45,7 +45,7 @@ public class AnalyticsController {
         List<Integer> counts = new ArrayList<>();
         subjectUuidsList = subjectRepository.getTheLastSevenSubject();
         subjectUuidsList.forEach(subject -> {
-            labels.add(subject.getMessage());
+            labels.add(subject.getTitle());
             counts.add(subjectRepository.getReadCountSubject(subject.getUUID()));
         });
         pieChartData.put("labels", labels);
