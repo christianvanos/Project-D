@@ -47,12 +47,6 @@ export class AppComponent implements OnInit {
             url: '/folder/Analytics',
             icon: 'analytics',
             accessPermission: 'ADMIN'
-        },
-        {
-            title: 'Profiel',
-            url: '/folder/Profile',
-            icon: 'mail',
-            accessPermission: 'USER'
         }
     ];
     public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
