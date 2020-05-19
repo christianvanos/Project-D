@@ -36,6 +36,26 @@ export class UserModalComponent implements OnInit {
     });
   }
 
+  openMessage(index, message) {
+    message.opened = true;
+    if (!message.read) {
+      this.readMessage(index, message);
+    }
+  }
+
+  closeMessage(message) {
+    message.opened = false;
+  }
+
+  likeMessage(message) {
+    this.relationship.username = this.user.username;
+    this.relationship.uuid = message.uuid;
+    this.relationship.relation = "LIKED_MESSAGE";
+    this.httpclient
+        .createRelationshipBetweenExistingNodes(this.relationship)
+        .subscribe();
+  }
+
   readMessage(index, message) {
     this.messageRead[index] = true;
     this.relationship.username = this.user.username;
