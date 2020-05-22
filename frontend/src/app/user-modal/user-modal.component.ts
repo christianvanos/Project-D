@@ -64,7 +64,7 @@ export class UserModalComponent implements OnInit {
         .createRelationshipBetweenExistingNodes(this.relationship)
         .subscribe();
   }
-  closeModal() {
-    this.modalController.dismiss();
+  async close() {
+    await this.modalController.dismiss();
   }
 }

@@ -119,7 +119,7 @@ export class AppComponent implements OnInit {
                             .subscribe(messages => {
                                 this.allUnreadHighLevelList = messages;
                                 if (this.allUnreadHighLevelList.length > 0) {
-                                    this.presentUnreadMessagesAlert();
+                                    this.presentModal();
                                 }
                             });
                     });
@@ -146,22 +146,6 @@ export class AppComponent implements OnInit {
             return false;
         }
 
-    }
-
-    async presentUnreadMessagesAlert() {
-        const alert = await this.alertController.create({
-            header: 'Ongelezen berichten',
-            cssClass: 'alertDanger',
-            message: 'Je heb belangrijke berichten die niet gelezen zijn, wil je die nu lezen?',
-            buttons: ['Niet nu', {
-                text: 'Lees',
-                role: 'Read',
-                handler: () => {
-                    this.presentModal();
-                }
-            }]
-        });
-        await alert.present();
     }
 
     async presentModal() {

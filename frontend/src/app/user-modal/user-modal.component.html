@@ -1,5 +1,14 @@
-<ion-content scroll-y="true">
-  <ion-title style="margin-top: 10px;">Ongelezen berichten:</ion-title>
+<ion-header [translucent]="true" >
+  <ion-toolbar color="main">
+    <ion-title style="margin-top: 10px;">Ongelezen berichten:</ion-title>
+    <ion-buttons slot="end">
+      <ion-button align="right" (click)="close()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<div class="inner-content">
   <ion-card *ngFor="let message of list; index as i;" [color]="message.level === 'High' ? 'priority' : ''" style="min-height: 100px;">
     <ion-card-content>
       <ion-grid>
@@ -41,11 +50,4 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
-  <ng-container>
-    <ion-list style="text-align:center">
-      <ion-button style="align-self: center;" (click)="closeModal()">
-        Sluiten
-      </ion-button>
-    </ion-list>
-  </ng-container>
-</ion-content>
+</div>
