@@ -36,6 +36,11 @@ export class HttpclientService {
     return this.http.put(url, person, httpOptions);
   }
 
+  changePasswordOfuserInNeo4j(person) {
+    const url = `${this.url}/changePassword`;
+    return this.http.put(url, person, httpOptions);
+  }
+
   getAllMessagesFromNeo4jFilter(username, type) {
     const url = `${this.url}/findSubject/${username}/${type}`;
     return this.http.get(url);
@@ -60,6 +65,10 @@ export class HttpclientService {
     const url = `${this.url}/findSubject/${username}`;
     return this.http.get(url);
   }
+  getAllUnreadHighLevelMessages(username) {
+    const url = `${this.url}/getUnreadHighLevel/${username}`;
+    return this.http.get(url);
+  }
 
   getAllUnreadHighLevelMessages(username) {
     const url = `${this.url}/getUnreadHighLevel/${username}`;
@@ -72,6 +81,11 @@ export class HttpclientService {
 
   getPieData() {
     const url = `${this.url}/getCountOfImportantMessageRead`;
+    return this.http.get(url);
+  }
+
+  getRadarData() {
+    const url = `${this.url}/getLikedMessages`;
     return this.http.get(url);
   }
 }

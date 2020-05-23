@@ -15,6 +15,7 @@ import {HttpInterceptorService} from './http-interceptor/http-interceptor.servic
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ChartsModule} from 'ng2-charts';
 
+
 @NgModule({
   declarations: [AppComponent, UserModalComponent, PopoverComponent],
   entryComponents: [UserModalComponent, PopoverComponent],

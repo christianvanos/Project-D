@@ -1,7 +1,8 @@
 package com.project78.graph.controller;
 
 import com.project78.graph.entity.Person;
-import com.project78.graph.entity.Subject;
+import com.project78.graph.entity.Subject;  
+import com.project78.graph.model.SubjectPerson;
 import com.project78.graph.entity.SubjectName;
 import com.project78.graph.model.Messages;
 import com.project78.graph.model.Relationship;
@@ -15,6 +16,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,8 +33,27 @@ public class SubjectController {
 
     @GetMapping("findSubject/{username}")
     public Messages get(@PathVariable String username) {
-        List <Subject> notReadmessages = (List<Subject>) subjectRepository.findAll();
+        List<Subject> notReadmessages = (List<Subject>) subjectRepository.findAll();
         List<Subject> readMessages = subjectRepository.allReadMessages(username);
+//        List<Subject> likedMessages = subjectRepository.allLikedMessages(username);
+//        System.out.println(likedMessages);
+
+//        notReadmessages.forEach((message) -> {
+//            readMessages.forEach((val) -> {
+//                if(message.getUUID() == val.getUUID()){
+//                    message.setRead(true);
+//                    return;
+//                }
+//
+//            });
+//            likedMessages.forEach((likedMessage) -> {
+//                        if (message.getUUID() == likedMessage.getUUID()) {
+//                            message.setLiked(true);
+//                            return;
+//                        }
+//                    });
+//            System.out.println(message);
+//        });
         notReadmessages.removeAll(readMessages);
         Messages messages = new Messages(readMessages, notReadmessages);
         return messages;
@@ -42,32 +63,40 @@ public class SubjectController {
 
     @GetMapping("getUnreadHighLevel/{username}")
     public List<Subject> getUnreadHighLevelMessages(@PathVariable String username) {
-    return subjectRepository.allUnreadHighLevelMessages(username);
-
+        return subjectRepository.allUnreadHighLevelMessages(username);
     }
-
-
 
     @GetMapping("findSubject/{username}/{type}")
     public Messages get(@PathVariable String username, @PathVariable String type) {
         System.out.println(username + type);
         Messages messages = this.get(username);
         List<Subject> readMessages = messages.getReadMassages();
-        List <Subject> notReadmessages = messages.getUnreadMassages();
+        List<Subject> notReadmessages = messages.getUnreadMassages();
+        List<Subject> readMessagesIndexes = new ArrayList<Subject>();
+        List<Subject> notReadMessagesIndexes = new ArrayList<Subject>();
 
-        for (int i=0; i < readMessages.size(); i++) {
+        for (Integer i=0; i < readMessages.size(); i++) {
             Subject curr_subject = readMessages.get(i);
-            if (curr_subject.getSubjectName().toString().compareTo(type) != 0) {
-                readMessages.remove(curr_subject);
+            String compareString = curr_subject.getSubjectName();
+            if (compareString.compareTo(type) != 0) {
+                readMessagesIndexes.add(curr_subject);
             }
         }
 
         for (int i=0; i < notReadmessages.size(); i++) {
             Subject curr_subject = notReadmessages.get(i);
-            if (curr_subject.getSubjectName().toString().compareTo(type) != 0) {
-                System.out.println(curr_subject.getSubjectName() + " " + type);
-                notReadmessages.remove(curr_subject);
+            String compareString = curr_subject.getSubjectName();
+            if (compareString.compareTo(type) != 0) {
+                notReadMessagesIndexes.add(curr_subject);
             }
+        }
+
+        for (Subject subject : readMessagesIndexes) {
+            readMessages.remove(subject);
+        }
+
+        for (Subject subject : notReadMessagesIndexes) {
+            notReadmessages.remove(subject);
         }
 
         messages = new Messages(readMessages, notReadmessages);
@@ -76,42 +105,60 @@ public class SubjectController {
     }
 
     @PutMapping("createSubject")
-    public ResponseEntity createPerson(@RequestBody Subject subject) {
+    public ResponseEntity createPerson(@RequestBody SubjectPerson subjectPerson) {
         Subject newSubject = new Subject();
-        newSubject.setSubjectName(subject.getSubjectName());
-        newSubject.setLevel(subject.getLevel());
-        newSubject.setMessage(subject.getMessage());
+        newSubject.setSubjectName(subjectPerson.getSubject().getSubjectName());
+        newSubject.setLevel(subjectPerson.getSubject().getLevel());
+        newSubject.setMessage(subjectPerson.getSubject().getMessage());
+        newSubject.setTitle(subjectPerson.getSubject().getTitle());
+        newSubject.setPostedBy(subjectPerson.getPerson().getName());
+        newSubject.setDatetimePosted(subjectPerson.getSubject().getDatetimePosted());
         UUID uuid = UUID.randomUUID();
         newSubject.setUUID(uuid.toString());
         System.out.println(newSubject.toString());
         subjectRepository.save(newSubject);
+
+        Relationship relationship = new Relationship();
+        relationship.setUUID(uuid.toString());
+        relationship.setUsername(subjectPerson.getPerson().getUsername());
+        relationship.setRelation("MESSAGE_POSTED_BY");
+        createRelationshipBetweenExistingNodes(relationship);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("createRelationship")
     public ResponseEntity createRelationshipBetweenExistingNodes(@RequestBody Relationship relationship) {
-        System.out.println(relationship.getUsername() + "  " + relationship.getUUID());
-        subjectRepository.createRelationship(relationship.getUsername(), relationship.getUUID());
+        System.out.println(relationship.getUsername() + "  " + relationship.getUUID() + "  " + relationship.getRelation() );
+
+        switch (relationship.getRelation().toUpperCase()){
+            case "READ_MESSAGE":
+                subjectRepository.createRelationship(relationship.getUsername(), relationship.getUUID());
+                break;
+            case "MESSAGE_POSTED_BY":
+                subjectRepository.createPostedByRelation(relationship.getUsername(), relationship.getUUID());
+                subjectRepository.createRelationship(relationship.getUsername(), relationship.getUUID());
+                break;
+            case "LIKED_MESSAGE":
+                subjectRepository.createLikedRelation(relationship.getUsername(), relationship.getUUID());
+                break;
+            default:
+                break;
+        }
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("findSubjectName")
     public List<String> get() {
         if (subjectNameRepository.count() == 0) {
-            System.out.println("Geen subjectname node aanwezig");
-
             SubjectName newsubjectname = new SubjectName();
             newsubjectname.addSubject("Vergadering");
             newsubjectname.addSubject("Verjaardag");
             newsubjectname.addSubject("Management");
             subjectNameRepository.save(newsubjectname);
-        } else {
-            System.out.println(subjectNameRepository.count());
         }
 
         List<SubjectName> subjectNamesList = (List<SubjectName>) subjectNameRepository.findAll();
         List<String> subjectName = subjectNamesList.get(0).getSubjectNamesList();
-        System.out.println("All subjectnames:" + subjectName);
         return subjectName;
 
     }

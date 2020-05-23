@@ -1,7 +1,10 @@
 package com.project78.graph.controller;
 
 import com.project78.graph.entity.Subject;
+import com.project78.graph.entity.SubjectName;
 import com.project78.graph.model.Messages;
+import com.project78.graph.model.RadarChartData;
+import com.project78.graph.repository.SubjectNameRepository;
 import com.project78.graph.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,9 @@ public class AnalyticsController {
 
     @Autowired
     private SubjectRepository subjectRepository;
+
+    @Autowired
+    private SubjectNameRepository subjectNameRepository;
 
     @GetMapping("eachReadSubject")
     public ArrayList<Map<String,Object>> get() {
@@ -45,11 +51,28 @@ public class AnalyticsController {
         List<Integer> counts = new ArrayList<>();
         subjectUuidsList = subjectRepository.getTheLastSevenSubject();
         subjectUuidsList.forEach(subject -> {
-            labels.add(subject.getMessage());
+            labels.add(subject.getTitle());
             counts.add(subjectRepository.getReadCountSubject(subject.getUUID()));
         });
         pieChartData.put("labels", labels);
         pieChartData.put("data", counts);
         return pieChartData;
+    }
+
+    @GetMapping("getLikedMessages")
+    public RadarChartData getLikedMessages() {
+    RadarChartData chartData = new RadarChartData();
+        List<SubjectName> subjectNamesList = (List<SubjectName>) subjectNameRepository.findAll();
+        ArrayList<String> subjectName = subjectNamesList.get(0).getSubjectNamesList();
+        subjectName.forEach(name -> {
+            Map<String,Object> data = new HashMap<>();
+            ArrayList<Integer> count = new ArrayList<>();
+            count.add(subjectRepository.getLikedMessages(name));
+            data.put("label", name);
+            data.put("data", count);
+            chartData.getData().add(data);
+        });
+        chartData.setLabels(subjectName);
+        return chartData;
     }
 }

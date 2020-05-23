@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NavParams, PopoverController} from '@ionic/angular';
 import {AuthenticationService} from "../service/authentication.service";
 import { HttpclientService } from "../service/httpclient.service";
+import {Relationship} from "../models/relationship";
 
 @Component({
   selector: 'app-popover',
@@ -11,10 +12,10 @@ import { HttpclientService } from "../service/httpclient.service";
 export class PopoverComponent implements OnInit {
   private user: any = {
     id: null,
-    name: "",
-    username: "",
-    password: "",
-    role: "",
+    name: '',
+    username: '',
+    password: '',
+    role: '',
     subjectList: []
   };
   subjectPopover = false;
@@ -32,20 +33,28 @@ export class PopoverComponent implements OnInit {
         this.levelPopover = true;
         break;
       case "SUBJECT":
+        this.loadUserData();
+        this.loadSubjects();
         this.subjectPopover = true;
         break;
       case "USER":
+        this.loadUserData();
         this.userOptionsPopover = true;
         break;
       default:
         break;
     }
-    this.httpclient.getUserFromNeo4J().subscribe(res => {
-      this.user = res;
-    });
-    this.httpclient.getSubjectNames().subscribe((test => this.newCreatedList.push(test)));
   }
 
+  // Further improvements: Server sided caching.
+  loadSubjects() {
+    this.httpclient.getSubjectNames().subscribe((res => this.newCreatedList.push(res)));
+    console.log(this.newCreatedList, this.user.name);
+  }
+
+  loadUserData() {
+    this.httpclient.getUserFromNeo4J().subscribe(res => {this.user = res;});
+  }
 
   dismissPopover() {
    this.popoverController.dismiss();
@@ -62,7 +71,7 @@ export class PopoverComponent implements OnInit {
   }
 
   getName() {
-    return sessionStorage.getItem('name');
+    return sessionStorage.getItem('username');
   }
 
   userOptionClicked(type) {
@@ -78,11 +87,10 @@ export class PopoverComponent implements OnInit {
   }
 
   createSubject() {
-    // const test = Object.keys(this.subject).map(key => ({type: key, value: this.subject[key]}));
-    // console.log(this.subject);
+    this.newCreatedList[0].push(this.subject);
+    this.subject = '';
     this.httpclient.addSubject(this.subject).subscribe();
-    this.subjectPopover = false;
-    this.popoverController.dismiss();
+    // this.chooseSubject(this.subject);
   }
 
 }
