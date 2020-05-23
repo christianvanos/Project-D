@@ -10,6 +10,7 @@ import {ModalController} from "@ionic/angular";
 })
 export class UserModalComponent implements OnInit {
   messageRead: { [key: number]: boolean } = {};
+  Gelezen = [];
   private relationship: Relationship = {
     username: '',
     uuid: '',
@@ -36,6 +37,12 @@ export class UserModalComponent implements OnInit {
     });
   }
 
+  CheckedMessage(index) {
+    this.Gelezen[index] = true;
+    console.log(this.Gelezen);
+
+  }
+
   openMessage(index, message) {
     message.opened = true;
     if (!message.read) {
@@ -57,9 +64,11 @@ export class UserModalComponent implements OnInit {
   }
 
   readMessage(index, message) {
+    console.log("hier lukt het nog")
     this.messageRead[index] = true;
     this.relationship.username = this.user.username;
     this.relationship.uuid = message.uuid;
+    this.relationship.relation = "READ_MESSAGE";
     this.httpclient
         .createRelationshipBetweenExistingNodes(this.relationship)
         .subscribe();

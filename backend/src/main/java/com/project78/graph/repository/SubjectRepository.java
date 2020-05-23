@@ -20,10 +20,10 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
             "RETURN s")
     List<Subject> allUnreadHighLevelMessages(@Param("username") String username);
 
-    @Query("MATCH  (n:Person )-[r:READ_MESSAGE]->(s:Subject)\n" +
-            "WHERE NOT (n:Person {username : $username})-[r:READ_MESSAGE]->(s:Subject)\n" +
-            "RETURN s")
-    List<Subject> allUnreadHighLevelMessages(@Param("username") String username);
+//    @Query("MATCH  (n:Person )-[r:READ_MESSAGE]->(s:Subject)\n" +
+//            "WHERE NOT (n:Person {username : $username})-[r:READ_MESSAGE]->(s:Subject)\n" +
+//            "RETURN s")
+//    List<Subject> allUnreadHighLevelMessages(@Param("username") String username);
 
     @Query("match (n:Person {username : $username})-[r:LIKED_MESSAGE]-(s:Subject) return s, type(r) AS relationship")
     Result allLikedMessages(@Param("username") String username);

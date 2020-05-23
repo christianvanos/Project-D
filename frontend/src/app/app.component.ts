@@ -152,6 +152,7 @@ export class AppComponent implements OnInit {
         const modal = await this.modalController.create({
             component: UserModalComponent,
             cssClass: 'custom-modal',
+            backdropDismiss: false,
             componentProps: {
                 list: this.allUnreadHighLevelList
             }

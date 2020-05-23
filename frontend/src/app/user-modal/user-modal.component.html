@@ -2,7 +2,7 @@
   <ion-toolbar color="main">
     <ion-title style="margin-top: 10px;">Ongelezen berichten:</ion-title>
     <ion-buttons slot="end">
-      <ion-button align="right" (click)="close()">
+      <ion-button [disabled]="Gelezen.length !== list.length" align="right" (click)="close()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -39,6 +39,10 @@
                 <div *ngIf="message.opened">
                   <p class="card-text text-left"> {{message.message}} </p>
                   <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
+                  <ion-item>
+                    <ion-label>Gelezen?</ion-label>
+                    <ion-checkbox name="message.title" [disabled]="Gelezen[i]" (click) = CheckedMessage(i) checked="false">Gelezen?</ion-checkbox>
+                  </ion-item>
                   <ion-item [color]="message.level === 'High' ? 'priority':  message.level=='Medium' ? 'warning' : 'secondary'" lines="none" >
                     <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
                   </ion-item>

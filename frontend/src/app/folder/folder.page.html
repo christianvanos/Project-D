@@ -129,21 +129,6 @@
                   </ion-select>
               </ion-item>
           </ion-card>
-              <ion-card *ngFor="let message of allUnreadHighLevelList; index as i;" [color]="message.level === 'High' ? 'danger' : ''">
-                  <ion-card-header>
-                      <ion-card-subtitle *ngIf="user">{{user.name}}</ion-card-subtitle>
-                      <ion-card-title>{{message.subjectName}}</ion-card-title>
-                      <br *ngIf="!messageRead[i]">
-                      <ion-icon *ngIf="!messageRead[i]" (click)="readMessage(i,message)" name="open-outline"></ion-icon>
-                  </ion-card-header>
-                  <ion-card-content *ngIf="messageRead[i]">
-                      {{message.message}}
-                  </ion-card-content>
-              </ion-card>
-                <ion-label>
-                    Dit is wat je gemist hebt^
-                </ion-label>
-
           <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority':''">
               <ion-card-content>
                   <ion-grid>
