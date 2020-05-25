@@ -4,7 +4,8 @@ import lombok.Data;
 import org.neo4j.ogm.annotation.*;
 import com.project78.graph.entity.Subject;
 
-
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -57,7 +58,8 @@ public class Subject {
     }
 
     public String getDatetimePosted() {
-        return datetimePosted;
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyy HH:mm:ss");
+        return dateFormat.format(datetimePosted);
     }
 
     public String getTitle() {
@@ -97,7 +99,7 @@ public class Subject {
 
 
     public void setDatetimePosted(String datetimePosted) {
-        this.datetimePosted = datetimePosted;
+        this.datetimePosted = new Date();
     }
 
 
@@ -111,7 +113,7 @@ public class Subject {
     private boolean read;
     private boolean liked;
 
-    private String datetimePosted;
+    private Date datetimePosted;
     private String postedBy;
 
 
@@ -128,7 +130,7 @@ public class Subject {
                 ", title='" + title + '\'' +
                 ", level='" + level + '\'' +
                 ", message='" + message + '\'' +
-                ", datetimePosted='" + datetimePosted + '\'' +
+                ", datetimePosted='" + datetimePosted.toString() + '\'' +
                 ", postedBy='" + postedBy + '\'' +
                 ", liked='" + liked + '\'' +
                 ", read='" + read + '\'' +

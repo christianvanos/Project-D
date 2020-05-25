@@ -19,11 +19,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.Date;
+
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/")
 public class SubjectController {
+    Date lastUpdate = new Date();
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonController.class);
 
     @Autowired
@@ -59,6 +64,29 @@ public class SubjectController {
         return messages;
 //        ArrayList<Subject> subjects = (ArrayList<Subject>) subjectRepository.findAll();
 //        return subjects;
+    }
+
+
+    @GetMapping("isfeedupdated/{datetime}")
+    public boolean isFeedUpdated(@PathVariable String datetime) {
+       boolean updated = false;
+
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyy hh:mm:ss");
+
+            Date date = formatter.parse(datetime);
+            System.out.println(datetime);
+            System.out.println(date);
+            System.out.println(lastUpdate);
+            if (lastUpdate.compareTo(date) > 0){
+                updated = true;
+            }
+        }
+        catch(Exception error){
+            System.out.println( error);
+
+        }
+        return updated;
     }
 
     @GetMapping("getUnreadHighLevel/{username}")
@@ -144,6 +172,10 @@ public class SubjectController {
             default:
                 break;
         }
+
+        lastUpdate = new Date();
+        System.out.println(lastUpdate);
+
         return ResponseEntity.ok().build();
     }
 

@@ -6,6 +6,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 import org.neo4j.ogm.model.Result;
 
+
 import java.util.List;
 
 public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
@@ -76,6 +77,10 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
     @Query("MATCH (n:Subject)-[r:READ_MESSAGE]-() WHERE n.uuid = $uuid\n" + "RETURN COUNT(r)")
     Integer getReadCountSubject(@Param("uuid") String uuid);
 
+    @Query("match(n:Subject) \n" +
+            "where n.datetimePosted > $datetime \n" +
+            "return count(n)")
+    Integer getCountOfSubjectsPostedAfterDate(@Param("datetime") String datetime);
 
     @Query("match (n:Subject)-[r:LIKED_MESSAGE]-() WHERE n.subjectName = $subjectName\n" + "RETURN COUNT(r)")
     Integer getLikedMessages(@Param("subjectName") String subjectName);

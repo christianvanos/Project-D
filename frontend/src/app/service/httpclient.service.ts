@@ -21,6 +21,12 @@ export class HttpclientService {
     return this.http.get(url);
   }
 
+  getSubjectCountAfterTime(time) {
+    const url = `${this.url}/isfeedupdated/` + time;
+    return this.http.get(url);
+
+  }
+
   getSubjectNames() {
     const url = `${this.url}/findSubjectName`;
     return this.http.get(url);

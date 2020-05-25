@@ -2,7 +2,7 @@ import { Component, OnInit, Renderer2 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpclientService } from "../service/httpclient.service";
 import { Person } from "../models/person";
-import { Feed } from "../models/feed";
+// import { Feed } from "../models/feed";
 import { Message } from "../models/message";
 import {ModalController, PopoverController} from "@ionic/angular";
 import { PopoverComponent } from "../popover/popover.component";
@@ -15,7 +15,9 @@ import { DatePipe } from "@angular/common";
 import { Label, MultiDataSet } from "ng2-charts";
 import {ChartDataSets, ChartOptions, ChartType, RadialChartOptions} from "chart.js";
 import { SubjectPerson } from "../models/subjectperson";
-import { UserModalComponent} from '../user-modal/user-modal.component';
+import { UserModalComponent} from '../user-modal/user-modal.component'
+import { interval } from 'rxjs';
+
 
 class CardsInterface {
   title: string;
@@ -92,6 +94,16 @@ export class FolderPage implements OnInit {
       }
     }
   };
+
+
+
+  public lastUpdate = this.datePipe
+      .transform(new Date(), 'dd-MM-yyy hh:mm:ss')
+      .toString()
+
+
+
+
   public barChartLabels: Label[] = [
       "Welke categorie het meest in wordt geplaatst"
   ];
@@ -109,6 +121,7 @@ export class FolderPage implements OnInit {
   // private allUnreadMessagesList;
   // private allUnreadHighLevelList;
   private feed: Array<Message>;
+  private lastFeedUpdate: string;
   messageShown = true;
   createMessageOpen = false;
   private newCreatedList = [];
@@ -157,22 +170,12 @@ export class FolderPage implements OnInit {
 ) {}
 
   ngOnInit() {
-    console.log(this.httpclient);
-    this.httpclient.getUserFromNeo4J().subscribe(res => {
-      this.user = res;
-      this.httpclient
-          .getAllMessagesFromNeo4j(this.user.username)
-          .subscribe(messages => {
-            this.messageList = messages;
-            this.messageList.readMassages.forEach((m) => {m.read = true;});
-            this.feed =  [];
-            this.feed = this.feed.concat(this.messageList.unreadMassages, this.messageList.readMassages);
-            console.log(this.feed);
-          });
-    });
 
-    // this.testFeed = new Feed(this.user.username);
-    // console.log('TestFeed...');
+    this.createFeed();
+
+
+    // this.testFeed = new Feed(this.httpclient, this.user.username);
+    // // console.log('TestFeed...');
     // console.log(this.testFeed.getFeed());
     // this.httpclient.getUserFromNeo4J().subscribe(res => {
     //   this.user = res;
@@ -192,6 +195,44 @@ export class FolderPage implements OnInit {
     this.createBarChart();
     this.createPieChart();
     this.createRadarChart();
+
+
+    if (this.folder === "Feed"){
+      const secondsCounter = interval(10000);
+        // Subscribe to begin publishing values
+      secondsCounter.subscribe(n =>
+          this.checkFeedUpdate());
+    }
+
+  }
+
+  checkFeedUpdate() {
+    this.httpclient
+        .getSubjectCountAfterTime(this.lastUpdate)
+        .subscribe(res => {
+          console.log(res);
+          if (res) {
+            this.createFeed();
+            this.lastUpdate = this.datePipe
+                .transform(new Date(), 'dd-MM-yyy hh:mm:ss')
+                .toString();
+          }
+        });
+  }
+
+  createFeed() {
+    this.httpclient.getUserFromNeo4J().subscribe(res => {
+      this.user = res;
+      this.httpclient
+          .getAllMessagesFromNeo4j(this.user.username)
+          .subscribe(messages => {
+            this.messageList = messages;
+            this.messageList.readMassages.forEach((m) => {m.read = true;});
+            this.feed =  [];
+            this.feed = this.feed.concat(this.messageList.unreadMassages, this.messageList.readMassages);
+            console.log(this.feed);
+          });
+    });
   }
 
   createBarChart() {

@@ -10,6 +10,7 @@
 //
 // export class Feed  {
 //     constructor(
+//         private httpclient: HttpclientService,
 //         private username: string
 //     ) {
 //         console.log(this.httpclient);
