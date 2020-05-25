@@ -2,6 +2,7 @@ import { Component, OnInit, Renderer2 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { HttpclientService } from "../service/httpclient.service";
 import { Person } from "../models/person";
+import { Feed } from "../models/feed";
 import { Message } from "../models/message";
 import {ModalController, PopoverController} from "@ionic/angular";
 import { PopoverComponent } from "../popover/popover.component";
@@ -124,6 +125,7 @@ export class FolderPage implements OnInit {
     subject: null,
     person: null
   };
+  private testFeed;
 
   private message: Message = {
     id: null,
@@ -155,6 +157,7 @@ export class FolderPage implements OnInit {
 ) {}
 
   ngOnInit() {
+    console.log(this.httpclient);
     this.httpclient.getUserFromNeo4J().subscribe(res => {
       this.user = res;
       this.httpclient
@@ -167,6 +170,10 @@ export class FolderPage implements OnInit {
             console.log(this.feed);
           });
     });
+
+    // this.testFeed = new Feed(this.user.username);
+    // console.log('TestFeed...');
+    // console.log(this.testFeed.getFeed());
     // this.httpclient.getUserFromNeo4J().subscribe(res => {
     //   this.user = res;
     //   this.httpclient

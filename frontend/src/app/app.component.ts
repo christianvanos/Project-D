@@ -19,7 +19,14 @@ import { Subject }    from 'rxjs';
 })
 export class AppComponent implements OnInit {
     public selectedIndex = 0;
-    private user;
+    private user: any = {
+        id: null,
+        name: '',
+        username: '',
+        password: '',
+        role: '',
+        subjectList: []
+    };
     username: string;
     password: string;
     error = '';
