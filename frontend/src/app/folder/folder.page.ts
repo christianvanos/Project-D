@@ -104,9 +104,10 @@ export class FolderPage implements OnInit {
   public folder: string;
   messageRead: { [key: number]: boolean } = {};
   private messageList;
-  private allReadMessagesList;
-  private allUnreadMessagesList;
-  private allUnreadHighLevelList;
+  // private allReadMessagesList;
+  // private allUnreadMessagesList;
+  // private allUnreadHighLevelList;
+  private feed: Array<Message>;
   messageShown = true;
   createMessageOpen = false;
   private newCreatedList = [];
@@ -151,7 +152,7 @@ export class FolderPage implements OnInit {
     private toastCtrl: ToastController,
     private alertController: AlertController,
     private modalController: ModalController
-  ) {}
+) {}
 
   ngOnInit() {
     this.httpclient.getUserFromNeo4J().subscribe(res => {
@@ -160,8 +161,10 @@ export class FolderPage implements OnInit {
           .getAllMessagesFromNeo4j(this.user.username)
           .subscribe(messages => {
             this.messageList = messages;
-            this.allReadMessagesList = this.messageList.readMassages;
-            this.allUnreadMessagesList = this.messageList.unreadMassages;
+            this.messageList.readMassages.forEach((m) => {m.read = true;});
+            this.feed =  [];
+            this.feed = this.feed.concat(this.messageList.unreadMassages, this.messageList.readMassages);
+            console.log(this.feed);
           });
     });
     // this.httpclient.getUserFromNeo4J().subscribe(res => {
@@ -319,10 +322,7 @@ export class FolderPage implements OnInit {
       this.selectedValue !== "" &&
       this.selectedValue !== undefined
     ) {
-      this.allUnreadMessagesList = this.messageList.unreadMassages.filter(
-        subject => subject.subjectName === this.selectedValue
-      );
-      this.allReadMessagesList = this.messageList.readMassages.filter(
+      this.feed = this.feed.filter(
         subject => subject.subjectName === this.selectedValue
       );
     }
@@ -330,8 +330,7 @@ export class FolderPage implements OnInit {
 
   removeFilter() {
     this.selectedValue = null;
-    this.allReadMessagesList = this.messageList.readMassages;
-    this.allUnreadMessagesList = this.messageList.unreadMassages;
+    this.feed = [].concat(this.messageList.unreadMassages, this.messageList.readMassages);
   }
 
   UnreadMessages() {
@@ -403,6 +402,7 @@ export class FolderPage implements OnInit {
 
   closeMessage(message) {
     message.opened = false;
+    message.read = true;
   }
 
   openMessageCreation() {
@@ -468,8 +468,6 @@ export class FolderPage implements OnInit {
       opened: true
     };
     const toServer = { subject: staticMessage, person: this.user };
-    this.newCreatedList.push(staticMessage);
-    this.user.subjectList.push(staticMessage);
     this.httpclient.createMessageInNeo4j(toServer).subscribe();
     // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
     this.closeInput();
