@@ -198,13 +198,22 @@
                                       </ion-item>
                                       <div *ngIf="message.opened">
                                           <p class="card-text text-left"> {{message.message}} </p>
-                                          <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
-                                          <ion-item [color]="message.level === 'High' ? 'priority': ''"  lines="none" >
-                                              <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
-                                          </ion-item>
                                       </div>
                                   </ion-col>
                               </ion-row>
+                          </ion-col>
+                      </ion-row>
+                      <ion-row  *ngIf="message.opened">
+                          <ion-col size="2">
+                              <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
+                          </ion-col>
+                          <ion-col size="9">
+                              <ion-item [color]="message.level === 'High' ? 'priority': ''"  lines="none" >
+                                  <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
+                              </ion-item>
+                          </ion-col>
+                          <ion-col size="1">
+
                           </ion-col>
                       </ion-row>
                   </ion-grid>
@@ -239,15 +248,22 @@
                                       </ion-item>
                                       <div *ngIf="message.opened">
                                           <p class="card-text text-left"> {{message.message}} </p>
-                                          <br>
-
-                                          <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
-                                          <ion-item [color]="message.level === 'High' ? 'priority':''" class="ion-margin-top" lines="none" >
-                                              <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
-                                          </ion-item>
                                       </div>
                                   </ion-col>
                               </ion-row>
+                          </ion-col>
+                      </ion-row>
+                      <ion-row  *ngIf="message.opened">
+                          <ion-col size="2">
+                              <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
+                          </ion-col>
+                          <ion-col size="9">
+                              <ion-item [color]="message.level === 'High' ? 'priority': ''"  lines="none" >
+                                  <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
+                              </ion-item>
+                          </ion-col>
+                          <ion-col size="1">
+
                           </ion-col>
                       </ion-row>
                   </ion-grid>

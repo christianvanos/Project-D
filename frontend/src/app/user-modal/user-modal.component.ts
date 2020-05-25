@@ -64,7 +64,6 @@ export class UserModalComponent implements OnInit {
   }
 
   readMessage(index, message) {
-    console.log("hier lukt het nog")
     this.messageRead[index] = true;
     this.relationship.username = this.user.username;
     this.relationship.uuid = message.uuid;
