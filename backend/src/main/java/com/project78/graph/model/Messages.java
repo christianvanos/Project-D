@@ -17,6 +17,7 @@ public class Messages {
         return UnreadMassages;
     }
 
+
     public Messages(List<Subject> readMassages, List<Subject> unreadMassages) {
         this.readMassages = readMassages;
         this.UnreadMassages = unreadMassages;
