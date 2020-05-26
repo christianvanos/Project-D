@@ -157,7 +157,7 @@
                                           <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
                                       </ion-item>
                                       <div *ngIf="message.opened">
-                                          <p class="card-text text-left"> {{message.message}} </p>
+                                          <p class="card-text text-left"  style="white-space: pre-line"> {{message.message}} </p>
                                           <ion-item [color]="message.level === 'High' ? 'priority': ''" lines="none" >
                                               <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
                                           </ion-item>
@@ -210,7 +210,7 @@
                                           <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
                                       </ion-item>
                                       <div *ngIf="message.opened">
-                                          <p class="card-text text-left"> {{message.message}} </p>
+                                          <p class="card-text text-left"  style="white-space: pre-line"> {{message.message}} </p>
                                       </div>
                                   </ion-col>
                               </ion-row>
@@ -260,7 +260,7 @@
                                           <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
                                       </ion-item>
                                       <div *ngIf="message.opened">
-                                          <p class="card-text text-left"> {{message.message}} </p>
+                                          <p class="card-text text-left"  style="white-space: pre-line"> {{message.message}} </p>
                                       </div>
                                   </ion-col>
                               </ion-row>
