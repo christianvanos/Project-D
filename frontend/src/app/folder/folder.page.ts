@@ -101,7 +101,7 @@ export class FolderPage implements OnInit {
       .transform(new Date(), 'dd-MM-yyy hh:mm:ss')
       .toString()
 
-
+  private filteredFeed;
 
 
   public barChartLabels: Label[] = [
@@ -201,8 +201,22 @@ export class FolderPage implements OnInit {
       const secondsCounter = interval(10000);
         // Subscribe to begin publishing values
       secondsCounter.subscribe(n =>
-          this.checkFeedUpdate());
+          this.getFeedUpdate());
     }
+
+  }
+
+  getFeedUpdate() {
+    this.httpclient
+        .getFeedUpdate(this.lastUpdate)
+        .subscribe(res => {
+          if (res !== []) {
+          this.feed = [].concat(res, this.feed);
+          this.lastUpdate = this.datePipe
+              .transform(new Date(), 'dd-MM-yyy hh:mm:ss')
+              .toString();
+          }
+        });
 
   }
 
@@ -210,9 +224,9 @@ export class FolderPage implements OnInit {
     this.httpclient
         .getSubjectCountAfterTime(this.lastUpdate)
         .subscribe(res => {
-          console.log(res);
           if (res) {
-            this.createFeed();
+
+            this.getFeedUpdate();
             this.lastUpdate = this.datePipe
                 .transform(new Date(), 'dd-MM-yyy hh:mm:ss')
                 .toString();
@@ -370,6 +384,7 @@ export class FolderPage implements OnInit {
       this.selectedValue !== "" &&
       this.selectedValue !== undefined
     ) {
+      this.filteredFeed = this.feed;
       this.feed = this.feed.filter(
         subject => subject.subjectName === this.selectedValue
       );
@@ -513,10 +528,16 @@ export class FolderPage implements OnInit {
       subjectName: this.message.subjectName,
       message: this.message.message,
       level: this.message.level,
-      opened: true
+      opened: true,
+      id:  -1,
+      read: true,
+      postedBy: this.user.name,
+      uuid: '-1'
     };
     const toServer = { subject: staticMessage, person: this.user };
     this.httpclient.createMessageInNeo4j(toServer).subscribe();
+    this.feed = [].concat(staticMessage, this.feed);
+
     // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
     this.closeInput();
   }

@@ -8,6 +8,7 @@ import org.neo4j.ogm.model.Result;
 
 
 import java.util.List;
+import java.util.Date;
 
 public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
 
@@ -79,8 +80,8 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
 
     @Query("match(n:Subject) \n" +
             "where n.datetimePosted > $datetime \n" +
-            "return count(n)")
-    Integer getCountOfSubjectsPostedAfterDate(@Param("datetime") String datetime);
+            "return n")
+    List<Subject> getSubjectsSinceDatetime(@Param("datetime") Date datetime);
 
     @Query("match (n:Subject)-[r:LIKED_MESSAGE]-() WHERE n.subjectName = $subjectName\n" + "RETURN COUNT(r)")
     Integer getLikedMessages(@Param("subjectName") String subjectName);

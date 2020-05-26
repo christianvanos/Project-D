@@ -51,6 +51,7 @@ public class SubjectController {
 //                }
 //
 //            });
+
 //            likedMessages.forEach((likedMessage) -> {
 //                        if (message.getUUID() == likedMessage.getUUID()) {
 //                            message.setLiked(true);
@@ -87,6 +88,25 @@ public class SubjectController {
 
         }
         return updated;
+    }
+
+
+    @GetMapping("renew/{datetime}")
+    public List<Subject> getFeedUpdate(@PathVariable String datetime) {
+        List<Subject> updated = new ArrayList<Subject>();
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyy hh:mm:ss");
+            Date date = formatter.parse(datetime);
+            if (lastUpdate.compareTo(date) > 0){
+
+                updated = subjectRepository.getSubjectsSinceDatetime(date);
+            }
+        }
+        catch(Exception error){
+        System.out.println( error);
+    }
+        return updated;
+
     }
 
     @GetMapping("getUnreadHighLevel/{username}")
