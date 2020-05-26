@@ -150,7 +150,7 @@ export class FolderPage implements OnInit {
     private datePipe: DatePipe,
     private toastCtrl: ToastController,
     private alertController: AlertController,
-    private modalController: ModalController
+    private modalController: ModalController,
   ) {}
 
   ngOnInit() {

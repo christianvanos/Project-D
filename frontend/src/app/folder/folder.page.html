@@ -156,17 +156,11 @@
                                       <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top" lines="none">
                                           <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
                                       </ion-item>
-                                      <div *ngIf="message.opened">
-                                          <p class="card-text text-left"  style="white-space: pre-line"> {{message.message}} </p>
-                                          <ion-item [color]="message.level === 'High' ? 'priority': ''" lines="none" >
-                                              <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
-                                          </ion-item>
-                                      </div>
                                   </ion-col>
                               </ion-row>
                           </ion-col>
                       </ion-row>
-                      <ion-row>
+                      <ion-row *ngIf="message.opened">
                           <ion-col size-lg="2" size-xs="12">
                               <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
                           </ion-col>
@@ -293,38 +287,44 @@
         <ion-card-header>
             <ion-card-title>Verander wachtwoord</ion-card-title>
         </ion-card-header>
-        <ion-card  style="width: 50%;">
-        <form #passwordForm="ngForm" (ngSubmit)="saveNewPassword(passwordForm.value, passwordForm);">
-            <ion-item class="ion-text-left">
-                <ion-label position="floating">Oud Wachtwoord:</ion-label>
-                <ion-input type="password" name="oldPassword" ngModel="" required="true"></ion-input>
-            </ion-item>
-            <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
-            <!--          <p>Invalid password (min 8 characters)</p>-->
-            <!--        </div>-->
-            <ion-item class="ion-text-left">
-                <ion-label position="floating">Nieuw Wachtwoord:</ion-label>
-                <ion-input type="password" name="newPassword" ngModel="" required="true"></ion-input>
-            </ion-item>
-            <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
-            <!--          <p>Invalid password (min 8 characters)</p>-->
-            <!--        </div>-->
-            <ion-item class="ion-text-left">
-                <ion-label position="floating">Herhaal nieuw Wachtwoord:</ion-label>
-                <ion-input type="password" name="confirmNewPassword" ngModel="" required="true"></ion-input>
-            </ion-item>
-            <!--        <div class="alert alert-danger" role="alert" *ngIf="validateForm.hasError('passwordNotMatch')">-->
-            <!--          <p>Passwords don't match</p>-->
-            <!--        </div>-->
-            <!--      </form>-->
-            <div style="text-align: center">
-                <ion-button type="submit">
-                    <ion-icon slot="end" name="save"></ion-icon>
-                    Opslaan
-                </ion-button>
-            </div>
-        </form>
-        </ion-card>
+        <ion-grid>
+            <ion-row>
+                <ion-col size-lg="6" size-xs="12">
+                    <ion-card>
+                        <form #passwordForm="ngForm" (ngSubmit)="saveNewPassword(passwordForm.value, passwordForm);">
+                            <ion-item class="ion-text-left">
+                                <ion-label position="floating">Oud Wachtwoord:</ion-label>
+                                <ion-input type="password" name="oldPassword" ngModel="" required="true"></ion-input>
+                            </ion-item>
+                            <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
+                            <!--          <p>Invalid password (min 8 characters)</p>-->
+                            <!--        </div>-->
+                            <ion-item class="ion-text-left">
+                                <ion-label position="floating">Nieuw Wachtwoord:</ion-label>
+                                <ion-input type="password" name="newPassword" ngModel="" required="true"></ion-input>
+                            </ion-item>
+                            <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
+                            <!--          <p>Invalid password (min 8 characters)</p>-->
+                            <!--        </div>-->
+                            <ion-item class="ion-text-left">
+                                <ion-label position="floating">Herhaal nieuw Wachtwoord:</ion-label>
+                                <ion-input type="password" name="confirmNewPassword" ngModel="" required="true"></ion-input>
+                            </ion-item>
+                            <!--        <div class="alert alert-danger" role="alert" *ngIf="validateForm.hasError('passwordNotMatch')">-->
+                            <!--          <p>Passwords don't match</p>-->
+                            <!--        </div>-->
+                            <!--      </form>-->
+                            <div style="text-align: center">
+                                <ion-button type="submit">
+                                    <ion-icon slot="end" name="save"></ion-icon>
+                                    Opslaan
+                                </ion-button>
+                            </div>
+                        </form>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
     </div>
 
     <div *ngIf="folder == 'Analytics'">
