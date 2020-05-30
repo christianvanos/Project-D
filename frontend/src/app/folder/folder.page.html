@@ -129,6 +129,17 @@
                   </ion-select>
               </ion-item>
           </ion-card>
+
+          <ion-card>
+              <ion-item>
+                  <ion-label>Sorteer</ion-label>
+                  <ion-select placeholder="Sorteer" cancelText="Wis selectie" [(ngModel)]="sortselectedValue" (ionChange)="sort()" (ionCancel)="removeFilter()">
+                      <ion-select-option value="h-l">Hoog naar Laag</ion-select-option>
+                      <ion-select-option value="l-h">Laag naar Hoog</ion-select-option>
+                  </ion-select>
+              </ion-item>
+          </ion-card>
+
           <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority':''">
               <ion-card-content>
                   <ion-grid>
