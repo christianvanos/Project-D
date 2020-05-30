@@ -97,13 +97,15 @@ public class SubjectController {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyy hh:mm:ss");
             Date date = formatter.parse(datetime);
+//            System.out.println("date from client: " + date);
+//            System.out.println("date from server: " + lastUpdate);
             if (lastUpdate.compareTo(date) > 0){
 
                 updated = subjectRepository.getSubjectsSinceDatetime(date);
             }
         }
         catch(Exception error){
-        System.out.println( error);
+        System.out.println(error);
     }
         return updated;
 
@@ -153,7 +155,7 @@ public class SubjectController {
     }
 
     @PutMapping("createSubject")
-    public ResponseEntity createPerson(@RequestBody SubjectPerson subjectPerson) {
+    public ResponseEntity<String> createPerson(@RequestBody SubjectPerson subjectPerson) {
         Subject newSubject = new Subject();
         newSubject.setSubjectName(subjectPerson.getSubject().getSubjectName());
         newSubject.setLevel(subjectPerson.getSubject().getLevel());
@@ -171,7 +173,11 @@ public class SubjectController {
         relationship.setUsername(subjectPerson.getPerson().getUsername());
         relationship.setRelation("MESSAGE_POSTED_BY");
         createRelationshipBetweenExistingNodes(relationship);
-        return ResponseEntity.ok().build();
+
+
+        String response = String.format("{\"uuid\" : \"%s\"}", uuid.toString());
+
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("createRelationship")
