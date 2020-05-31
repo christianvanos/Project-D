@@ -95,9 +95,6 @@ export class FolderPage implements OnInit {
         }
     };
 
-    private filteredFeed;
-
-
     public barChartLabels: Label[] = [
         "Welke categorie het meest in wordt geplaatst"
     ];
@@ -111,13 +108,9 @@ export class FolderPage implements OnInit {
     public folder: string;
     messageRead: { [key: number]: boolean } = {};
     private messageList;
-    // private allReadMessagesList;
-    // private allUnreadMessagesList;
-    // private allUnreadHighLevelList;
     private feed: Array<Message>;
     private feedStream: Array<Message>;
     public lastFeedUpdate: string;
-    messageShown = true;
     createMessageOpen = false;
     private newCreatedList = [];
     private subjectList = [];
