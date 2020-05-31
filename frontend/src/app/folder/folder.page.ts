@@ -252,22 +252,30 @@ export class FolderPage implements OnInit {
             this.user = res;
             this.httpclient
                 .getAllMessagesFromNeo4j(this.user.username)
-                .subscribe(messages => {
+                .subscribe((messages: {readMassages: Message[], unReadMassages: Message[]}) => {
+
+
                     this.messageList = messages;
                     this.messageList.readMassages.forEach((m) => {
                         m.read = true;
                     });
+                    this.messageList.unreadMassages.sort(this.compareDatetime);
+                    this.messageList.readMassages.sort(this.compareDatetime);
                     this.feedStream = [].concat(this.messageList.unreadMassages, this.messageList.readMassages);
                     this.feed = this.feedStream;
-
                     this.lastFeedUpdate = this.getCurrentDateTimeToString();
-
                     this.filter();
 
                 });
         });
     }
-
+    compareDatetime(a: Message, b: Message){
+        if(a.datetimePosted < b.datetimePosted){
+            return 1;
+        } else {
+            return -1;
+        }
+}
     createBarChart() {
         if (this.folder === 'Analytics') {
             this.httpclient.getBarChartData().subscribe(data => {
@@ -534,10 +542,9 @@ export class FolderPage implements OnInit {
         this.httpclient
             .createRelationshipBetweenExistingNodes(this.relationship)
             .subscribe();
-    }
+}
 
-    unLikeMessage(message) {
-    }
+
 
 
     sendMessage() {
@@ -562,6 +569,7 @@ export class FolderPage implements OnInit {
 
         // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
         this.closeInput();
+        this.getFeedUpdate();
     }
 }
 
