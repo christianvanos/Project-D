@@ -14,12 +14,14 @@ import {PopoverComponent} from './popover/popover.component';
 import {HttpInterceptorService} from './http-interceptor/http-interceptor.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ChartsModule} from 'ng2-charts';
+import { DatePipe, CommonModule  } from '@angular/common';
 
 
 @NgModule({
   declarations: [AppComponent, UserModalComponent, PopoverComponent],
   entryComponents: [UserModalComponent, PopoverComponent],
   imports: [
+    CommonModule,
     BrowserModule,
     IonicModule.forRoot(),
     ChartsModule,

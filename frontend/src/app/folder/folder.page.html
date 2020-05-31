@@ -124,7 +124,7 @@
           <ion-card>
               <ion-item>
                   <ion-label>Filter</ion-label>
-                  <ion-select placeholder="Filter" cancelText="Wis selectie" [(ngModel)]="selectedValue" (ionChange)="filter()" (ionCancel)="removeFilter()">
+                  <ion-select placeholder="Filter" cancelText="Wis selectie" [(ngModel)]="selectedValue" (ionChange)="callFilterSort()" (ionCancel)="removeFilter()">
                       <ion-select-option *ngFor="let item of subjectList[0]" [value]="item">{{item}}</ion-select-option>
                   </ion-select>
               </ion-item>
@@ -133,60 +133,13 @@
           <ion-card>
               <ion-item>
                   <ion-label>Sorteer</ion-label>
-                  <ion-select placeholder="Sorteer" cancelText="Wis selectie" [(ngModel)]="sortselectedValue" (ionChange)="sort()" (ionCancel)="removeFilter()">
+                  <ion-select placeholder="Sorteer" cancelText="Wis selectie" [(ngModel)]="sortselectedValue" (ionChange)="callFilterSort()" (ionCancel)="removeSort()">
                       <ion-select-option value="h-l">Hoog naar Laag</ion-select-option>
                       <ion-select-option value="l-h">Laag naar Hoog</ion-select-option>
                   </ion-select>
               </ion-item>
           </ion-card>
 
-          <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority':''">
-              <ion-card-content>
-                  <ion-grid>
-                      <ion-row>
-                          <ion-col size="1" class="header">
-                              <img src="../../../assets/icon/default-image.jpg"class="rounded float-left" alt="...">
-                          </ion-col>
-                          <ion-col size="11">
-                              <ion-row>
-                                  <ion-col size="4" class="subheader">
-                                      <ion-label> {{user.name}}</ion-label>
-                                      <br>
-                                      <ion-label >{{message.datetimePosted}}</ion-label>
-                                  </ion-col>
-                                  <ion-col size="4" style="text-align: center;">
-                                      <ion-label style="font-weight: bold; font-size:125%; ">{{message.title}}</ion-label>
-                                  </ion-col>
-                                  <ion-col size="4" >
-                                      <ion-label class="ion-float-right">
-                                          {{message.subjectName}}</ion-label>
-                                  </ion-col>
-                              </ion-row>
-                              <ion-row>
-                                  <ion-col size="12" class="subheader">
-                                      <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top" lines="none">
-                                          <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
-                                      </ion-item>
-                                  </ion-col>
-                              </ion-row>
-                          </ion-col>
-                      </ion-row>
-                      <ion-row *ngIf="message.opened">
-                          <ion-col size-lg="2" size-xs="12">
-                              <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
-                          </ion-col>
-                          <ion-col size-lg="9" size-xs="12">
-                              <ion-item [color]="message.level === 'High' ? 'priority': ''"  lines="none" >
-                                  <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
-                              </ion-item>
-                          </ion-col>
-                          <ion-col size="1">
-
-                          </ion-col>
-                      </ion-row>
-                  </ion-grid>
-              </ion-card-content>
-          </ion-card>
           <ion-card *ngFor="let message of feed; index as i;" [color]="message.level === 'High' ? 'priority' : ''">
               <ion-card-content>
                   <ion-grid>

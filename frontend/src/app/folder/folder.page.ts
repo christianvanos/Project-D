@@ -1,21 +1,21 @@
-import {Component, OnInit, Renderer2} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
-import {HttpclientService} from "../service/httpclient.service";
-import {Person} from "../models/person";
-// import { Feed } from "../models/feed";
-import {Message} from "../models/message";
-import {ModalController, PopoverController} from "@ionic/angular";
-import {PopoverComponent} from "../popover/popover.component";
-import {Relationship} from "../models/relationship";
-import {ViewChild} from "@angular/core";
-import {NgForm} from "@angular/forms";
-import {ToastController} from "@ionic/angular";
-import {AlertController} from "@ionic/angular";
-import {DatePipe} from "@angular/common";
-import {Label, MultiDataSet} from "ng2-charts";
-import {ChartDataSets, ChartOptions, ChartType, RadialChartOptions} from "chart.js";
-import {SubjectPerson} from "../models/subjectperson";
-import {UserModalComponent} from '../user-modal/user-modal.component'
+import {Component, OnInit, Renderer2} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpclientService} from '../service/httpclient.service';
+import {Person} from '../models/person';
+// import { Feed } from '../models/feed';
+import {Message} from '../models/message';
+import {ModalController, PopoverController} from '@ionic/angular';
+import {PopoverComponent} from '../popover/popover.component';
+import {Relationship} from '../models/relationship';
+import {ViewChild} from '@angular/core';
+import {NgForm} from '@angular/forms';
+import {ToastController} from '@ionic/angular';
+import {AlertController} from '@ionic/angular';
+import {DatePipe} from '@angular/common';
+import {Label, MultiDataSet} from 'ng2-charts';
+import {ChartDataSets, ChartOptions, ChartType, RadialChartOptions} from 'chart.js';
+import {SubjectPerson} from '../models/subjectperson';
+import {UserModalComponent} from '../user-modal/user-modal.component';
 import {interval} from 'rxjs';
 
 
@@ -66,13 +66,13 @@ export class FolderPage implements OnInit {
     public pieChartColors = [
         {
             backgroundColor: [
-                "rgba(255,0,0,0.3)",
-                "rgba(0,255,0,0.3)",
-                "rgba(0,0,255,0.3)",
-                "rgba(248, 64, 22, 1)",
-                "rgba(189, 81, 144, 1)",
-                "rgba(81, 99, 189, 1)",
-                "rgba(81, 189, 124, 1)"
+                'rgba(255,0,0,0.3)',
+                'rgba(0,255,0,0.3)',
+                'rgba(0,0,255,0.3)',
+                'rgba(248, 64, 22, 1)',
+                'rgba(189, 81, 144, 1)',
+                'rgba(81, 99, 189, 1)',
+                'rgba(81, 189, 124, 1)'
             ]
         }
     ];
@@ -91,19 +91,19 @@ export class FolderPage implements OnInit {
         },
         plugins: {
             datalabels: {
-                anchor: "end",
-                align: "end"
+                anchor: 'end',
+                align: 'end'
             }
         }
     };
 
     public barChartLabels: Label[] = [
-        "Welke categorie het meest in wordt geplaatst"
+        'Welke categorie het meest in wordt geplaatst'
     ];
-    public barChartType: ChartType = "bar";
+    public barChartType: ChartType = 'bar';
     public barChartLegend = true;
     public barChartData: ChartDataSets[] = [
-        {data: [90], label: "Laden..."}
+        {data: [90], label: 'Laden...'}
     ];
     // tslint:disable-next-line:ban-types
     dataFromBackend;
@@ -164,32 +164,16 @@ export class FolderPage implements OnInit {
 
         this.createFeed();
 
-
-        // this.testFeed = new Feed(this.httpclient, this.user.username);
-        // // console.log('TestFeed...');
-        // console.log(this.testFeed.getFeed());
-        // this.httpclient.getUserFromNeo4J().subscribe(res => {
-        //   this.user = res;
-        //   this.httpclient
-        //       .getAllUnreadHighLevelMessages(this.user.username)
-        //       .subscribe(messages => {
-        //         this.allUnreadHighLevelList = messages;
-        //         console.log(this.allUnreadHighLevelList);
-        //       });
-        // });
-        // this.httpclient.getSubjectNames().subscribe((test => this.subjectList.push(test)));
-        // this.folder = this.activatedRoute.snapshot.paramMap.get('id');
-
         this.httpclient
             .getSubjectNames()
             .subscribe(test => this.subjectList.push(test));
-        this.folder = this.activatedRoute.snapshot.paramMap.get("id");
+        this.folder = this.activatedRoute.snapshot.paramMap.get('id');
         this.createBarChart();
         this.createPieChart();
         this.createRadarChart();
 
 
-        if (this.folder === "Feed") {
+        if (this.folder === 'Feed') {
             const updateInterval = interval(10000);
             // Subscribe to begin publishing values
             updateInterval.subscribe(n =>
@@ -242,12 +226,13 @@ export class FolderPage implements OnInit {
     }
 
 
+
     createFeed() {
         this.httpclient.getUserFromNeo4J().subscribe(res => {
             this.user = res;
             this.httpclient
                 .getAllMessagesFromNeo4j(this.user.username)
-                .subscribe((messages: {readMassages: Message[], unReadMassages: Message[]}) => {
+                .subscribe((messages: { readMassages: Message[], unReadMassages: Message[] }) => {
 
 
                     this.messageList = messages;
@@ -256,21 +241,30 @@ export class FolderPage implements OnInit {
                     });
                     this.messageList.unreadMassages.sort(this.compareDatetime);
                     this.messageList.readMassages.sort(this.compareDatetime);
+                    console.log(this.messageList.unReadMassages);
                     this.feedStream = [].concat(this.messageList.unreadMassages, this.messageList.readMassages);
                     this.feed = this.feedStream;
                     this.lastFeedUpdate = this.getCurrentDateTimeToString();
-                    this.filter();
+                    // this.filter();
 
                 });
         });
     }
-    compareDatetime(a: Message, b: Message){
-        if(a.datetimePosted < b.datetimePosted){
+
+
+
+    compareDatetime(a: Message, b: Message) {
+ 
+        //
+        // if (this.datePipe.transform(new Date(a.datetimePosted), 'dd-MM-yyyy HH:mm:ss' )
+        //     < this.datePipe.transform(new Date(b.datetimePosted), 'dd-MM-yyyy HH:mm:ss' )) {
+        if (a.datetimePosted <  b.datetimePosted ) {
             return 1;
         } else {
             return -1;
         }
-}
+    }
+
     createBarChart() {
         if (this.folder === 'Analytics') {
             this.httpclient.getBarChartData().subscribe(data => {
@@ -284,7 +278,7 @@ export class FolderPage implements OnInit {
     }
 
     getCreateMessageSubjectName() {
-        return this.message.subjectName != "" ? this.message.subjectName : 'Type';
+        return this.message.subjectName !== '' ? this.message.subjectName : 'Type';
     }
 
     createPieChart() {
@@ -320,15 +314,15 @@ export class FolderPage implements OnInit {
     getCreateMessageLevel() {
         switch (this.message.level) {
             case '':
-                return 'Prioriteit'; 
+                return 'Prioriteit';
             case 'High':
-                return 'Hoog'; 
+                return 'Hoog';
             case 'Normal':
-                return 'Normaal'; 
+                return 'Normaal';
             default:
-                return 'Error: Wrong level variable'; 
+                return 'Error: Wrong level variable';
         }
-    } 
+    }
 
     saveNewUser(data, form: NgForm) {
         if (
@@ -356,9 +350,9 @@ export class FolderPage implements OnInit {
 
     saveNewPassword(data, form: NgForm) {
         if (
-            data.oldPassword === "" ||
-            data.newPassword === "" ||
-            data.confirmNewPassword === ""
+            data.oldPassword === '' ||
+            data.newPassword === '' ||
+            data.confirmNewPassword === ''
         ) {
             this.empty();
         } else if (data.newPassword === data.confirmNewPassword) {
@@ -395,58 +389,89 @@ export class FolderPage implements OnInit {
         }
     }
 
+   compareLevel(type) {
+       return function comparison(a: Message, b: Message) {
+           if (type === 'h-l'){
+               if (a.level > b.level) {
+                    return 1;
+                } else {
+                    return -1;
+                }
 
+       } else {
+           if (type === 'l-h') {
+               if (a.level < b.level) {
+                   return 1;
+               } else {
+                   return -1;
+               }
+           }
+        }
+       };
+   }
 
     sort() {
-        console.log(this.selectedValue)
+        console.log(this.selectedValue);
         console.log(this.sortselectedValue);
         if (
             this.sortselectedValue !== null &&
             this.sortselectedValue !== '' &&
             this.sortselectedValue !== undefined
         ) {
-          if (this.sortselectedValue === 'h-l') {
-            this.feed = this.feed.sort(
-                (a, b) => a.level.localeCompare(b.level)
-            ); 
-          } else {
-            if (this.sortselectedValue === 'l-h') {
-              this.feed = this.feed.sort(
-                  (a, b) => b.level.localeCompare(a.level)
-              ); 
+            if (this.sortselectedValue === 'h-l') {
+                this.feed = this.feedStream.slice().sort(this.compareLevel('h-l'));
+            } else {
+                if (this.sortselectedValue === 'l-h') {
+                    this.feed = this.feedStream.slice().sort(this.compareLevel('l-h'));
+                }
             }
-          }
-     
+
         }
-      }
+
+    }
+
 
     filter() {
         console.log(this.selectedValue);
         if (
             this.selectedValue !== null &&
-            this.selectedValue !== "" &&
+            this.selectedValue !== '' &&
             this.selectedValue !== undefined
         ) {
-            this.feed = this.feedStream.filter(
+            this.feed = this.feed.filter(
                 subject => subject.subjectName === this.selectedValue
             );
         }
+    }
+
+    callFilterSort() {
+        this.feed = this.feedStream;
         this.sort();
+        this.filter();
     }
 
     removeFilter() {
+
+        console.log(this.feedStream);
+        console.log(this.feed);
         this.selectedValue = null;
+        this.feed = this.feedStream;
+        this.sort();
+    }
+
+    removeSort() {
         this.sortselectedValue = null;
         this.feed = this.feedStream;
+        this.filter();
     }
- 
     toggleLiked(card: any) {
-        if (card.icon === "star") {
-            card.icon = "star-outline";
+        if (card.icon === 'star') {
+            card.icon = 'star-outline';
         } else {
-            card.icon = "star";
+            card.icon = 'star';
         }
     }
+
 
     async setCreateMessageSubjectName(event) {
         if (this.message.subjectName === '') {
@@ -542,7 +567,7 @@ export class FolderPage implements OnInit {
         this.messageRead[index] = true;
         this.relationship.username = this.user.username;
         this.relationship.uuid = message.uuid;
-        this.relationship.relation = "READ_MESSAGE";
+        this.relationship.relation = 'READ_MESSAGE';
         console.log(message);
         this.httpclient
             .createRelationshipBetweenExistingNodes(this.relationship)
@@ -552,13 +577,11 @@ export class FolderPage implements OnInit {
     likeMessage(message) {
         this.relationship.username = this.user.username;
         this.relationship.uuid = message.uuid;
-        this.relationship.relation = "LIKED_MESSAGE";
+        this.relationship.relation = 'LIKED_MESSAGE';
         this.httpclient
             .createRelationshipBetweenExistingNodes(this.relationship)
             .subscribe();
-}
-
-
+    }
 
 
     sendMessage() {
@@ -580,7 +603,6 @@ export class FolderPage implements OnInit {
         });
         this.feedStream = [].concat(staticMessage, this.feedStream);
         this.feed = this.feedStream;
-
         // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
         this.closeInput();
         this.getFeedUpdate();
