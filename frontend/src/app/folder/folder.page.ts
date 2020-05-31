@@ -33,6 +33,8 @@ class CardsInterface {
 })
 export class FolderPage implements OnInit {
     selectedValue;
+    sortselectedValue;
+
     public radarChartOptions: RadialChartOptions = {
         responsive: true,
     };
@@ -318,19 +320,15 @@ export class FolderPage implements OnInit {
     getCreateMessageLevel() {
         switch (this.message.level) {
             case '':
-                return 'Prioriteit';
-                break;
+                return 'Prioriteit'; 
             case 'High':
-                return 'Hoog';
-                break;
+                return 'Hoog'; 
             case 'Normal':
-                return 'Normaal';
-                break;
+                return 'Normaal'; 
             default:
-                return 'Error: Wrong level variable';
-                break;
+                return 'Error: Wrong level variable'; 
         }
-    }
+    } 
 
     saveNewUser(data, form: NgForm) {
         if (
@@ -397,6 +395,31 @@ export class FolderPage implements OnInit {
         }
     }
 
+
+
+    sort() {
+        console.log(this.selectedValue)
+        console.log(this.sortselectedValue);
+        if (
+            this.sortselectedValue !== null &&
+            this.sortselectedValue !== '' &&
+            this.sortselectedValue !== undefined
+        ) {
+          if (this.sortselectedValue === 'h-l') {
+            this.feed = this.feed.sort(
+                (a, b) => a.level.localeCompare(b.level)
+            ); 
+          } else {
+            if (this.sortselectedValue === 'l-h') {
+              this.feed = this.feed.sort(
+                  (a, b) => b.level.localeCompare(a.level)
+              ); 
+            }
+          }
+     
+        }
+      }
+
     filter() {
         console.log(this.selectedValue);
         if (
@@ -408,17 +431,15 @@ export class FolderPage implements OnInit {
                 subject => subject.subjectName === this.selectedValue
             );
         }
+        this.sort();
     }
 
     removeFilter() {
         this.selectedValue = null;
+        this.sortselectedValue = null;
         this.feed = this.feedStream;
     }
-
-    UnreadMessages() {
-
-    }
-
+ 
     toggleLiked(card: any) {
         if (card.icon === "star") {
             card.icon = "star-outline";

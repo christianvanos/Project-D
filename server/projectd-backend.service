@@ -1,0 +1,14 @@
+[Unit]
+Description=Project D backend
+
+[Service]
+User=root
+WorkingDirectory=/root/
+ExecStart=/root/projectd-backend.sh
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
