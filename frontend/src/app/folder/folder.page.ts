@@ -200,7 +200,7 @@ export class FolderPage implements OnInit {
   }
 
   getCreateMessageSubjectName() {
-    return this.message.subjectName != '' ? this.message.subjectName : 'Type' ;
+    return this.message.subjectName !== '' ? this.message.subjectName : 'Type' ;
   }
 
   createPieChart() {
@@ -333,8 +333,6 @@ export class FolderPage implements OnInit {
   }
 
   sort() {
-    console.log(this.selectedValue)
-    console.log(this.sortselectedValue);
     if (
         this.sortselectedValue !== null &&
         this.sortselectedValue !== '' &&
