@@ -1,10 +1,10 @@
 [Unit]
-Description=Project D frontend
+Description=Project D
 
 [Service]
 User=root
 WorkingDirectory=/root/
-ExecStart=/root/projectd-frontend.sh
+ExecStart=/root/projectd.sh
 SuccessExitStatus=143
 TimeoutStopSec=10
 Restart=on-failure
