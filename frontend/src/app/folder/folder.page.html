@@ -128,7 +128,7 @@
                         <ion-card>
                             <ion-item>
                                 <ion-label>Filter</ion-label>
-                                <ion-select placeholder="Filter" cancelText="Wis selectie" [(ngModel)]="selectedValue" (ionChange)="filter()" (ionCancel)="removeFilter()">
+                                <ion-select placeholder="Filter" cancelText="Wis selectie" [(ngModel)]="selectedValue" (ionChange)="callFilterSort()" (ionCancel)="removeFilter()">
                                     <ion-select-option *ngFor="let item of subjectList[0]" [value]="item">{{item}}</ion-select-option>
                                 </ion-select>
                             </ion-item>
@@ -138,7 +138,7 @@
                           <ion-card>
                               <ion-item>
                                   <ion-label>Sorteer</ion-label>
-                                  <ion-select placeholder="Sorteer" cancelText="Wis selectie" [(ngModel)]="sortselectedValue" (ionChange)="sort()" (ionCancel)="removeSort()">
+                                  <ion-select placeholder="Sorteer" cancelText="Wis selectie" [(ngModel)]="sortselectedValue" (ionChange)="callFilterSort()" (ionCancel)="removeSort()">
                                       <ion-select-option value="h-l">Hoog naar Laag</ion-select-option>
                                       <ion-select-option value="l-h">Laag naar Hoog</ion-select-option>
                                   </ion-select>
