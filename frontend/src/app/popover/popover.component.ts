@@ -10,7 +10,7 @@ import {Relationship} from "../models/relationship";
   styleUrls: ['./popover.component.scss'],
 })
 export class PopoverComponent implements OnInit {
-  private user: any = {
+   user: any = {
     id: null,
     name: '',
     username: '',
@@ -21,8 +21,8 @@ export class PopoverComponent implements OnInit {
   subjectPopover = false;
   levelPopover = false;
   userOptionsPopover = false;
-  private newCreatedList = [];
-  private subject: string;
+   newCreatedList = [];
+   subject: string;
   constructor(private popoverController: PopoverController, public navParams: NavParams,
               private loginService: AuthenticationService,
               private httpclient: HttpclientService) { }

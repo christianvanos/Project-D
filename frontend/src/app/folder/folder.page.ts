@@ -35,29 +35,31 @@ class CardsInterface {
     providers: [DatePipe]
 })
 export class FolderPage implements OnInit {
-    selectedValue;
-    sortselectedValue;
+  selectedValue;
+  sortselectedValue;
+  selectedChart;
+  availableCharts = ['Meest geliked', 'Aantal gelezen', 'Aantal berichten'];
+  public radarChartOptions: RadialChartOptions = {
+    responsive: true,
+  };
+  public barChartLabels2: Label[] = ['Welke onderwerpen worden het meest geliked'];
 
-    public radarChartOptions: RadialChartOptions = {
-        responsive: true,
-    };
-    public barChartLabels2: Label[] = ['Welke onderwerpen worden het meest geliked'];
-
-    public barChartData2: ChartDataSets[] = [
-        {data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B'}
-    ];
-    public pieChartOptions: ChartOptions = {
-        responsive: true,
-        legend: {
-            position: 'top',
-        },
-        plugins: {
-            datalabels: {
-                formatter: (value, ctx) => {
-                    const label = ctx.chart.data.labels[ctx.dataIndex];
-                    return label;
-                }
-            }
+  public barChartData2: ChartDataSets[] = [
+    { data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B' }
+  ];
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+    legend: {
+      position: 'top',
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          const label = ctx.chart.data.labels[ctx.dataIndex];
+          return label;
+          
+        }
+    }
         }
     };
     public pieChartLabels: Label[] = [
@@ -560,6 +562,11 @@ export class FolderPage implements OnInit {
         });
         return await popover.present();
     }
+
+    
+  removeCharts() {
+    this.selectedChart = null;
+  }
 
     restartInput() {
         this.message.message = '';
