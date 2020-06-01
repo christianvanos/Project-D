@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 GREP='/bin/grep'
 RM='/bin/rm'
 GIT='/usr/bin/git'
@@ -8,6 +10,7 @@ AWK='/usr/bin/awk'
 XARGS='/usr/bin/xargs'
 NPM='/usr/bin/npm'
 SYSTEMCTL='/bin/systemctl'
+MVN='/root/.sdkman/candidates/maven/current/bin/mvn'
 
 ${SYSTEMCTL} stop projectd.service
 
@@ -17,10 +20,10 @@ ${RM} -r /var/www/project-d.christianvanos.com/.*
 ${GIT} clone https://github.com/christianvanos/Project-D.git /var/www/project-d.christianvanos.com/
 ${GREP} -r "http://localhost:8080" /var/www/project-d.christianvanos.com/frontend/src/ | ${SED} 's/:/ /g' | ${AWK} '{print $1}' | ${XARGS} ${SED} -i 's/http:\/\/localhost:8080/https:\/\/api-project-d.christianvanos.com/g'
 
-echo ""
+cd /var/www/project-d.christianvanos.com/frontend
+${NPM} install
 
-echo "cd /var/www/project-d.christianvanos.com/backend"
-echo "${MVN}/root/.sdkman/candidates/maven/current/bin/mvn install"
-echo "cd /var/www/project-d.christianvanos.com/frontend"
-echo "${NPM} install"
-echo "${SYSTEMCTL} start projectd.service"
+cd /var/www/project-d.christianvanos.com/backend
+${MVN} install
+${SYSTEMCTL} enable projectd.service
+${SYSTEMCTL} start projectd.service
