@@ -3,7 +3,6 @@ package com.project78.graph.controller;
 
 import com.project78.graph.config.JwtTokenUtil;
 import com.project78.graph.entity.Person;
-import com.project78.graph.entity.SubjectName;
 import com.project78.graph.model.JwtRequest;
 import com.project78.graph.model.JwtResponse;
 import com.project78.graph.repository.PersonRepository;

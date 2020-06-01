@@ -30,6 +30,8 @@ class CardsInterface {
 })
 export class FolderPage implements OnInit {
   selectedValue;
+  selectedChart;
+  availableCharts = ['Meest geliked', 'Aantal gelezen', 'Aantal berichten'];
   public radarChartOptions: RadialChartOptions = {
     responsive: true,
   };
@@ -332,6 +334,10 @@ export class FolderPage implements OnInit {
     this.selectedValue = null;
     this.allReadMessagesList = this.messageList.readMassages;
     this.allUnreadMessagesList = this.messageList.unreadMassages;
+  }
+
+  removeCharts() {
+    this.selectedChart = null;
   }
 
   UnreadMessages() {

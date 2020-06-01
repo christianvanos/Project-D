@@ -328,7 +328,14 @@
     </div>
 
     <div *ngIf="folder == 'Analytics'">
-        <div class="chart">
+        <ion-item>
+            <ion-label>Wat voor informatie wilt u hebben?</ion-label>
+            <ion-select  placeholder="Opties" cancelText="Wis selectie" [(ngModel)]="selectedChart" (ionCancel)="removeCharts()">
+                <ion-select-option *ngFor="let item of availableCharts" [value]="item">{{item}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <div class="chart" *ngIf="selectedChart === 'Aantal gelezen'">
             <canvas baseChart
                     [data]="pieChartData"
                     [labels]="pieChartLabels"
@@ -338,7 +345,7 @@
                     [legend]="pieChartLegend">
             </canvas>
         </div>
-        <div style="display: block">
+        <div style="display: block" *ngIf="selectedChart === 'Aantal berichten'">
             <canvas baseChart
                     [datasets]="barChartData"
                     [labels]="barChartLabels"
@@ -347,7 +354,7 @@
                     [chartType]="barChartType">
             </canvas>
         </div>
-        <div style="display: block">
+        <div style="display: block" *ngIf="selectedChart === 'Meest geliked'">
             <canvas baseChart
                     [datasets]="barChartData2"
                     [options]="barChartOptions"
