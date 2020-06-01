@@ -162,7 +162,7 @@ public class SubjectController {
         newSubject.setMessage(subjectPerson.getSubject().getMessage());
         newSubject.setTitle(subjectPerson.getSubject().getTitle());
         newSubject.setPostedBy(subjectPerson.getPerson().getName());
-        newSubject.setDatetimePosted(subjectPerson.getSubject().getDatetimePosted());
+        newSubject.setDatetimePosted();
         UUID uuid = UUID.randomUUID();
         newSubject.setUUID(uuid.toString());
         System.out.println(newSubject.toString());

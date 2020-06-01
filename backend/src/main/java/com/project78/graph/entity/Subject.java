@@ -57,9 +57,8 @@ public class Subject {
         this.message = message;
     }
 
-    public String getDatetimePosted() {
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyy HH:mm:ss");
-        return dateFormat.format(datetimePosted);
+    public Date getDatetimePosted() {
+       return datetimePosted;
     }
 
     public String getTitle() {
@@ -98,7 +97,7 @@ public class Subject {
     }
 
 
-    public void setDatetimePosted(String datetimePosted) {
+    public void setDatetimePosted() {
         this.datetimePosted = new Date();
     }
 

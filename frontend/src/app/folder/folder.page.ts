@@ -17,6 +17,9 @@ import {ChartDataSets, ChartOptions, ChartType, RadialChartOptions} from 'chart.
 import {SubjectPerson} from '../models/subjectperson';
 import {UserModalComponent} from '../user-modal/user-modal.component';
 import {interval} from 'rxjs';
+import * as moment from 'moment';
+import 'moment/locale/nl';
+
 
 
 class CardsInterface {
@@ -161,6 +164,14 @@ export class FolderPage implements OnInit {
     }
 
     ngOnInit() {
+        moment.locale('NL', {
+            calendar: {
+                sameDay: '[Vandaag om ]HH:MM:SS',
+                lastDay: '[Gisteren om ]HH:MM:SS',
+                lastWeek: 'DD-MM-YYYY HH:MM:SS',
+                sameElse: 'DD-MM-YYYY HH:MM:SS'
+            }
+        });
 
         this.createFeed();
 
@@ -226,7 +237,6 @@ export class FolderPage implements OnInit {
     }
 
 
-
     createFeed() {
         this.httpclient.getUserFromNeo4J().subscribe(res => {
             this.user = res;
@@ -252,13 +262,12 @@ export class FolderPage implements OnInit {
     }
 
 
+    getFormattedDatetime(datetime) {
+        return moment(datetime).calendar();
+    }
 
-    compareDatetime(a: Message, b: Message) {
- 
-        //
-        // if (this.datePipe.transform(new Date(a.datetimePosted), 'dd-MM-yyyy HH:mm:ss' )
-        //     < this.datePipe.transform(new Date(b.datetimePosted), 'dd-MM-yyyy HH:mm:ss' )) {
-        if (a.datetimePosted <  b.datetimePosted ) {
+    compareDatetime(a: Message, b: Message) { 
+        if (a.datetimePosted < b.datetimePosted) {
             return 1;
         } else {
             return -1;
@@ -389,26 +398,26 @@ export class FolderPage implements OnInit {
         }
     }
 
-   compareLevel(type) {
-       return function comparison(a: Message, b: Message) {
-           if (type === 'h-l'){
-               if (a.level > b.level) {
+    compareLevel(type) {
+        return function comparison(a: Message, b: Message) {
+            if (type === 'h-l') {
+                if (a.level > b.level) {
                     return 1;
                 } else {
                     return -1;
                 }
 
-       } else {
-           if (type === 'l-h') {
-               if (a.level < b.level) {
-                   return 1;
-               } else {
-                   return -1;
-               }
-           }
-        }
-       };
-   }
+            } else {
+                if (type === 'l-h') {
+                    if (a.level < b.level) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                }
+            }
+        };
+    }
 
     sort() {
         console.log(this.selectedValue);
@@ -464,6 +473,7 @@ export class FolderPage implements OnInit {
         this.feed = this.feedStream;
         this.filter();
     }
+
     toggleLiked(card: any) {
         if (card.icon === 'star') {
             card.icon = 'star-outline';
@@ -587,7 +597,7 @@ export class FolderPage implements OnInit {
     sendMessage() {
         const staticMessage = {
             title: this.message.title,
-            datetimePosted: this.getCurrentDateTimeToString(),
+            datetimePosted: new Date(),
             subjectName: this.message.subjectName,
             message: this.message.message,
             level: this.message.level,

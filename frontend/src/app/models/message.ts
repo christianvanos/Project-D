@@ -1,3 +1,7 @@
+
+import * as moment from 'moment';
+import 'moment/locale/nl';
+
 export class Message {
     id: number;
     postedBy: string;
@@ -9,4 +13,5 @@ export class Message {
     datetimePosted: string;
     uuid: string;
     opened: boolean;
+
 }
