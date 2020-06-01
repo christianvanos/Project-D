@@ -164,17 +164,7 @@ export class FolderPage implements OnInit {
     }
 
     ngOnInit() {
-        moment.locale('NL', {
-            calendar: {
-                sameDay: '[Vandaag om ]HH:MM:SS',
-                lastDay: '[Gisteren om ]HH:MM:SS',
-                lastWeek: 'DD-MM-YYYY HH:MM:SS',
-                sameElse: 'DD-MM-YYYY HH:MM:SS'
-            }
-        });
-
         this.createFeed();
-
         this.httpclient
             .getSubjectNames()
             .subscribe(test => this.subjectList.push(test));
@@ -251,7 +241,6 @@ export class FolderPage implements OnInit {
                     });
                     this.messageList.unreadMassages.sort(this.compareDatetime);
                     this.messageList.readMassages.sort(this.compareDatetime);
-                    console.log(this.messageList.unReadMassages);
                     this.feedStream = [].concat(this.messageList.unreadMassages, this.messageList.readMassages);
                     this.feed = this.feedStream;
                     this.lastFeedUpdate = this.getCurrentDateTimeToString();
@@ -266,7 +255,7 @@ export class FolderPage implements OnInit {
         return moment(datetime).calendar();
     }
 
-    compareDatetime(a: Message, b: Message) { 
+    compareDatetime(a: Message, b: Message) {
         if (a.datetimePosted < b.datetimePosted) {
             return 1;
         } else {
@@ -420,8 +409,6 @@ export class FolderPage implements OnInit {
     }
 
     sort() {
-        console.log(this.selectedValue);
-        console.log(this.sortselectedValue);
         if (
             this.sortselectedValue !== null &&
             this.sortselectedValue !== '' &&
@@ -441,7 +428,6 @@ export class FolderPage implements OnInit {
 
 
     filter() {
-        console.log(this.selectedValue);
         if (
             this.selectedValue !== null &&
             this.selectedValue !== '' &&
@@ -460,9 +446,6 @@ export class FolderPage implements OnInit {
     }
 
     removeFilter() {
-
-        console.log(this.feedStream);
-        console.log(this.feed);
         this.selectedValue = null;
         this.feed = this.feedStream;
         this.sort();

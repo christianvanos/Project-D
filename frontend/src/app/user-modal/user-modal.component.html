@@ -21,7 +21,7 @@
               <ion-col size="3" class="subheader">
                 <ion-label> {{message.postedBy}}</ion-label>
                 <br>
-                <ion-label >{{message.datetimePosted}}</ion-label>
+                <ion-label >{{getFormattedDatetime(message.datetimePosted)}}</ion-label>
               </ion-col>
               <ion-col size="6" style="text-align: center;">
                 <ion-label style="font-weight: bold; font-size: 175%;">{{message.title}}</ion-label>

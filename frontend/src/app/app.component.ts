@@ -10,7 +10,9 @@ import {Router} from '@angular/router';
 import {AppPage} from "../../e2e/src/app.po";
 
 
+
 import { Subject }    from 'rxjs';
+import * as moment from "moment";
 
 @Component({
     selector: 'app-root',
@@ -74,6 +76,15 @@ export class AppComponent implements OnInit {
     }
 
     initializeApp() {
+        moment.locale('NL', {
+            calendar: {
+                sameDay: '[Vandaag om ]HH:MM',
+                lastDay: '[Gisteren om ]HH:MM',
+                lastWeek: 'DD-MM-YYYY HH:MM',
+                sameElse: 'DD-MM-YYYY HH:MM'
+            }
+        });
+
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();

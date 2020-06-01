@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Relationship} from "../models/relationship";
 import {HttpclientService} from "../service/httpclient.service";
 import {ModalController} from "@ionic/angular";
+import * as moment from 'moment';
+import 'moment/locale/nl';
 
 @Component({
   selector: 'app-user-modal',
@@ -32,6 +34,7 @@ export class UserModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     this.httpclient.getUserFromNeo4J().subscribe(res => {
       this.user = res;
     });
@@ -61,6 +64,11 @@ export class UserModalComponent implements OnInit {
     this.httpclient
         .createRelationshipBetweenExistingNodes(this.relationship)
         .subscribe();
+  }
+
+
+  getFormattedDatetime(datetime) {
+    return moment(datetime).calendar();
   }
 
   readMessage(index, message) {
