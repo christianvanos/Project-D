@@ -6,9 +6,9 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-buttons slot="secondary">
-            <ion-button>
-                <ion-icon slot="icon-only"  style="color:white;" name="search"></ion-icon>
-            </ion-button>
+<!--            <ion-button>-->
+<!--                <ion-icon slot="icon-only"  style="color:white;" name="search"></ion-icon>-->
+<!--            </ion-button>-->
             <ion-button (click)="showUserOptionsPopover($event)">
                 <ion-icon slot="icon-only"  style="color:white;" name="person-circle"></ion-icon>
             </ion-button>
@@ -29,12 +29,12 @@
               <!--          <p>Please enter a valid name.</p>-->
               <!--        </div>-->
               <ion-item class="ion-text-left">
-                  <ion-label position="floating">Username:</ion-label>
+                  <ion-label position="floating">Gebruikersnaam:</ion-label>
                   <ion-input style="font-weight: bold;" type="text" name="username" ngModel="" required="true"></ion-input>
               </ion-item>
               <ion-item class="ion-text-left">
                   <ion-label position="floating">Kies Rol:</ion-label>
-                  <ion-select placeholder="Select One" name="role" ngModel="" required="true">
+                  <ion-select placeholder="Kies een rol" name="role" ngModel="" required="true">
                       <ion-select-option value="ADMIN">Admin</ion-select-option>
                       <ion-select-option value="USER">User</ion-select-option>
                   </ion-select>
@@ -98,7 +98,7 @@
                                   </ion-col>
                               </ion-row>
                           </ion-col>
-                          <ion-col size="2">
+                          <ion-col size-md="2"  size-xs="12">
                               <ion-icon class="ion-float-right" (click)="closeInput()" style="zoom:2.0;" name="close-circle-outline"></ion-icon>
                               <ion-chip class="ion-float-right" color="primary" *ngIf="this.user.role === 'USER'" (click)="setCreateMessageSubjectName($event)">
                                   <ion-label>{{getCreateMessageSubjectName()}}</ion-label>
@@ -122,22 +122,31 @@
               </ion-card-content>
           </ion-card>
           <ion-card>
-              <ion-item>
-                  <ion-label>Filter</ion-label>
-                  <ion-select placeholder="Filter" cancelText="Wis selectie" [(ngModel)]="selectedValue" (ionChange)="filter()" (ionCancel)="removeFilter()">
-                      <ion-select-option *ngFor="let item of subjectList[0]" [value]="item">{{item}}</ion-select-option>
-                  </ion-select>
-              </ion-item>
-          </ion-card>
-
-          <ion-card>
-              <ion-item>
-                  <ion-label>Sorteer</ion-label>
-                  <ion-select placeholder="Sorteer" cancelText="Wis selectie" [(ngModel)]="sortselectedValue" (ionChange)="sort()" (ionCancel)="removeFilter()">
-                      <ion-select-option value="h-l">Hoog naar Laag</ion-select-option>
-                      <ion-select-option value="l-h">Laag naar Hoog</ion-select-option>
-                  </ion-select>
-              </ion-item>
+              <ion-grid>
+                  <ion-row>
+                    <ion-col size-lg="6" size-xs="12">
+                        <ion-card>
+                            <ion-item>
+                                <ion-label>Filter</ion-label>
+                                <ion-select placeholder="Filter" cancelText="Wis selectie" [(ngModel)]="selectedValue" (ionChange)="filter()" (ionCancel)="removeFilter()">
+                                    <ion-select-option *ngFor="let item of subjectList[0]" [value]="item">{{item}}</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-card>
+                    </ion-col>
+                      <ion-col size-lg="6" size-xs="12">
+                          <ion-card>
+                              <ion-item>
+                                  <ion-label>Sorteer</ion-label>
+                                  <ion-select placeholder="Sorteer" cancelText="Wis selectie" [(ngModel)]="sortselectedValue" (ionChange)="sort()" (ionCancel)="removeFilter()">
+                                      <ion-select-option value="h-l">Hoog naar Laag</ion-select-option>
+                                      <ion-select-option value="l-h">Laag naar Hoog</ion-select-option>
+                                  </ion-select>
+                              </ion-item>
+                          </ion-card>
+                      </ion-col>
+                  </ion-row>
+              </ion-grid>
           </ion-card>
 
           <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority':''">
@@ -167,14 +176,21 @@
                                       <ion-item [color]="message.level === 'High' ? 'priority': ''" *ngIf="!message.opened" class="ion-margin-top" lines="none">
                                           <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
                                       </ion-item>
-                                      <div *ngIf="message.opened">
-                                          <p class="card-text text-left"> {{message.message}} </p>
-                                          <ion-item [color]="message.level === 'High' ? 'priority': ''" lines="none" >
-                                              <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
-                                          </ion-item>
-                                      </div>
                                   </ion-col>
                               </ion-row>
+                          </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="message.opened">
+                          <ion-col size-lg="2" size-xs="12">
+                              <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
+                          </ion-col>
+                          <ion-col size-lg="9" size-xs="12">
+                              <ion-item [color]="message.level === 'High' ? 'priority': ''"  lines="none" >
+                                  <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
+                              </ion-item>
+                          </ion-col>
+                          <ion-col size="1">
+
                           </ion-col>
                       </ion-row>
                   </ion-grid>
@@ -208,17 +224,17 @@
                                           <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
                                       </ion-item>
                                       <div *ngIf="message.opened">
-                                          <p class="card-text text-left"> {{message.message}} </p>
+                                          <p class="card-text text-left"  style="white-space: pre-line"> {{message.message}} </p>
                                       </div>
                                   </ion-col>
                               </ion-row>
                           </ion-col>
                       </ion-row>
                       <ion-row  *ngIf="message.opened">
-                          <ion-col size="2">
+                          <ion-col size-lg="2" size-xs="12">
                               <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
                           </ion-col>
-                          <ion-col size="9">
+                          <ion-col size-lg="9" size-xs="12">
                               <ion-item [color]="message.level === 'High' ? 'priority': ''"  lines="none" >
                                   <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
                               </ion-item>
@@ -258,17 +274,18 @@
                                           <ion-label style="text-align:center; cursor: pointer;"   (click) = openMessage(i,message)>Open bericht</ion-label>
                                       </ion-item>
                                       <div *ngIf="message.opened">
-                                          <p class="card-text text-left"> {{message.message}} </p>
+                                          <p class="card-text text-left"  style="white-space: pre-line"> {{message.message}} </p>
                                       </div>
                                   </ion-col>
                               </ion-row>
                           </ion-col>
                       </ion-row>
+
                       <ion-row  *ngIf="message.opened">
-                          <ion-col size="2">
+                          <ion-col size-lg="2" size-xs="12">
                               <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
                           </ion-col>
-                          <ion-col size="9">
+                          <ion-col size-lg="9" size-xs="12">
                               <ion-item [color]="message.level === 'High' ? 'priority': ''"  lines="none" >
                                   <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
                               </ion-item>
@@ -290,42 +307,55 @@
         <ion-card-header>
             <ion-card-title>Verander wachtwoord</ion-card-title>
         </ion-card-header>
-        <ion-card  style="width: 50%;">
-        <form #passwordForm="ngForm" (ngSubmit)="saveNewPassword(passwordForm.value, passwordForm);">
-            <ion-item class="ion-text-left">
-                <ion-label position="floating">Oud Wachtwoord:</ion-label>
-                <ion-input type="password" name="oldPassword" ngModel="" required="true"></ion-input>
-            </ion-item>
-            <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
-            <!--          <p>Invalid password (min 8 characters)</p>-->
-            <!--        </div>-->
-            <ion-item class="ion-text-left">
-                <ion-label position="floating">Nieuw Wachtwoord:</ion-label>
-                <ion-input type="password" name="newPassword" ngModel="" required="true"></ion-input>
-            </ion-item>
-            <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
-            <!--          <p>Invalid password (min 8 characters)</p>-->
-            <!--        </div>-->
-            <ion-item class="ion-text-left">
-                <ion-label position="floating">Herhaal nieuw Wachtwoord:</ion-label>
-                <ion-input type="password" name="confirmNewPassword" ngModel="" required="true"></ion-input>
-            </ion-item>
-            <!--        <div class="alert alert-danger" role="alert" *ngIf="validateForm.hasError('passwordNotMatch')">-->
-            <!--          <p>Passwords don't match</p>-->
-            <!--        </div>-->
-            <!--      </form>-->
-            <div style="text-align: center">
-                <ion-button type="submit">
-                    <ion-icon slot="end" name="save"></ion-icon>
-                    Opslaan
-                </ion-button>
-            </div>
-        </form>
-        </ion-card>
+        <ion-grid>
+            <ion-row>
+                <ion-col size-lg="6" size-xs="12">
+                    <ion-card>
+                        <form #passwordForm="ngForm" (ngSubmit)="saveNewPassword(passwordForm.value, passwordForm);">
+                            <ion-item class="ion-text-left">
+                                <ion-label position="floating">Oud Wachtwoord:</ion-label>
+                                <ion-input type="password" name="oldPassword" ngModel="" required="true"></ion-input>
+                            </ion-item>
+                            <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
+                            <!--          <p>Invalid password (min 8 characters)</p>-->
+                            <!--        </div>-->
+                            <ion-item class="ion-text-left">
+                                <ion-label position="floating">Nieuw Wachtwoord:</ion-label>
+                                <ion-input type="password" name="newPassword" ngModel="" required="true"></ion-input>
+                            </ion-item>
+                            <!--        <div class="alert alert-danger" role="alert" *ngIf="!validateForm.controls.password.valid && (validateForm.controls.password.dirty || submitAttempt)">-->
+                            <!--          <p>Invalid password (min 8 characters)</p>-->
+                            <!--        </div>-->
+                            <ion-item class="ion-text-left">
+                                <ion-label position="floating">Herhaal nieuw Wachtwoord:</ion-label>
+                                <ion-input type="password" name="confirmNewPassword" ngModel="" required="true"></ion-input>
+                            </ion-item>
+                            <!--        <div class="alert alert-danger" role="alert" *ngIf="validateForm.hasError('passwordNotMatch')">-->
+                            <!--          <p>Passwords don't match</p>-->
+                            <!--        </div>-->
+                            <!--      </form>-->
+                            <div style="text-align: center">
+                                <ion-button type="submit">
+                                    <ion-icon slot="end" name="save"></ion-icon>
+                                    Opslaan
+                                </ion-button>
+                            </div>
+                        </form>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
     </div>
 
     <div *ngIf="folder == 'Analytics'">
-        <div class="chart">
+        <ion-item>
+            <ion-label>Wat voor informatie wilt u hebben?</ion-label>
+            <ion-select  placeholder="Opties" cancelText="Wis selectie" [(ngModel)]="selectedChart" (ionCancel)="removeCharts()">
+                <ion-select-option *ngFor="let item of availableCharts" [value]="item">{{item}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <div class="chart" *ngIf="selectedChart === 'Aantal gelezen'">
             <canvas baseChart
                     [data]="pieChartData"
                     [labels]="pieChartLabels"
@@ -335,7 +365,7 @@
                     [legend]="pieChartLegend">
             </canvas>
         </div>
-        <div style="display: block">
+        <div style="display: block" *ngIf="selectedChart === 'Aantal berichten'">
             <canvas baseChart
                     [datasets]="barChartData"
                     [labels]="barChartLabels"
@@ -344,7 +374,7 @@
                     [chartType]="barChartType">
             </canvas>
         </div>
-        <div style="display: block">
+        <div style="display: block" *ngIf="selectedChart === 'Meest geliked'">
             <canvas baseChart
                     [datasets]="barChartData2"
                     [options]="barChartOptions"

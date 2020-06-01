@@ -48,15 +48,15 @@
           </ion-col>
         </ion-row>
         <ion-row *ngIf="message.opened">
-          <ion-col size="3">
+          <ion-col size-lg="3" size-xs="12">
             <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
           </ion-col>
-          <ion-col size="7">
+          <ion-col size-lg="7" size-xs="12">
             <ion-item [color]="message.level === 'High' ? 'priority':  message.level=='Medium' ? 'warning' : 'secondary'" lines="none" >
               <ion-label style="text-align:center; cursor: pointer;"  (click) = closeMessage(message) >Sluit bericht</ion-label>
             </ion-item>
           </ion-col>
-          <ion-col size="2">
+          <ion-col size-lg="2" size-xs="12">
             <ion-item class="test">
               <ion-label>Gelezen?</ion-label>
               <ion-checkbox name="message.title" [disabled]="Gelezen[i]" (click) = CheckedMessage(i) checked="false">Gelezen?</ion-checkbox>

@@ -31,6 +31,8 @@ class CardsInterface {
 export class FolderPage implements OnInit {
   selectedValue;
   sortselectedValue;
+  selectedChart;
+  availableCharts = ['Meest geliked', 'Aantal gelezen', 'Aantal berichten'];
   public radarChartOptions: RadialChartOptions = {
     responsive: true,
   };
@@ -151,7 +153,7 @@ export class FolderPage implements OnInit {
     private datePipe: DatePipe,
     private toastCtrl: ToastController,
     private alertController: AlertController,
-    private modalController: ModalController
+    private modalController: ModalController,
   ) {}
 
   ngOnInit() {
@@ -198,7 +200,7 @@ export class FolderPage implements OnInit {
   }
 
   getCreateMessageSubjectName() {
-    return this.message.subjectName != '' ? this.message.subjectName : 'Type' ;
+    return this.message.subjectName !== '' ? this.message.subjectName : 'Type' ;
   }
 
   createPieChart() {
@@ -331,8 +333,6 @@ export class FolderPage implements OnInit {
   }
 
   sort() {
-    console.log(this.selectedValue)
-    console.log(this.sortselectedValue);
     if (
         this.sortselectedValue !== null &&
         this.sortselectedValue !== '' &&
@@ -364,6 +364,10 @@ export class FolderPage implements OnInit {
     this.selectedValue = null;
     this.allReadMessagesList = this.messageList.readMassages;
     this.allUnreadMessagesList = this.messageList.unreadMassages;
+  }
+
+  removeCharts() {
+    this.selectedChart = null;
   }
 
   UnreadMessages() {
