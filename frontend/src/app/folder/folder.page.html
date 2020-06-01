@@ -6,9 +6,9 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-buttons slot="secondary">
-            <ion-button>
-                <ion-icon slot="icon-only"  style="color:white;" name="search"></ion-icon>
-            </ion-button>
+<!--            <ion-button>-->
+<!--                <ion-icon slot="icon-only"  style="color:white;" name="search"></ion-icon>-->
+<!--            </ion-button>-->
             <ion-button (click)="showUserOptionsPopover($event)">
                 <ion-icon slot="icon-only"  style="color:white;" name="person-circle"></ion-icon>
             </ion-button>
@@ -29,12 +29,12 @@
               <!--          <p>Please enter a valid name.</p>-->
               <!--        </div>-->
               <ion-item class="ion-text-left">
-                  <ion-label position="floating">Username:</ion-label>
+                  <ion-label position="floating">Gebruikersnaam:</ion-label>
                   <ion-input style="font-weight: bold;" type="text" name="username" ngModel="" required="true"></ion-input>
               </ion-item>
               <ion-item class="ion-text-left">
                   <ion-label position="floating">Kies Rol:</ion-label>
-                  <ion-select placeholder="Select One" name="role" ngModel="" required="true">
+                  <ion-select placeholder="Kies een rol" name="role" ngModel="" required="true">
                       <ion-select-option value="ADMIN">Admin</ion-select-option>
                       <ion-select-option value="USER">User</ion-select-option>
                   </ion-select>
@@ -122,22 +122,31 @@
               </ion-card-content>
           </ion-card>
           <ion-card>
-              <ion-item>
-                  <ion-label>Filter</ion-label>
-                  <ion-select placeholder="Filter" cancelText="Wis selectie" [(ngModel)]="selectedValue" (ionChange)="filter()" (ionCancel)="removeFilter()">
-                      <ion-select-option *ngFor="let item of subjectList[0]" [value]="item">{{item}}</ion-select-option>
-                  </ion-select>
-              </ion-item>
-          </ion-card>
-
-          <ion-card>
-              <ion-item>
-                  <ion-label>Sorteer</ion-label>
-                  <ion-select placeholder="Sorteer" cancelText="Wis selectie" [(ngModel)]="sortselectedValue" (ionChange)="sort()" (ionCancel)="removeFilter()">
-                      <ion-select-option value="h-l">Hoog naar Laag</ion-select-option>
-                      <ion-select-option value="l-h">Laag naar Hoog</ion-select-option>
-                  </ion-select>
-              </ion-item>
+              <ion-grid>
+                  <ion-row>
+                    <ion-col size-lg="6" size-xs="12">
+                        <ion-card>
+                            <ion-item>
+                                <ion-label>Filter</ion-label>
+                                <ion-select placeholder="Filter" cancelText="Wis selectie" [(ngModel)]="selectedValue" (ionChange)="filter()" (ionCancel)="removeFilter()">
+                                    <ion-select-option *ngFor="let item of subjectList[0]" [value]="item">{{item}}</ion-select-option>
+                                </ion-select>
+                            </ion-item>
+                        </ion-card>
+                    </ion-col>
+                      <ion-col size-lg="6" size-xs="12">
+                          <ion-card>
+                              <ion-item>
+                                  <ion-label>Sorteer</ion-label>
+                                  <ion-select placeholder="Sorteer" cancelText="Wis selectie" [(ngModel)]="sortselectedValue" (ionChange)="sort()" (ionCancel)="removeFilter()">
+                                      <ion-select-option value="h-l">Hoog naar Laag</ion-select-option>
+                                      <ion-select-option value="l-h">Laag naar Hoog</ion-select-option>
+                                  </ion-select>
+                              </ion-item>
+                          </ion-card>
+                      </ion-col>
+                  </ion-row>
+              </ion-grid>
           </ion-card>
 
           <ion-card  *ngFor="let message of newCreatedList.slice().reverse()  index as i" [color]="message.level === 'High' ? 'priority':''">
