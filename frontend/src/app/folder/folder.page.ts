@@ -390,18 +390,36 @@ export class FolderPage implements OnInit {
     compareLevel(type) {
         return function comparison(a: Message, b: Message) {
             if (type === 'h-l') {
-                if (a.level > b.level) {
-                    return 1;
-                } else {
-                    return -1;
-                }
+                if (a.read === b.read){
+                    if (a.level === b.level) {
+                            if(a.datetimePosted < b.datetimePosted){
+                                return 2;
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            return (a.level > b.level) ? 0 : -1;
+                        }
+
+                    } else {
+                        return (a.read < b.read) ? 1 : 0;
+                    }
 
             } else {
                 if (type === 'l-h') {
-                    if (a.level < b.level) {
-                        return 1;
+                    if (a.read === b.read){
+                        if (a.level === b.level) {
+                            if(a.datetimePosted < b.datetimePosted){
+                                return 2;
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            return (a.level < b.level) ? 0 : -1;
+                        }
+
                     } else {
-                        return -1;
+                        return (a.read < b.read) ? 1 : 0;
                     }
                 }
             }
