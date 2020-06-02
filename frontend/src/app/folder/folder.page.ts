@@ -189,6 +189,8 @@ export class FolderPage implements OnInit {
         const result = this.datePipe
             .transform(new Date(), 'dd-MM-yyyy HH:mm:ss')
             .toString();
+
+        console.log(result);
         return result;
     }
 
