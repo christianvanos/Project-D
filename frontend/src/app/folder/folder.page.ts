@@ -177,7 +177,7 @@ export class FolderPage implements OnInit, OnDestroy {
 
 
         if (this.folder === 'Feed') {
-            const updateInterval = interval(10000);
+            const updateInterval = interval(15000);
             // Subscribe to begin publishing values
             this.updateIntervalSubscription = updateInterval.subscribe(n =>
                 this.getFeedUpdate());
@@ -231,6 +231,7 @@ export class FolderPage implements OnInit, OnDestroy {
                     this.feedStream = [].concat(res, this.feedStream);
                     this.feed = this.feedStream;
                     this.lastFeedUpdate = this.getCurrentDateTimeToString();
+                    this.sort();
                     this.filter();
                 }
             });
