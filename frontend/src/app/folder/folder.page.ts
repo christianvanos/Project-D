@@ -1,4 +1,4 @@
-import {Component, OnInit,OnDestroy, Renderer2} from '@angular/core';
+import {Component, OnInit, Renderer2} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpclientService} from '../service/httpclient.service';
 import {Person} from '../models/person';
@@ -34,7 +34,7 @@ class CardsInterface {
     styleUrls: ['./folder.page.scss'],
     providers: [DatePipe]
 })
-export class FolderPage implements OnInit,OnDestroy {
+export class FolderPage implements OnInit {
   selectedValue;
   sortselectedValue;
   selectedChart;
@@ -133,7 +133,7 @@ export class FolderPage implements OnInit,OnDestroy {
         subject: null,
         person: null
     };
-    private updateIntervalSubscription;
+    private testFeed;
 
     private message: Message = {
         id: null,
@@ -177,19 +177,20 @@ export class FolderPage implements OnInit,OnDestroy {
 
 
         if (this.folder === 'Feed') {
-            // Subscribe to begin publishing values
             const updateInterval = interval(10000);
-            this.updateIntervalSubscription = updateInterval.subscribe(n =>
+            // Subscribe to begin publishing values
+            updateInterval.subscribe(n =>
                 this.getFeedUpdate());
         }
 
     }
-    ngOnDestroy() {
-        this.updateIntervalSubscription.unsubscribe();
-    }
 
     getCurrentDateTimeToString() {
-        const result = new Date().getTime().toString();
+        const result = this.datePipe
+            .transform(new Date(), 'dd-MM-yyyy HH:mm:ss')
+            .toString();
+
+        console.log(result);
         return result;
     }
 

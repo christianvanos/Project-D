@@ -73,7 +73,7 @@ public class SubjectController {
        boolean updated = false;
 
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyy hh:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyy HH:mm:ss");
 
             Date date = formatter.parse(datetime);
             System.out.println(datetime);
@@ -97,8 +97,8 @@ public class SubjectController {
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyy hh:mm:ss");
             Date date = formatter.parse(datetime);
-//            System.out.println("date from client: " + date);
-//            System.out.println("date from server: " + lastUpdate);
+           System.out.println("date from client: " + date);
+           System.out.println("date from server: " + lastUpdate);
             if (lastUpdate.compareTo(date) > 0){
 
                 updated = subjectRepository.getSubjectsSinceDatetime(date);
