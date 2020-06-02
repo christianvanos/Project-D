@@ -78,10 +78,10 @@ export class AppComponent implements OnInit {
     initializeApp() {
         moment.locale('NL', {
             calendar: {
-                sameDay: '[Vandaag om ]HH:MM',
-                lastDay: '[Gisteren om ]HH:MM',
-                lastWeek: 'DD-MM-YYYY HH:MM',
-                sameElse: 'DD-MM-YYYY HH:MM'
+                sameDay: '[Vandaag om ]HH:mm',
+                lastDay: '[Gisteren om ]HH:mm',
+                lastWeek: 'DD-MM-YYYY HH:mm',
+                sameElse: 'DD-MM-YYYY HH:mm'
             }
         });
 
