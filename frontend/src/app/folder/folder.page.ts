@@ -145,7 +145,8 @@ export class FolderPage implements OnInit, OnDestroy {
         subjectName: '',
         level: '',
         uuid: '',
-        opened: false
+        opened: false,
+        liked: null
     };
 
     private relationship: Relationship = {
@@ -186,7 +187,7 @@ export class FolderPage implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if (this.folder === 'Feed') { 
+        if (this.folder === 'Feed') {
             this.updateIntervalSubscription.unsubscribe();
         }
     }
@@ -206,7 +207,6 @@ export class FolderPage implements OnInit, OnDestroy {
             .getFeedUpdate(this.lastFeedUpdate)
             .subscribe((res: Message[]) => {
                 if (!(res.length === 0)) {
-
                     const BreakException = {};
                     const index = this.feedStream.map((e) => {
                         return e.id;
@@ -487,15 +487,6 @@ export class FolderPage implements OnInit, OnDestroy {
         this.filter();
     }
 
-    toggleLiked(card: any) {
-        if (card.icon === 'star') {
-            card.icon = 'star-outline';
-        } else {
-            card.icon = 'star';
-        }
-    }
-
-
     async setCreateMessageSubjectName(event) {
         if (this.message.subjectName === '') {
             const popover = await this.popoverController.create({
@@ -546,6 +537,7 @@ export class FolderPage implements OnInit, OnDestroy {
 
     openMessage(index, message) {
         message.opened = true;
+        this.getIfLiked(message);
         if (!message.read) {
             this.readMessage(index, message);
         }
@@ -603,6 +595,7 @@ export class FolderPage implements OnInit, OnDestroy {
     }
 
     likeMessage(message) {
+        message.liked = true;
         this.relationship.username = this.user.username;
         this.relationship.uuid = message.uuid;
         this.relationship.relation = 'LIKED_MESSAGE';
@@ -611,6 +604,24 @@ export class FolderPage implements OnInit, OnDestroy {
             .subscribe();
     }
 
+    getIfLiked(message) {
+        this.httpclient.getLiked(this.user.username, message.uuid).subscribe(test => {
+            console.log(test);
+            if (test === true) {
+                if ( message.liked !== true ) {
+                    message.liked = true;
+                }
+            } else {
+                message.liked = false;
+            }
+        });
+        console.log(message.liked);
+        // if (z[0] === true ) {
+        //     message.liked = true;
+        // } else {
+        //     message.liked = false;
+        // }
+    }
 
     sendMessage() {
         const staticMessage = {

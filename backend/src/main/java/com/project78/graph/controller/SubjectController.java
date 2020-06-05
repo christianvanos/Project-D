@@ -1,13 +1,15 @@
 package com.project78.graph.controller;
 
 import com.project78.graph.entity.Person;
-import com.project78.graph.entity.Subject;  
+import com.project78.graph.entity.Subject;
+import com.project78.graph.model.RadarChartData;
 import com.project78.graph.model.SubjectPerson;
 import com.project78.graph.entity.SubjectName;
 import com.project78.graph.model.Messages;
 import com.project78.graph.model.Relationship;
 import com.project78.graph.repository.SubjectNameRepository;
 import com.project78.graph.repository.SubjectRepository;
+import org.apache.logging.log4j.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-import java.util.Date;
+import java.util.*;
 
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
@@ -66,7 +64,6 @@ public class SubjectController {
 //        ArrayList<Subject> subjects = (ArrayList<Subject>) subjectRepository.findAll();
 //        return subjects;
     }
-
 
     @GetMapping("isfeedupdated/{datetime}")
     public boolean isFeedUpdated(@PathVariable String datetime) {
@@ -205,6 +202,16 @@ public class SubjectController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("getLikedMessage/{username}/{uuid}")
+    public Boolean getLikedMessages(@PathVariable String username, @PathVariable String uuid) {
+        Integer result = subjectRepository.getLikedMessage(username, uuid);
+        if ( result == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @GetMapping("findSubjectName")
     public List<String> get() {
         if (subjectNameRepository.count() == 0) {
@@ -231,11 +238,6 @@ public class SubjectController {
         subjectNameRepository.save(newsubjectname);
         return ResponseEntity.ok().build();
     }
-
-    // @PutMapping("createSubjectName")
-    // public ResponseEntity createSubjectName(@RequestBody SubjectName subjectname) {
-//
-    // }
 
 //    @PutMapping("linkedMessage")
 //    public ResponseEntity linkMessageToPerson(@RequestBody Person person) {

@@ -83,6 +83,9 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
             "return n")
     List<Subject> getSubjectsSinceDatetime(@Param("datetime") Date datetime);
 
+    @Query("match (n:Person {username: $username})-[r:LIKED_MESSAGE]-(x:Subject {uuid: $uuid}) RETURN COUNT(r)")
+    Integer getLikedMessage(@Param("username") String username, @Param("uuid") String uuid);
+
     @Query("match (n:Subject)-[r:LIKED_MESSAGE]-() WHERE n.subjectName = $subjectName\n" + "RETURN COUNT(r)")
     Integer getLikedMessages(@Param("subjectName") String subjectName);
 
