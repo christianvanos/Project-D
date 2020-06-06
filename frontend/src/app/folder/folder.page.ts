@@ -604,6 +604,11 @@ export class FolderPage implements OnInit, OnDestroy {
             .subscribe();
     }
 
+    forceRemoveFilterSort() {
+        this.removeFilter();
+        this.removeSort();
+    }
+
     getIfLiked(message) {
         this.httpclient.getLiked(this.user.username, message.uuid).subscribe(test => {
             console.log(test);
@@ -645,6 +650,8 @@ export class FolderPage implements OnInit, OnDestroy {
         // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
         this.closeInput();
         this.getFeedUpdate();
+        this.forceRemoveFilterSort();
+
     }
 }
 
