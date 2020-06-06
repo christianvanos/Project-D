@@ -58,6 +58,9 @@ public interface SubjectRepository extends Neo4jRepository<Subject,Long> {
             "MERGE (a)-[r:LIKED_MESSAGE]->(b)\n" +
             "RETURN type(r)")
     List<Subject> createLikedRelation(@Param("username") String username, @Param("uuid") String uuid);
+
+    @Query("match (n:Person {username: $username})-[r:LIKED_MESSAGE]-(x:Subject {uuid: $uuid}) delete r")
+    List<Subject> deleteLikedRelation(@Param("username") String username, @Param("uuid") String uuid);
 //
 //    @Query("MATCH (a:Subject { uuid: $uuid})<-[:MESSAGE_POSTED_BY]-(b)\n" +
 //            "    RETURN b.username")

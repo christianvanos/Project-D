@@ -595,13 +595,23 @@ export class FolderPage implements OnInit, OnDestroy {
     }
 
     likeMessage(message) {
-        message.liked = true;
-        this.relationship.username = this.user.username;
-        this.relationship.uuid = message.uuid;
-        this.relationship.relation = 'LIKED_MESSAGE';
-        this.httpclient
-            .createRelationshipBetweenExistingNodes(this.relationship)
-            .subscribe();
+        if ( message.liked === false ) {
+            message.liked = true;
+            this.relationship.username = this.user.username;
+            this.relationship.uuid = message.uuid;
+            this.relationship.relation = 'LIKED_MESSAGE';
+            this.httpclient
+                .createRelationshipBetweenExistingNodes(this.relationship)
+                .subscribe();
+        } else {
+            message.liked = false;
+            this.relationship.username = this.user.username;
+            this.relationship.uuid = message.uuid;
+            this.relationship.relation = 'LIKED_MESSAGE';
+            this.httpclient
+                .deleteRelationshipBetweenExistingNodes(this.relationship)
+                .subscribe();
+        }
     }
 
     getIfLiked(message) {
