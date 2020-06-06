@@ -404,11 +404,7 @@ export class FolderPage implements OnInit, OnDestroy {
             if (type === 'h-l') {
                 if (a.read === b.read){
                     if (a.level === b.level) {
-                            if(a.datetimePosted < b.datetimePosted){
-                                return 2;
-                            } else {
-                                return 0;
-                            }
+                        return (a.datetimePosted < b.datetimePosted) ? 1 : 0;
                         } else {
                             return (a.level > b.level) ? 0 : -1;
                         }
@@ -421,11 +417,7 @@ export class FolderPage implements OnInit, OnDestroy {
                 if (type === 'l-h') {
                     if (a.read === b.read){
                         if (a.level === b.level) {
-                            if(a.datetimePosted < b.datetimePosted){
-                                return 2;
-                            } else {
-                                return 0;
-                            }
+                            return (a.datetimePosted < b.datetimePosted) ? 1 : 0;
                         } else {
                             return (a.level < b.level) ? 0 : -1;
                         }
@@ -483,7 +475,7 @@ export class FolderPage implements OnInit, OnDestroy {
 
     removeSort() {
         this.sortselectedValue = null;
-        this.feed = this.feedStream;
+        this.feed = [].concat(this.feedStream);
         this.filter();
     }
 
