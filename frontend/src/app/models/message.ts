@@ -13,5 +13,5 @@ export class Message {
     datetimePosted: string;
     uuid: string;
     opened: boolean;
-
+    liked: boolean;
 }
