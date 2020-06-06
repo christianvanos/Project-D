@@ -67,6 +67,11 @@ export class HttpclientService {
     return this.http.put(url, relationship, httpOptions);
   }
 
+  deleteRelationshipBetweenExistingNodes(relationship) {
+    const url = `${this.url}/deleteLikedRelation`;
+    return this.http.put(url, relationship, httpOptions);
+  }
+
   getLiked(username, uuid) {
     const url = `${this.url}/getLikedMessage/${username}/${uuid}`;
     return this.http.get(url);

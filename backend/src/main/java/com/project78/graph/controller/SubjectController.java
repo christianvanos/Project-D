@@ -202,6 +202,24 @@ public class SubjectController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("deleteLikedRelation")
+    public ResponseEntity deleteRelationshipBetweenExistingNodes(@RequestBody Relationship relationship) {
+        System.out.println(relationship.getUsername() + "  " + relationship.getUUID() + "  " + relationship.getRelation() );
+
+        switch (relationship.getRelation().toUpperCase()){
+            case "LIKED_MESSAGE":
+                subjectRepository.deleteLikedRelation(relationship.getUsername(), relationship.getUUID());
+                break;
+            default:
+                break;
+        }
+
+        lastUpdate = new Date();
+        System.out.println(lastUpdate);
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("getLikedMessage/{username}/{uuid}")
     public Boolean getLikedMessages(@PathVariable String username, @PathVariable String uuid) {
         Integer result = subjectRepository.getLikedMessage(username, uuid);
