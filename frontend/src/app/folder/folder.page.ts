@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
+import {Component, OnInit, OnDestroy, Renderer2} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpclientService} from '../service/httpclient.service';
 import {Person} from '../models/person';
@@ -34,7 +34,7 @@ class CardsInterface {
     styleUrls: ['./folder.page.scss'],
     providers: [DatePipe]
 })
-export class FolderPage implements OnInit {
+export class FolderPage implements OnInit, OnDestroy {
   selectedValue;
   sortselectedValue;
   selectedChart;
@@ -133,7 +133,7 @@ export class FolderPage implements OnInit {
         subject: null,
         person: null
     };
-    private testFeed;
+    private updateIntervalSubscription;
 
     private message: Message = {
         id: null,
@@ -145,7 +145,8 @@ export class FolderPage implements OnInit {
         subjectName: '',
         level: '',
         uuid: '',
-        opened: false
+        opened: false,
+        liked: null
     };
 
     private relationship: Relationship = {
@@ -177,12 +178,18 @@ export class FolderPage implements OnInit {
 
 
         if (this.folder === 'Feed') {
-            const updateInterval = interval(10000);
+            const updateInterval = interval(15000);
             // Subscribe to begin publishing values
-            updateInterval.subscribe(n =>
+            this.updateIntervalSubscription = updateInterval.subscribe(n =>
                 this.getFeedUpdate());
         }
 
+    }
+
+    ngOnDestroy(): void {
+        if (this.folder === 'Feed') {
+            this.updateIntervalSubscription.unsubscribe();
+        }
     }
 
     getCurrentDateTimeToString() {
@@ -195,11 +202,11 @@ export class FolderPage implements OnInit {
     }
 
     getFeedUpdate() {
+        console.log('updateCall');
         this.httpclient
             .getFeedUpdate(this.lastFeedUpdate)
             .subscribe((res: Message[]) => {
                 if (!(res.length === 0)) {
-
                     const BreakException = {};
                     const index = this.feedStream.map((e) => {
                         return e.id;
@@ -224,6 +231,7 @@ export class FolderPage implements OnInit {
                     this.feedStream = [].concat(res, this.feedStream);
                     this.feed = this.feedStream;
                     this.lastFeedUpdate = this.getCurrentDateTimeToString();
+                    this.sort();
                     this.filter();
                 }
             });
@@ -396,11 +404,7 @@ export class FolderPage implements OnInit {
             if (type === 'h-l') {
                 if (a.read === b.read){
                     if (a.level === b.level) {
-                            if(a.datetimePosted < b.datetimePosted){
-                                return 2;
-                            } else {
-                                return 0;
-                            }
+                        return (a.datetimePosted < b.datetimePosted) ? 1 : 0;
                         } else {
                             return (a.level > b.level) ? 0 : -1;
                         }
@@ -413,11 +417,7 @@ export class FolderPage implements OnInit {
                 if (type === 'l-h') {
                     if (a.read === b.read){
                         if (a.level === b.level) {
-                            if(a.datetimePosted < b.datetimePosted){
-                                return 2;
-                            } else {
-                                return 0;
-                            }
+                            return (a.datetimePosted < b.datetimePosted) ? 1 : 0;
                         } else {
                             return (a.level < b.level) ? 0 : -1;
                         }
@@ -475,18 +475,9 @@ export class FolderPage implements OnInit {
 
     removeSort() {
         this.sortselectedValue = null;
-        this.feed = this.feedStream;
+        this.feed = [].concat(this.feedStream);
         this.filter();
     }
-
-    toggleLiked(card: any) {
-        if (card.icon === 'star') {
-            card.icon = 'star-outline';
-        } else {
-            card.icon = 'star';
-        }
-    }
-
 
     async setCreateMessageSubjectName(event) {
         if (this.message.subjectName === '') {
@@ -538,6 +529,7 @@ export class FolderPage implements OnInit {
 
     openMessage(index, message) {
         message.opened = true;
+        this.getIfLiked(message);
         if (!message.read) {
             this.readMessage(index, message);
         }
@@ -595,14 +587,48 @@ export class FolderPage implements OnInit {
     }
 
     likeMessage(message) {
-        this.relationship.username = this.user.username;
-        this.relationship.uuid = message.uuid;
-        this.relationship.relation = 'LIKED_MESSAGE';
-        this.httpclient
-            .createRelationshipBetweenExistingNodes(this.relationship)
-            .subscribe();
+        if ( message.liked === false ) {
+            message.liked = true;
+            this.relationship.username = this.user.username;
+            this.relationship.uuid = message.uuid;
+            this.relationship.relation = 'LIKED_MESSAGE';
+            this.httpclient
+                .createRelationshipBetweenExistingNodes(this.relationship)
+                .subscribe();
+        } else {
+            message.liked = false;
+            this.relationship.username = this.user.username;
+            this.relationship.uuid = message.uuid;
+            this.relationship.relation = 'LIKED_MESSAGE';
+            this.httpclient
+                .deleteRelationshipBetweenExistingNodes(this.relationship)
+                .subscribe();
+        }
     }
 
+    forceRemoveFilterSort() {
+        this.removeFilter();
+        this.removeSort();
+    }
+
+    getIfLiked(message) {
+        this.httpclient.getLiked(this.user.username, message.uuid).subscribe(test => {
+            console.log(test);
+            if (test === true) {
+                if ( message.liked !== true ) {
+                    message.liked = true;
+                }
+            } else {
+                message.liked = false;
+            }
+        });
+        console.log(message.liked);
+        // if (z[0] === true ) {
+        //     message.liked = true;
+        // } else {
+        //     message.liked = false;
+        // }
+    }
 
     sendMessage() {
         const staticMessage = {
@@ -626,6 +652,8 @@ export class FolderPage implements OnInit {
         // this.httpclient.createLinkUserAndMessage(this.user).subscribe();
         this.closeInput();
         this.getFeedUpdate();
+        this.forceRemoveFilterSort();
+
     }
 }
 

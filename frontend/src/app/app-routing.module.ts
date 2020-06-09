@@ -5,7 +5,7 @@ import {AuthenticationGuard} from './auth-guard/authentication-guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '',
+    redirectTo: 'folder/Feed',
     pathMatch: 'full'
   },
   {
@@ -19,7 +19,8 @@ const routes: Routes = [
   {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule), canActivate: [AuthenticationGuard]
-  }
+  },
+  {path: '**', redirectTo: 'folder/Feed', pathMatch: 'full'} // Fallback Route.
 
 ];
 

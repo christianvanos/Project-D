@@ -1,13 +1,15 @@
 package com.project78.graph.controller;
 
 import com.project78.graph.entity.Person;
-import com.project78.graph.entity.Subject;  
+import com.project78.graph.entity.Subject;
+import com.project78.graph.model.RadarChartData;
 import com.project78.graph.model.SubjectPerson;
 import com.project78.graph.entity.SubjectName;
 import com.project78.graph.model.Messages;
 import com.project78.graph.model.Relationship;
 import com.project78.graph.repository.SubjectNameRepository;
 import com.project78.graph.repository.SubjectRepository;
+import org.apache.logging.log4j.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-import java.util.Date;
+import java.util.*;
 
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
@@ -67,7 +65,6 @@ public class SubjectController {
 //        return subjects;
     }
 
-
     @GetMapping("isfeedupdated/{datetime}")
     public boolean isFeedUpdated(@PathVariable String datetime) {
        boolean updated = false;
@@ -95,7 +92,7 @@ public class SubjectController {
     public List<Subject> getFeedUpdate(@PathVariable String datetime) {
         List<Subject> updated = new ArrayList<Subject>();
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyy hh:mm:ss");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyy HH:mm:ss");
             Date date = formatter.parse(datetime);
            System.out.println("date from client: " + date);
            System.out.println("date from server: " + lastUpdate);
@@ -205,6 +202,34 @@ public class SubjectController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("deleteLikedRelation")
+    public ResponseEntity deleteRelationshipBetweenExistingNodes(@RequestBody Relationship relationship) {
+        System.out.println(relationship.getUsername() + "  " + relationship.getUUID() + "  " + relationship.getRelation() );
+
+        switch (relationship.getRelation().toUpperCase()){
+            case "LIKED_MESSAGE":
+                subjectRepository.deleteLikedRelation(relationship.getUsername(), relationship.getUUID());
+                break;
+            default:
+                break;
+        }
+
+        lastUpdate = new Date();
+        System.out.println(lastUpdate);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("getLikedMessage/{username}/{uuid}")
+    public Boolean getLikedMessages(@PathVariable String username, @PathVariable String uuid) {
+        Integer result = subjectRepository.getLikedMessage(username, uuid);
+        if ( result == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @GetMapping("findSubjectName")
     public List<String> get() {
         if (subjectNameRepository.count() == 0) {
@@ -226,16 +251,13 @@ public class SubjectController {
 //        Check if geen subjectnames aanwezig...
 
         List<SubjectName> subjectNameList = (List<SubjectName>) subjectNameRepository.findAll();
+        System.out.println(subjectNameList);
         SubjectName newsubjectname = subjectNameList.get(0);
         newsubjectname.addSubject(subject);
+        System.out.println(newsubjectname);
         subjectNameRepository.save(newsubjectname);
         return ResponseEntity.ok().build();
     }
-
-    // @PutMapping("createSubjectName")
-    // public ResponseEntity createSubjectName(@RequestBody SubjectName subjectname) {
-//
-    // }
 
 //    @PutMapping("linkedMessage")
 //    public ResponseEntity linkMessageToPerson(@RequestBody Person person) {

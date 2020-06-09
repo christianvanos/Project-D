@@ -185,7 +185,10 @@
                       </ion-row>
                       <ion-row  *ngIf="message.opened">
                           <ion-col size-lg="2" size-xs="12">
-                              <ion-button size="small" (click) = likeMessage(message) ><ion-icon name='heart-outline'></ion-icon> Interresant?</ion-button>
+                              <ion-button size="small" (click) = likeMessage(message)>
+                                  <ion-icon [name]="message.liked ? 'heart' : 'heart-outline'" style="padding-right: 10px" ></ion-icon>
+                                  Interresant
+                              </ion-button>
                           </ion-col>
                           <ion-col size-lg="9" size-xs="12">
                               <ion-item [color]="message.level === 'High' ? 'priority': ''"  lines="none" >
