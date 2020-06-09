@@ -251,8 +251,10 @@ public class SubjectController {
 //        Check if geen subjectnames aanwezig...
 
         List<SubjectName> subjectNameList = (List<SubjectName>) subjectNameRepository.findAll();
+        System.out.println(subjectNameList);
         SubjectName newsubjectname = subjectNameList.get(0);
         newsubjectname.addSubject(subject);
+        System.out.println(newsubjectname);
         subjectNameRepository.save(newsubjectname);
         return ResponseEntity.ok().build();
     }

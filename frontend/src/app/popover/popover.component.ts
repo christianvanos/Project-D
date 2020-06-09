@@ -88,8 +88,8 @@ export class PopoverComponent implements OnInit {
 
   createSubject() {
     this.newCreatedList[0].push(this.subject);
-    this.subject = '';
     this.httpclient.addSubject(this.subject).subscribe();
+    this.subject = '';
     // this.chooseSubject(this.subject);
   }
 
