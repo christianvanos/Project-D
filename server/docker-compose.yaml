@@ -1,0 +1,53 @@
+version: '3'
+
+volumes:
+  neo4j-conf:
+  neo4j-data:
+  neo4j-import:
+  neo4j-logs:
+  neo4j-plugins:
+
+networks:
+  project-d-network:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.18.0.0/16
+         gateway: 172.18.0.1
+
+services:
+  neo4j:
+    image: neo4j:3.5.14
+    restart: always
+    expose:
+      - "7474"
+      - "7687"
+    volumes:
+      - neo4j-conf:/conf
+      - neo4j-data:/data
+      - neo4j-import:/import
+      - neo4j-logs:/logs
+      - neo4j-plugins:/plugins
+    environment:
+      - NEO4J_dbms_memory_pagecache_size=1G
+      - NEO4J_dbms.memory.heap.initial_size=1G
+      - NEO4J_dbms_memory_heap_max__size=1G
+    networks:
+      project-d-network:
+        ipv4_address: 172.18.0.2
+
+  spring-boot:
+    image: christian/project-d-backend
+    links:
+      - neo4j
+    networks:
+      project-d-network:
+        ipv4_address: 172.18.0.3
+
+  angular:
+    image: christian/project-d-frontend
+    links:
+      - spring-boot
+    networks:
+      project-d-network:
+        ipv4_address: 172.18.0.4
