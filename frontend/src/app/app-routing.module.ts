@@ -13,10 +13,6 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then( m => m.LoginModule)
   },
   {
-    path: 'main-menu',
-    loadChildren: () => import('./main/main.module').then( m => m.MainModule), canActivate: [AuthenticationGuard]
-  },
-  {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule), canActivate: [AuthenticationGuard]
   },
