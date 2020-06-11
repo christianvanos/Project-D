@@ -613,7 +613,6 @@ export class FolderPage implements OnInit, OnDestroy {
 
     getIfLiked(message) {
         this.httpclient.getLiked(this.user.username, message.uuid).subscribe(test => {
-            console.log(test);
             if (test === true) {
                 if ( message.liked !== true ) {
                     message.liked = true;
@@ -622,12 +621,6 @@ export class FolderPage implements OnInit, OnDestroy {
                 message.liked = false;
             }
         });
-        console.log(message.liked);
-        // if (z[0] === true ) {
-        //     message.liked = true;
-        // } else {
-        //     message.liked = false;
-        // }
     }
 
     sendMessage() {
