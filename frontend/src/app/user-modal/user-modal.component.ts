@@ -4,6 +4,7 @@ import {HttpclientService} from "../service/httpclient.service";
 import {ModalController} from "@ionic/angular";
 import * as moment from 'moment';
 import 'moment/locale/nl';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-user-modal',
@@ -26,11 +27,13 @@ export class UserModalComponent implements OnInit {
     role: '',
     subjectList: []
   };
+  public devWidth = this.platform.width();
   // Data passed in by componentProps
   @Input() list: any;
   constructor(
       private httpclient: HttpclientService,
-      private modalController: ModalController
+      private modalController: ModalController,
+      public platform: Platform
   ) { }
 
   ngOnInit() {
@@ -42,8 +45,6 @@ export class UserModalComponent implements OnInit {
 
   CheckedMessage(index) {
     this.Gelezen[index] = true;
-    console.log(this.Gelezen);
-
   }
 
   openMessage(index, message) {

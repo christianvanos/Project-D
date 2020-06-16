@@ -49,7 +49,6 @@ export class PopoverComponent implements OnInit {
   // Further improvements: Server sided caching.
   loadSubjects() {
     this.httpclient.getSubjectNames().subscribe((res => this.newCreatedList.push(res)));
-    console.log(this.newCreatedList, this.user.name);
   }
 
   loadUserData() {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import {NavigationStart, Router} from '@angular/router';
 import {AuthenticationService} from '../service/authentication.service';
 
 @Component({
@@ -12,10 +12,26 @@ export class LoginComponent implements OnInit {
   password: string;
   error = '';
   constructor(private loginService: AuthenticationService,
-              private router: Router) { }
+              private router: Router) {router.events
+      .subscribe((event: NavigationStart) => {
+          if (event.navigationTrigger === 'popstate') {
+              this.redirectIfLoggedIn();
+          }
+      }); }
 
 
-  ngOnInit() {}
+  ngOnInit() {
+      this.redirectIfLoggedIn();
+  }
+
+  redirectIfLoggedIn(){
+      if (sessionStorage.getItem('username') !== null ||
+          sessionStorage.getItem('username') !== undefined ||
+          sessionStorage.getItem('username') !== '' ){
+          this.router.navigate(['/folder/Feed']);
+      }
+  }
+
   onLogin() {
     (this.loginService.authenticate(this.username, this.password).subscribe(
             data => {
@@ -23,7 +39,7 @@ export class LoginComponent implements OnInit {
               //   this.error = 'No permissions to access this platform.';
               // } else {
                 // this.alertService.presentToast('Logged In');
-                this.router.navigate(['/main-menu']);
+                this.router.navigate(['/folder/Feed']);
                 this.error = '';
               // }
             },
